@@ -1,0 +1,39 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Switch, Router, Route, BrowserRouter, Link, IndexRoute} from 'react-router-dom';
+import registerServiceWorker from './registerServiceWorker';
+
+import './index.css';
+import './style/style.css';
+
+import App from './components/common/App';
+import Home from './components/common/Home';
+import Students from './components/common/Students';
+import Configuration from './components/common/Configuration';
+import StudentPage from './components/student/StudentPage';
+
+// ReactDOM.render(<App />, document.getElementById('root'));
+
+const Root = () => {
+  return (
+
+  	<BrowserRouter>
+  		<App>
+    		<Switch>
+        		<Route exact path="/" component={Home}/> 
+        		<Route  exact path="/students" component={Students}/> 
+            <Route  path="/students/:userID" component={StudentPage}/>
+        		<Route  path="/configuration" component={Configuration}/>   
+      		</Switch>
+      	</App>
+   </BrowserRouter >
+
+   );
+};
+
+
+
+ReactDOM.render(
+  <Root />,
+  document.querySelector('#root')
+);
