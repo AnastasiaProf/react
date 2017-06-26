@@ -13,7 +13,8 @@
     "react-router-dom": "^4.1.1"
   },
   "devDependencies": {
-    "react-scripts": "^1.0.7"
+    "json-loader": "^0.5.4",
+    "react-scripts": "1.0.7"
   },
   "scripts": {
     "start": "react-scripts start",
