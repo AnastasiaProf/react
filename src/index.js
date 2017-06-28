@@ -15,7 +15,7 @@ import Configuration from './components/common/Configuration';
 import StudentPage from './components/student/StudentPage';
 
 const client = new ApolloCLient({
-   networkInterface: createNetworkInterface({ uri: ' http://efannotation.eu.ngrok.io/api/graphql'}),
+   networkInterface: createNetworkInterface({ uri: 'https://effeedbackapp-qa.herokuapp.com/api/graphql'}),
 });
 
 // ReactDOM.render(<App />, document.getElementById('root'));
