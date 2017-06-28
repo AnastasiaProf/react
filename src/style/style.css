@@ -2,6 +2,8 @@ body {
   background-color: white;
   padding: 20px;
   margin: 0;
+  background-color: rgb(242, 242, 242);
+  width: 100%; 
 }
 h1, h2, p, ul, li {
   font-family: Helvetica, Arial, sans-serif;
@@ -12,18 +14,20 @@ ul.header li {
   margin: 0;
 }
 ul.header {
-  background-color: #111;
-  padding: 0;
+  background-color: white;
+  padding-top:2%;
+  padding-bottom:2%;
+  
 }
 ul.header li a {
-  color: #FFF;
   font-weight: bold;
   text-decoration: none;
   padding: 20px;
   display: inline-block;
 }
+
 .content {
-  background-color: #FFF;
+  background-color: rgb(242, 242, 242);
   padding: 20px;
 }
 .content h2 {
@@ -33,3 +37,39 @@ ul.header li a {
 .content li {
   margin-bottom: 10px;
 }
+
+
+/*thumbnail*/
+
+.profile{
+  text-align: center;
+}
+
+/* student list */
+
+.show-grid{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.classetitle{
+  text-align: center;
+  background-color: white;
+  padding: 5px;
+  margin:2%;
+}
+
+.search{
+  width:50%;
+  margin: 1% 25% 1% 25%;
+}
+
+/*student page */
+
+/*.studentpicture{
+  display: inline-block;
+}
+
+.studentname{
+  display: inline-block;
+}*/

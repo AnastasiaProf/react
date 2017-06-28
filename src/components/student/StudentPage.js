@@ -92,17 +92,17 @@ class StudentPage extends Component{
                         <div key={student.userID}>
                             <Grid>
                                 <Row>
-                                    <Col xs={6} md={4} >
+                                    <Col xs={6} md={2} mdOffset={4} >
                                         <img src={student.photoURL} alt="242x200"/>
                                     </Col>
                                     <Col xs={6} md={4} >
                                         <h1>{student.lastName}</h1>
                                     </Col>
-                                    <Row>
+                                </Row>
+                                <Row>
                                     <Col xs={6} md={4} xsOffset={6} mdOffset={4}>
                                         <h1>All the feedback posts</h1>
                                     </Col>
-                                </Row>
                                 </Row>
                             </Grid>
                         </div>

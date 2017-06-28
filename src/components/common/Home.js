@@ -8,7 +8,8 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Thumbnail from 'react-bootstrap/lib/Thumbnail';
 
-import StudentHomeList from '../student/StudentHomeList';
+//import StudentHomeList from '../student/StudentHomeList';
+import StudentHomeListTest from '../student/StudentHomeListTest';
 
 class Home extends Component{
   constructor(props) {
@@ -42,27 +43,29 @@ class Home extends Component{
 			<Grid>
     			<Row className="show-grid">
     				{/*dropdown for class*/}
-      				<Col xs={6} md={4}><code>
+      				<Col xs={6} md={4}>
       					<FormControl onChange={this.filterStud.bind(this.child)} componentClass="select" placeholder="select">
       						<option value="">All Classes</option>
         					<option value="class1">Class 1</option>
         					<option value="class2">Class 2</option>
         					<option value="class3">Class 3</option>
       					</FormControl>
-      				</code></Col>
+      				</Col>
       				{/*dropdown for sorting by ...*/}
-     	 			<Col xs={6} md={4}><code>
+     	 			<Col xs={6} md={4} mdOffset={4}>
   						<FormControl onChange={this.sortStud.bind(this.child)} componentClass="select" placeholder="select">
         					<option value="name">Name</option>
         					<option value="fbmonth">Feedback this month</option>
         					<option value="fball">All feedback</option>
       					</FormControl>
-     	 			</code></Col>
+     	 			</Col>
     			</Row>
         	</Grid>
 
-			{/*display the list of students*/}
-			<StudentHomeList ref={(child) => { this.child = child; }}/>
+			{/*display the list of students
+			<StudentHomeList ref={(child) => { this.child = child; }}/>*/}
+
+      <StudentHomeListTest />
 
 			
 </div>

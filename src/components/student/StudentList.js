@@ -134,20 +134,18 @@ class StudentList extends React.Component {
     return (
     <div>
       <Grid>
-        <input type="text"
-         placeholder="Search for a student by name"
-         onChange={this.updateSearch.bind(this)}
-         searchText={this.state.filter}
-        />
+        <input className="search" type="text" placeholder="Search for a student by name" onChange={this.updateSearch.bind(this)}/>
         {courses.map(course => {
           if(course.studentsDisplay.length > 0){
             return (
               <Row key={course.courseID}>
-                <h1>{course.courseName}</h1>
+                <div className="classetitle">
+                  <h1>{course.courseName}</h1>
+                </div>
                 {course.studentsDisplay.map(student => {
                   return (
-                    <Col xs={6} md={4} key={student.userID}>
-                      <Thumbnail> <img src={student.photoURL} alt="242x200"/>
+                    <Col xs={4} md={2} key={student.userID} >
+                      <Thumbnail className="profile"> <img src={student.photoURL} alt="student picture"/>
                         <Link to={`students/${student.userID}`}><h3>{student.lastName}</h3></Link>
                       </Thumbnail>
                     </Col>

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Switch, Router, Route, BrowserRouter, Link, IndexRoute} from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import ApolloCLient from 'apollo-client';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider, createNetworkInterface } from 'react-apollo';
 
 import './index.css';
 import './style/style.css';
@@ -15,7 +15,7 @@ import Configuration from './components/common/Configuration';
 import StudentPage from './components/student/StudentPage';
 
 const client = new ApolloCLient({
-  dataIdFromObject: o => o.id
+   networkInterface: createNetworkInterface({ uri: ' http://efannotation.eu.ngrok.io/api/graphql'}),
 });
 
 // ReactDOM.render(<App />, document.getElementById('root'));

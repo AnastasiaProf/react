@@ -124,12 +124,12 @@ class StudentHomeList extends React.Component {
             var currentTime = new Date();
             var month = currentTime.getMonth() + 1;
             var year = currentTime.getFullYear();
-            students.sort(this.dynamicSort("-annotationsmonth"));
+            students.sort(this.dynamicSort("annotationsmonth"));
             break;
 
           case "fball":
             var annot = "fball";
-            students.sort(this.dynamicSort("-annotations"));
+            students.sort(this.dynamicSort("annotations"));
             break;
 
           default:
@@ -144,30 +144,22 @@ class StudentHomeList extends React.Component {
       student.class.includes(this.state.filterStud))
     }
 
-    
-
-    if(this.state.sortStud){
-
-    }
-
-
-
     return (
-    <div>
-      <Grid>
-        <Row>
-        {students.map(student => {
-          return (
-        <Col xs={6} md={4} key={student.userID}>
-          <Thumbnail> <img src={student.photoURL} alt="242x200"/>
-          {this.returnLink(student,annot)}
-          </Thumbnail>
-        </Col>
-          )
-        })}
-    </Row>
-      </Grid>
-        </div>
+      <div >
+        <Grid>
+          <Row>
+            {students.map(student => {
+              return (
+                <Col xs={4} md={2} key={student.userID}>
+                  <Thumbnail className="profile"> <img src={student.photoURL} alt="student profile picture"/>
+                  {this.returnLink(student,annot)}
+                  </Thumbnail>
+                </Col>
+              )
+            })}
+          </Row>
+        </Grid>
+      </div>
     );
   }
 
