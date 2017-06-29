@@ -15,7 +15,7 @@ import Configuration from './components/common/Configuration';
 import StudentPage from './components/student/StudentPage';
 
 const client = new ApolloCLient({
-   networkInterface: createNetworkInterface({ uri: 'https://effeedbackapp-qa.herokuapp.com/api/graphql'}),
+   //networkInterface: createNetworkInterface({ uri: 'https://effeedbackapp-qa.herokuapp.com/api/graphql'}),
 });
 
 // ReactDOM.render(<App />, document.getElementById('root'));
@@ -23,14 +23,14 @@ const client = new ApolloCLient({
 const Root = () => {
   return (
     <ApolloProvider client={client}>
-    	<BrowserRouter>
-    		<App>
-      		<Switch>
-          	<Route exact path="/" component={Home}/> 
-          	<Route  exact path="/students" component={Students}/> 
+      <BrowserRouter>
+        <App>
+          <Switch>
+            <Route exact path="/" component={Home}/> 
+            <Route  exact path="/students" component={Students}/> 
             <Route  path="/students/:userID" component={StudentPage}/>
-          	<Route  path="/configuration" component={Configuration}/>   
-        	</Switch>
+            <Route  path="/configuration" component={Configuration}/>   
+          </Switch>
         </App>
       </BrowserRouter >
     </ApolloProvider>

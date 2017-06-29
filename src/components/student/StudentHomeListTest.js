@@ -3,9 +3,32 @@ import { Link } from 'react-router-dom';
 import { graphql ,gql} from 'react-apollo';
 //import studentsQuery from '../../queries/fetchStudents';
 
+
 class StudentHomeListTest extends React.Component {
 
+
 	render(){
+
+		const query = `
+		  {
+		    students { 
+		      lastName 
+		    } 
+		  }`
+
+		fetch('https://effeedbackapp-qa.herokuapp.com/api/graphql', {
+		        method: 'POST',
+		        headers: {
+		          'Accept':'application/json',
+		          'Content-Type': 'application/json'
+		        },
+		        body: JSON.stringify({"query": query, "variables": null})
+		        }).then(function (response) {
+		            console.log(response.text());
+		        }).then(data => {
+		            console.log('Here is the data: ', data);
+		          })
+
 
 		if (this.props.data.loading) {
       		return (<div>Loading</div>)
