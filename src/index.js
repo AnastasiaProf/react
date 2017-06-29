@@ -15,10 +15,10 @@ import Configuration from './components/common/Configuration';
 import StudentPage from './components/student/StudentPage';
 
 const client = new ApolloCLient({
-   //networkInterface: createNetworkInterface({ uri: 'https://effeedbackapp-qa.herokuapp.com/api/graphql'}),
+   networkInterface: createNetworkInterface({ uri: 'https://effeedbackapp-qa.herokuapp.com/api/graphql'}),
 });
 
-// ReactDOM.render(<App />, document.getElementById('root'));
+
 
 const Root = () => {
   return (
@@ -40,7 +40,4 @@ const Root = () => {
 
 
 
-ReactDOM.render(
-  <Root />,
-  document.querySelector('#root')
-);
+ReactDOM.render(<Root />, document.getElementById('root'));
