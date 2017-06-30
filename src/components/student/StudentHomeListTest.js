@@ -47,7 +47,6 @@ class StudentHomeListTest extends React.Component {
   renderStudents(){
 
     console.log(this);
-    console.log(StudentsQuery);
     
     return this.props.data.students.map(({lastName, photoURL, userID}) => {
       return (
@@ -55,7 +54,7 @@ class StudentHomeListTest extends React.Component {
           <Col xs={4} md={2} key={userID}>
             <Thumbnail className="profile"> 
               <img src={photoURL} alt="student profile picture"/>
-              <Link to="/"><h3>{lastName}</h3></Link>
+              <Link to={`/students/${userID}`}><h3>{lastName}</h3></Link>
             </Thumbnail>
           </Col>
       );
