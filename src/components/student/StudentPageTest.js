@@ -5,60 +5,97 @@ import { graphql } from 'react-apollo';
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
+import Panel from 'react-bootstrap/lib/Panel';
 
 
-        const getStudentInfo = gql`
-        query getStudentInfo($userID: ID!)
-        {
-            student(studentID: $userID) {
-                userID
-                firstName
-                lastName
-                photoURL
-            }
-            annotations(filterStudentIDs: [$userID]) {
-                annotationID
-            }
+
+const getStudentInfo = gql`
+    query getStudentInfo($userID: ID!)
+    {
+        student(studentID: $userID) {
+            lastName
+            photoURL
         }
-        `;
+        annotations(filterStudentIDs: [$userID]) {
+            annotationID
+            contentType
+            mediaURL
+            thumbnailURL
+            text
+            transcript
+            classDate
+            createdAt
+            updatedAt
+            transcribedAt
+        }
+    }
+`;
 
 
 class StudentPageTest extends Component{
-    constructor(props) {
-    super(props);
-    this.state= {
-        filter: null, 
-        students: []
-    };
-}
 
  	render(){
-        console.log(this)
-        let student = this.props.data.student;
-        if (this.props.data.loading){
-            return <div>Loading...</div>;
-        }
 
-        return (
+        console.log(this);
+
+        const { student } = this.props.data;
+        const title = (<h3>Annotation</h3>);
+        
+        if (!student) { return <div>Loading...</div>}
+            console.log(this.props.data.annotations.annotationID);
+       return (
         	<div>
         		<Link to="/">Back</Link>
-                        <div key={student.userID}>
-                            <Grid>
-                                <Row>
-                                    <Col xs={6} md={2} mdOffset={4} >
-                                        <img src={student.photoURL} alt="242x200"/>
-                                    </Col>
-                                    <Col xs={6} md={4} >
-                                        <h1>{student.lastName}</h1>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col xs={6} md={4} xsOffset={6} mdOffset={4}>
-                                        <h1>All the feedback posts</h1>
-                                    </Col>
-                                </Row>
-                            </Grid>
-                        </div>               
+            
+                <div key={student.userID}>
+                    <Grid>
+                        <Row>
+                            <Col xs={6} md={2} mdOffset={4} >
+                                <img src={student.photoURL} alt="242x200"/>
+                            </Col>
+                            <Col xs={6} md={4} >
+                                <h1>{student.lastName}</h1>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs={12} md={8} mdOffset={2}>
+                                <h1>All the feedback posts</h1>
+                                 {this.props.data.annotations.map(annotation => {
+                                    if(annotation.contentType == "image"){
+                                        return (
+                                            <Panel header={title} key={annotation.annotationID}>
+                                                <p>{annotation.contentType}</p>
+                                                <img src={annotation.mediaURL} />     
+                                            </Panel>
+                                        );     
+                                    }else if(annotation.contentType == "video"){
+                                        return (
+                                            <Panel header={title} key={annotation.annotationID}>
+                                                <p>{annotation.contentType}</p>
+                                                <video><source src={annotation.mediaURL} type="video/mp4"/></video>    
+                                            </Panel>
+                                        );     
+                                    }else if(annotation.contentType == "text"){
+                                        return (
+                                            <Panel header={title} key={annotation.annotationID}>
+                                                <p>{annotation.contentType}</p>
+                                                <p>{annotation.text}</p>    
+                                            </Panel>
+                                        );     
+                                    }else if(annotation.contentType == "audio"){
+                                        return (
+                                            <Panel header={title} key={annotation.annotationID}>
+                                                <p>{annotation.contentType}</p>
+                                                <p>{annotation.transcript}</p>
+                                                <audio src={annotation.mediaURL}></audio> 
+                                            </Panel>
+                                        );
+                                    }     
+                                })}
+                            </Col>
+                        </Row>
+                    </Grid>
+                </div>        
         	</div>
         );
     }
