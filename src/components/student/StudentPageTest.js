@@ -6,14 +6,19 @@ import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
-const query = gql`
-    {
-      students {
-        firstName
-        photoURL
-      }
-    }
-`;
+
+        const getStudentInfo = gql`
+        query getStudentInfo($userID: ID!)
+        {
+            student(studentID: $userID) {
+                firstName
+                photoURL
+            }
+            annotations(filterStudentIDs: [$userID]) {
+                annotationID
+            }
+        }
+        `;
 
 
 class StudentPageTest extends Component{
@@ -26,20 +31,20 @@ class StudentPageTest extends Component{
 }
 
  	render(){
+        console.log(this);
 
-        let students  = this.props.data;
-
-        const userID  = this.props.match.params.userID;
-
-        students = students.filter(student => {
+        let students  = this.props.data.students;
+        var userID  = this.props.match.params.userID;
+        return(null)
+/*        students = students.filter(student => {
             if(student.userID == userID) {
                 return true;
             }else{
                 return false;
             }    
-        }); 
+        }); */
 
-        return (
+/*        return (
         	<div>
         		<Link to="/">Back</Link>
                 
@@ -67,11 +72,9 @@ class StudentPageTest extends Component{
                 
                 
         	</div>
-        );
+        );*/
     }
 }
 
 
-
-
-export default graphql(query)(StudentPageTest);
+export default graphql(getStudentInfo, { options:  (props) => { return { variables: { userID: props.match.params.userID} } } },)(StudentPageTest);
