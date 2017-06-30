@@ -11,7 +11,9 @@ import Col from 'react-bootstrap/lib/Col';
         query getStudentInfo($userID: ID!)
         {
             student(studentID: $userID) {
+                userID
                 firstName
+                lastName
                 photoURL
             }
             annotations(filterStudentIDs: [$userID]) {
@@ -31,25 +33,15 @@ class StudentPageTest extends Component{
 }
 
  	render(){
-        console.log(this);
+        console.log(this)
+        let student = this.props.data.student;
+        if (this.props.data.loading){
+            return <div>Loading...</div>;
+        }
 
-        let students  = this.props.data.students;
-        var userID  = this.props.match.params.userID;
-        return(null)
-/*        students = students.filter(student => {
-            if(student.userID == userID) {
-                return true;
-            }else{
-                return false;
-            }    
-        }); */
-
-/*        return (
+        return (
         	<div>
         		<Link to="/">Back</Link>
-                
-                {students.map(student => {
-                    return(
                         <div key={student.userID}>
                             <Grid>
                                 <Row>
@@ -66,13 +58,9 @@ class StudentPageTest extends Component{
                                     </Col>
                                 </Row>
                             </Grid>
-                        </div>
-                    );
-                })}
-                
-                
+                        </div>               
         	</div>
-        );*/
+        );
     }
 }
 
