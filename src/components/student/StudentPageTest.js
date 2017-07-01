@@ -6,6 +6,11 @@ import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
+import Button from 'react-bootstrap/lib/Button';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
+import FormControl from 'react-bootstrap/lib/FormControl';
+
+import AddAnnotation from './AddAnnotation';
 
 
 const getStudentInfo = gql`
@@ -58,7 +63,9 @@ class StudentPageTest extends Component{
                         <Row>
                             <Col xs={12} md={8} mdOffset={2}>
                                 <h1>All the feedback posts</h1>
-                                 {this.props.data.annotations.map(annotation => {
+                                <AddAnnotation/>
+
+                                {this.props.data.annotations.map(annotation => {
                                     if(annotation.contentType == "image"){
                                         return (
                                             <Panel header={title} key={annotation.annotationID}>
