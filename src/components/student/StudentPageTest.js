@@ -13,6 +13,7 @@ import FormControl from 'react-bootstrap/lib/FormControl';
 import AddAnnotation from './AddAnnotation';
 
 
+
 const getStudentInfo = gql`
     query getStudentInfo($userID: ID!)
     {
@@ -39,6 +40,7 @@ const getStudentInfo = gql`
 class StudentPageTest extends Component{
 
  	render(){
+
         console.log(this);
 
         const { student } = this.props.data;
