@@ -9,6 +9,7 @@ import './index.css';
 import './style/style.css';
 
 import App from './components/common/App';
+import Teachers from './components/common/Teachers';
 import Home from './components/common/Home';
 import Students from './components/common/Students';
 import Configuration from './components/common/Configuration';
@@ -26,10 +27,11 @@ const Root = () => {
       <BrowserRouter>
         <App>
           <Switch>
-            <Route exact path="/" component={Home}/> 
-            <Route  exact path="/students" component={Students}/> 
-            <Route  path="/students/:userID" component={StudentPageTest}/>
-            <Route  path="/configuration" component={Configuration}/>   
+            <Route  exact path="/" component={Teachers}/>
+            <Route  exact path="/:teacherID/configuration" component={Configuration}/>   
+            <Route  exact path="/:teacherID/students" component={Students}/> 
+            <Route  exact path="/:teacherID" component={Home}/> 
+            <Route  path="/:teacherID/students/:userID" component={StudentPageTest}/>
           </Switch>
         </App>
       </BrowserRouter >

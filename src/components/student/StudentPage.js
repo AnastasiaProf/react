@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
 
+
 class StudentPage extends Component{
     constructor(props) {
         super(props);
@@ -114,14 +115,5 @@ class StudentPage extends Component{
         );
     }
 }
-
-
-// const query = gql`
-// 	{
-// 	  students {
-// 	    firstName
-// 	  }
-// 	}
-// `;
 
 export default StudentPage;

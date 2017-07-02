@@ -4,20 +4,19 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Thumbnail from 'react-bootstrap/lib/Thumbnail';
 
-import StudentList from '../student/StudentList';
+import TeacherList from './TeacherList';
 
 
-class Students extends Component{
+class Teachers extends Component{
 	render(){
-		var teacherID = window.location.pathname.split("/")[1];
 		return(
 			<div>
         		{/*display the list of students*/}
-        		<StudentList teacherID={teacherID}/>
+        		<TeacherList/>
      		</div>
 		);
 	}
 }
 
-export default Students;
+export default Teachers;
 

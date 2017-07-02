@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { graphql ,gql} from 'react-apollo';
 import DropdownButton from 'react-bootstrap/lib/DropdownButton';
 import {ControlLabel} from 'react-bootstrap';
 import {FormControl} from 'react-bootstrap';
@@ -11,12 +12,30 @@ import Thumbnail from 'react-bootstrap/lib/Thumbnail';
 //import StudentHomeList from '../student/StudentHomeList';
 import StudentHomeListTest from '../student/StudentHomeListTest';
 
+
+const CourseQuery = gql`
+  query CourseQuery($teacherID: ID!) {
+    courses(teacherID: $teacherID) {
+      courseID
+      courseName
+      description
+      courseStartDate
+      courseEndDate
+      courseStartWeekCode
+      courseEndWeekCode
+      createdAt
+      updatedAt
+    }
+    }
+`;
+
 class Home extends Component{
   constructor(props) {
     super(props);
 
     this.state = {
       list: {},
+      filterStud: ""
     };
   }
 
@@ -28,7 +47,7 @@ class Home extends Component{
   }
 
   sortStud(e){
-    this.setState({sortStud: e.target.value})
+    this.child.setState({sortStud: e.target.value})
   }
 
 
@@ -38,22 +57,36 @@ class Home extends Component{
   }
 
 	render(){
+    if (this.props.data.loading){
+      return <div>Loading...</div>;
+    }
+
+    let course = "";
+
+    if(this.state.filterStud == ""){
+      course = this.props.data.courses[0].courseID;
+    } else {
+      course =  this.state.filterStud;
+    }
+
+
 		return(
-<div>
+    <div>
 			<Grid>
     			<Row className="show-grid">
     				{/*dropdown for class*/}
       				<Col xs={6} md={4}>
-      					<FormControl onChange={this.filterStud.bind(this.child)} componentClass="select" placeholder="select">
-      						<option value="">All Classes</option>
-        					<option value="class1">Class 1</option>
-        					<option value="class2">Class 2</option>
-        					<option value="class3">Class 3</option>
+      					<FormControl onChange={this.filterStud.bind(this)} componentClass="select" placeholder="select">
+                {this.props.data.courses.map(course => {
+                  return (
+                    <option key={course.courseID} value={course.courseID}>{course.courseName}</option>
+                  );
+                })}
       					</FormControl>
       				</Col>
       				{/*dropdown for sorting by ...*/}
      	 			<Col xs={6} md={4} mdOffset={4}>
-  						<FormControl onChange={this.sortStud.bind(this.child)} componentClass="select" placeholder="select">
+  						<FormControl onChange={this.sortStud.bind(this)} componentClass="select" placeholder="select">
         					<option value="name">Name</option>
         					<option value="fbmonth">Feedback this month</option>
         					<option value="fball">All feedback</option>
@@ -62,10 +95,12 @@ class Home extends Component{
     			</Row>
         	</Grid>
 
-			{/*display the list of students
-			<StudentHomeList ref={(child) => { this.child = child; }}/>*/}
-
-      <StudentHomeListTest />
+      <StudentHomeListTest ref={(child) => {
+        if(!(child == null )){
+          this.child = child.getWrappedInstance();
+        }
+      } } filterStudValue={course} teacherID={this.props.match.params.teacherID}
+        />
 
 			
 </div>
@@ -74,5 +109,7 @@ class Home extends Component{
 	}
 }
 
-export default Home;
+export default graphql(CourseQuery, {
+  options:  (props) => {  { return { variables: { teacherID: props.match.params.teacherID } } } }
+})(Home);
 

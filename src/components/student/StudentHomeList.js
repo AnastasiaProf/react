@@ -110,7 +110,6 @@ class StudentHomeList extends React.Component {
   render() {
     let students = this.state.students;
 
-    console.log(Date.now())
 
     if(this.state.sortStud){
       switch(this.state.sortStud) {

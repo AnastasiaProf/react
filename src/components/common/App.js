@@ -10,6 +10,8 @@ import Home from './Home';
 
 class App extends Component {
   render() {
+    var teacherID = window.location.pathname.split("/")[1];
+    console.log(window.location.pathname)
     return (
       <div>
         <Grid>
@@ -17,9 +19,9 @@ class App extends Component {
             <Col xs={12} md={12}>
               <ul className="header">
                 <li> <img src={logo} className="EF-logo" alt="EF logo" /> </li>
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/students">Students</Link></li>
-                <li><Link to="/configuration">Settings</Link></li>
+                <li><Link to={`/${teacherID}`}>Home</Link></li>
+                <li><Link to={`/${teacherID}/students`}>Students</Link></li>
+                <li><Link to={`/${teacherID}/configuration`}>Settings</Link></li>
               </ul>
             </Col>
           </Row>
