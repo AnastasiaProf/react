@@ -50,8 +50,8 @@ class AddAnnotation extends Component{
 				teacherID: this.props.teacherID,
 				studentIDs: [this.props.studentIDs],
 				tags: this.state.tags},
-				refetchQueries: [{AddAnnotation}]
-		}).then(() => this.setState({text: ''}));
+				refetchQueries: [{getStudentInfo}]
+		}).then(() => this.setState({text: " "}));
 	}
 
 
