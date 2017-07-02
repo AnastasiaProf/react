@@ -8,73 +8,169 @@ import Thumbnail from 'react-bootstrap/lib/Thumbnail';
 //import StudentsQuery from '../../queries/fetchStudents';
 
 const StudentsQuery = gql`
-  query StudentsQuery {
-    students {
+  query StudentsQuery($courseID: ID!, $teacherID: ID!) {
+    students(courseID: $courseID) {
       userID
       lastName
       photoURL
     }
-  }
-`
+    annotations(filterTeacherID: $teacherID){
+    annotationID
+    createdAt
+        students{
+            userID
+        }
+    }
+  }`;
+
 
 class StudentHomeListTest extends React.Component {
-
-
-
-// const query = `
-//   {
-//     students { 
-//       lastName 
-//     } 
-//   }`
-// console.log(fetch('https://effeedbackapp-qa.herokuapp.com/api/graphql', {
-//         method: 'POST',
-//         headers: {
-//           'accept':'application/json',
-//           'content-type': 'application/json'
-//         },
-//         body: JSON.stringify({"query": query, "variables": null})
-//         }).then(function (response) {
-//             return response.text();
-//         }).then(data => {
-//             console.log('Here is the data: ', data);
-//           }
-//     ));
-
-
-//       return(null)
-
-  renderStudents(){
-
-    console.log(this);
-    
-    return this.props.data.students.map(({lastName, photoURL, userID}) => {
-      return (
-
-          <Col xs={4} md={2} key={userID}>
-            <Thumbnail className="profile"> 
-              <img src={photoURL} alt="student profile picture"/>
-              <Link to={`/students/${userID}`}><h3>{lastName}</h3></Link>
-            </Thumbnail>
-          </Col>
-      );
-    });
-  }
-
-  render(){
-    if (this.props.data.loading){
-      return <div>Loading...</div>;
+    constructor(props) {
+        super(props);
+        this.state = {
+            sortStud: "name"
+        };
     }
-    return(
-      <div>
-        <Grid>
-          <Row>
-            {this.renderStudents()}
-          </Row>
-        </Grid>
-      </div>
-    );
-  }
+
+
+    dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return function (a,b) {
+            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+            return result * sortOrder;
+        }
+    }
+
+
+
+    countAnnot(array, month = false){
+        let counterarray = [];
+
+        // Return today's date and time
+        var currentTime = new Date()
+
+        // returns the month (from 0 to 11)
+        var current_month = currentTime.getMonth() + 1
+
+
+        // returns the year (four digits)
+        var current_year = currentTime.getFullYear()
+
+        if(!(array == undefined)){
+
+            array.forEach(function(e){
+
+                let dates = e.createdAt.split("-");
+
+                if(!(e.students[0].userID == undefined)){
+                    if(month && current_month == dates[1] && current_year == dates[0]){
+                        if(counterarray[e.students[0].userID] == undefined){
+                            counterarray[e.students[0].userID] = 0;
+                        } else {
+                            counterarray[e.students[0].userID] += 1;
+                        }
+                    } else if(!month){
+                        if(counterarray[e.students[0].userID] == undefined){
+                            counterarray[e.students[0].userID] = 0;
+                        } else {
+                            counterarray[e.students[0].userID] += 1;
+                        }
+                    }
+                }
+            });
+        }
+        this.props.data.students.forEach(function(e){
+            if(!counterarray.hasOwnProperty(e.userID)){
+                counterarray[e.userID] = 0;
+            }
+        });
+        console.log(counterarray);
+        return counterarray;
+    }
+
+    sortName(students) {
+        return students.concat().sort(this.dynamicSort("lastName"));
+    }
+
+    sortAnnotAll(students, annotations) {
+        return students.concat().sort(function(a, b){
+            if (annotations[a.userID] < annotations[b.userID])
+                return -1;
+            if (annotations[a.userID] > annotations[b.userID])
+                return 1;
+
+            return 0;
+        });
+    }
+
+    sortAnnotMonth(arr) {
+        return arr.concat().sort(this.dynamicSort("lastName"));
+    }
+
+    renderStudents(){
+        let students = [];
+
+        let annotations = [];
+
+        if(this.state.sortStud){
+            switch(this.state.sortStud) {
+                case "name":
+                    students = this.sortName(this.props.data.students);
+                    break;
+
+                case "fbmonth"://TODO
+
+                    var annot = "fbmonth";
+                    annotations = this.countAnnot(this.props.data.annotations, true);
+                    students = this.sortAnnotAll(this.props.data.students, annotations);
+                    break;
+
+
+                case "fball"://Comprends pas erreur
+                    annotations = this.countAnnot(this.props.data.annotations);
+                    students = this.sortAnnotAll(this.props.data.students, annotations);
+                    break;
+
+                default:
+                    students = this.sortName(this.props.data.students);
+                    break;
+
+            }
+        }
+
+        var teacherID = this.props.teacherID;
+
+        return students.map(({lastName, photoURL, userID}) => {
+            return (
+                <Col xs={4} md={2} key={userID}>
+                    <Thumbnail className="profile">
+                        <img src={photoURL} alt="student profile picture"/>
+                        <Link to={`/${teacherID}/students/${userID}`}><h3>{lastName}</h3></Link>
+                    </Thumbnail>
+                </Col>
+            );
+        });
+    }
+
+    render(){
+        if (this.props.data.loading){
+            return <div>Loading...</div>;
+        }
+        console.log(this)
+        return(
+            <div>
+                <Grid>
+                    <Row>
+                        {this.renderStudents()}
+                    </Row>
+                </Grid>
+            </div>
+        );
+    }
 
 
 }
@@ -82,6 +178,9 @@ class StudentHomeListTest extends React.Component {
 
 
 
-export default graphql(StudentsQuery)(StudentHomeListTest)
+export default graphql(StudentsQuery, {
+    withRef: true,
+    options:  (props) => {  { return { variables: { courseID: props.filterStudValue, teacherID: props.teacherID} } } }
+})(StudentHomeListTest)
 /*
-export default StudentHomeListTest*/
+ export default StudentHomeListTest*/
