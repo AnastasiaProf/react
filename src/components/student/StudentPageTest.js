@@ -11,47 +11,29 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import FormControl from 'react-bootstrap/lib/FormControl';
 
 import AddAnnotation from './AddAnnotation';
+import getStudentInfo from '../../queries/fetchAnnotations';
 
-
-
-const getStudentInfo = gql`
-    query getStudentInfo($userID: ID!)
-    {
-        student(studentID: $userID) {
-            lastName
-            photoURL
-        }
-        annotations(filterStudentIDs: [$userID]) {
-            annotationID
-            contentType
-            mediaURL
-            thumbnailURL
-            text
-            transcript
-            classDate
-            createdAt
-            updatedAt
-            transcribedAt
-        }
-    }
-`;
 
 
 class StudentPageTest extends Component{
 
- 	render(){
+    render(){
 
         console.log(this);
 
         const { student } = this.props.data;
         const title = (<h3>Annotation</h3>);
-        
+
         if (!student) { return <div>Loading...</div>}
-            console.log(this.props.data.annotations.annotationID);
-       return (
-        	<div>
-        		<Link to="/">Back</Link>
-            
+        console.log(this.props.data.annotations.annotationID);
+        let teacherID = this.props.match.params.teacherID;
+        let studentID = this.props.match.params.userID;
+        let annotations = this.props.data.annotations.concat().reverse();
+
+        return (
+            <div>
+                <Link to="/">Back</Link>
+
                 <div key={student.userID}>
                     <Grid>
                         <Row>
@@ -65,45 +47,45 @@ class StudentPageTest extends Component{
                         <Row>
                             <Col xs={12} md={8} mdOffset={2}>
                                 <h1>All the feedback posts</h1>
-                                <AddAnnotation/>
+                                <AddAnnotation studentID={studentID} teacherID={teacherID}/>
 
-                                {this.props.data.annotations.map(annotation => {
+                                {annotations.map(annotation => {
                                     if(annotation.contentType == "image"){
                                         return (
                                             <Panel header={title} key={annotation.annotationID}>
                                                 <p>{annotation.contentType}</p>
-                                                <img src={annotation.mediaURL} />     
+                                                <img src={annotation.mediaURL} />
                                             </Panel>
-                                        );     
+                                        );
                                     }else if(annotation.contentType == "video"){
                                         return (
                                             <Panel header={title} key={annotation.annotationID}>
                                                 <p>{annotation.contentType}</p>
-                                                <video><source src={annotation.mediaURL} type="video/mp4"/></video>    
+                                                <video><source src={annotation.mediaURL} type="video/mp4"/></video>
                                             </Panel>
-                                        );     
+                                        );
                                     }else if(annotation.contentType == "text"){
                                         return (
                                             <Panel header={title} key={annotation.annotationID}>
                                                 <p>{annotation.contentType}</p>
-                                                <p>{annotation.text}</p>    
+                                                <p>{annotation.text}</p>
                                             </Panel>
-                                        );     
+                                        );
                                     }else if(annotation.contentType == "audio"){
                                         return (
                                             <Panel header={title} key={annotation.annotationID}>
                                                 <p>{annotation.contentType}</p>
                                                 <p>{annotation.transcript}</p>
-                                                <audio src={annotation.mediaURL}></audio> 
+                                                <audio src={annotation.mediaURL}></audio>
                                             </Panel>
                                         );
-                                    }     
+                                    }
                                 })}
                             </Col>
                         </Row>
                     </Grid>
-                </div>        
-        	</div>
+                </div>
+            </div>
         );
     }
 }

@@ -79,7 +79,7 @@ class Home extends Component{
       					<FormControl onChange={this.filterStud.bind(this)} componentClass="select" placeholder="select">
                 {this.props.data.courses.map(course => {
                   return (
-                    <option key={course.courseID} value={course.courseID}>{course.courseName}</option>
+                    <option key={course.courseID} value={course.courseID}>{course.description}</option>
                   );
                 })}
       					</FormControl>

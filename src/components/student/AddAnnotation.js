@@ -4,74 +4,64 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import Panel from 'react-bootstrap/lib/Panel';
 import Button from 'react-bootstrap/lib/Button';
-
-const getStudentInfo = gql`
-    query getStudentInfo($userID: ID!)
-    {
-        student(studentID: $userID) {
-            lastName
-            photoURL
-        }
-        annotations(filterStudentIDs: [$userID]) {
-            annotationID
-            contentType
-            mediaURL
-            thumbnailURL
-            text
-            transcript
-            classDate
-            createdAt
-            updatedAt
-            transcribedAt
-        }
-    }
-`;
+import getStudentInfo from '../../queries/fetchAnnotations';
 
 class AddAnnotation extends Component{
-	constructor(props){
-    	super(props);
-    	this.state = {
-     		open: false,
-     		contentType: '',
-     		text: '',
-     		studentIDs: [],
-     		teacherID: '',
-     		tags:''
-    	};
-  	}
+    constructor(props){
+        super(props);
 
-  	onSubmit(event){
-		event.preventDefault();
-
-		this.props.mutate({
-			variables: {
-				contentType: "text",
-				text: this.state.text,
-				teacherID: this.props.teacherID,
-				studentIDs: [this.props.studentIDs],
-				tags: this.state.tags},
-				refetchQueries: [{getStudentInfo}]
-		}).then(() => this.setState({text: " "}));
-	}
+        this.state = {
+            open: false,
+            contentType: '',
+            text: '',
+            studentIDs: [props.studentID],
+            teacherID: props.teacherID,
+            tags:''
+        };
+    }
 
 
-	render(){
-		return(
+    onSubmit(event){
+        event.preventDefault();
+        let studentID = this.props.studentID;
+        let teacherID = this.props.teacherID;
+
+        this.props.mutate({
+            variables: {
+                "annotation": {
+                    contentType: "text",
+                    text: this.state.text,
+                    teacherID: teacherID,
+                    studentIDs: [studentID],
+                    tags: this.state.tags
+                }
+            },
+            refetchQueries: [{
+                query: getStudentInfo,
+                variables: { userID: studentID },
+            }]
+        }).then(() => this.setState({text: ''}));
+    }
+
+
+
+    render(){
+        return(
 			<div>
 				<Button bsSize="large" block onClick={ ()=> this.setState({ open: !this.state.open })}> + Add a comment</Button>
 				<Panel collapsible expanded={this.state.open} >
-				    <form onSubmit={this.onSubmit.bind(this)}>
-				        <input value= {this.state.text} onChange={event => this.setState({ text: event.target.value})}/>
-				    </form>
+					<form onSubmit={this.onSubmit.bind(this)}>
+						<input value= {this.state.text} onChange={event => this.setState({ text: event.target.value})}/>
+					</form>
 				</Panel>
 			</div>
-		)
-	}
+        )
+    }
 
 }
 
 const mutation = gql`
-	mutation AddAnnotation ($annotation:AnnotationInput){
+	mutation AddAnnotation ($annotation: AnnotationInput!){
   		addAnnotation(annotation:$annotation)	
 	}
 `;
