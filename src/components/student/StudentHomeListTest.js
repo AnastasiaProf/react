@@ -11,6 +11,7 @@ const StudentsQuery = gql`
   query StudentsQuery($courseID: ID!, $teacherID: ID!) {
     students(courseID: $courseID) {
       userID
+      firstName
       lastName
       photoURL
     }
@@ -88,7 +89,6 @@ class StudentHomeListTest extends React.Component {
                 counterarray[e.userID] = 0;
             }
         });
-        console.log(counterarray);
         return counterarray;
     }
 
@@ -107,9 +107,6 @@ class StudentHomeListTest extends React.Component {
         });
     }
 
-    sortAnnotMonth(arr) {
-        return arr.concat().sort(this.dynamicSort("lastName"));
-    }
 
     renderStudents(){
         let students = [];
@@ -144,12 +141,12 @@ class StudentHomeListTest extends React.Component {
 
         var teacherID = this.props.teacherID;
 
-        return students.map(({lastName, photoURL, userID}) => {
+        return students.map(({firstName, lastName, photoURL, userID}) => {
             return (
                 <Col xs={4} md={2} key={userID}>
                     <Thumbnail className="profile">
                         <img src={photoURL} alt="student profile picture"/>
-                        <Link to={`/${teacherID}/students/${userID}`}><h3>{lastName}</h3></Link>
+                        <Link to={`/${teacherID}/students/${userID}`}><h3>{firstName} {lastName}</h3></Link>
                     </Thumbnail>
                 </Col>
             );
