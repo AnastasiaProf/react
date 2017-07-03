@@ -110,15 +110,13 @@ class StudentHomeListTest extends React.Component {
         });
     }
 
-
-
     renderStudents(){
         let students = [];
 
         let annotations = [];
 
         let annot = false;
-
+        console.log(this)
         if(this.state.sortStud){
             switch(this.state.sortStud) {
                 case "name":

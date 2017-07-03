@@ -21,7 +21,7 @@ import getStudentInfo from '../../queries/fetchAnnotations';
 
 class StudentPageTest extends Component{
 
-    getQueryVariable(variable) {
+    getQueryVariable(variable, value = false) {
         var query = window.location.search.substring(1);
         var vars = query.split("&");
         for (var i=0;i<vars.length;i++) {

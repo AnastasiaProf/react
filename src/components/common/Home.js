@@ -30,86 +30,87 @@ const CourseQuery = gql`
 `;
 
 class Home extends Component{
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.state = {
-      list: {},
-      filterStud: ""
-    };
-  }
-
-
-
-  componentDidMount(e){
-  	this.setState({list: this.child});
-
-  }
-
-  sortStud(e){
-    this.child.setState({sortStud: e.target.value})
-  }
-
-
-
-  filterStud(e){
-    this.setState({filterStud: e.target.value})
-  }
-
-	render(){
-    if (this.props.data.loading){
-      return <div>Loading...</div>;
-    }
-
-    let course = "";
-
-    if(this.state.filterStud == ""){
-      course = this.props.data.courses[0].courseID;
-    } else {
-      course =  this.state.filterStud;
+        this.state = {
+            list: {},
+            filterStud: ""
+        };
     }
 
 
-		return(
-    <div>
-			<Grid>
-    			<Row className="show-grid">
-    				{/*dropdown for class*/}
-      				<Col xs={6} md={4}>
-      					<FormControl onChange={this.filterStud.bind(this)} componentClass="select" placeholder="select">
-                {this.props.data.courses.map(course => {
-                  return (
-                    <option key={course.courseID} value={course.courseID}>{course.description}</option>
-                  );
-                })}
-      					</FormControl>
-      				</Col>
-      				{/*dropdown for sorting by ...*/}
-     	 			<Col xs={6} md={4} mdOffset={4}>
-  						<FormControl onChange={this.sortStud.bind(this)} componentClass="select" placeholder="select">
-        					<option value="name">Name</option>
-        					<option value="fbmonth">Feedback this month</option>
-        					<option value="fball">All feedback</option>
-      					</FormControl>
-     	 			</Col>
-    			</Row>
-        	</Grid>
 
-      <StudentHomeListTest ref={(child) => {
-        if(!(child == null )){
-          this.child = child.getWrappedInstance();
+    componentDidMount(e){
+        this.setState({list: this.child});
+
+    }
+
+    sortStud(e){
+        this.child.setState({sortStud: e.target.value})
+    }
+
+
+
+    filterStud(e){
+        this.setState({filterStud: e.target.value})
+    }
+
+
+    render(){
+        if (this.props.data.loading){
+            return <div>Loading...</div>;
         }
-      } } filterStudValue={course} teacherID={this.props.match.params.teacherID}
-        />
 
-			
-</div>
+        let course = "";
+        console.log(this)
+        if(this.state.filterStud == ""){
+            course = this.props.data.courses[0].courseID;
+        } else {
+            course =  this.state.filterStud;
+        }
 
-		);
-	}
+
+        return(
+            <div>
+                <Grid>
+                    <Row className="show-grid">
+                        {/*dropdown for class*/}
+                        <Col xs={6} md={4}>
+                            <FormControl onChange={this.filterStud.bind(this)} componentClass="select" placeholder="select">
+                                {this.props.data.courses.map(course => {
+                                    return (
+                                        <option key={course.courseID} value={course.courseID}>{course.description}</option>
+                                    );
+                                })}
+                            </FormControl>
+                        </Col>
+                        {/*dropdown for sorting by ...*/}
+                        <Col xs={6} md={4} mdOffset={4}>
+                            <FormControl onChange={this.sortStud.bind(this)} componentClass="select" placeholder="select">
+                                <option value="name">Name</option>
+                                <option value="fbmonth">Feedback this month</option>
+                                <option value="fball">All feedback</option>
+                            </FormControl>
+                        </Col>
+                    </Row>
+                </Grid>
+
+                <StudentHomeListTest ref={(child) => {
+                    if(!(child == null )){
+                        this.child = child.getWrappedInstance();
+                    }
+                } } filterStudValue={course} teacherID={this.props.match.params.teacherID}
+                />
+
+
+            </div>
+
+        );
+    }
 }
 
 export default graphql(CourseQuery, {
-  options:  (props) => {  { return { variables: { teacherID: props.match.params.teacherID } } } }
+    options:  (props) => {  { return { variables: { teacherID: props.match.params.teacherID } } } }
 })(Home);
 
