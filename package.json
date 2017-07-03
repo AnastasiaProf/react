@@ -14,7 +14,8 @@
     "react-dom": "^15.6.1",
     "react-player": "^0.18.0",
     "react-router": "^4.1.1",
-    "react-router-dom": "^4.1.1"
+    "react-router-dom": "^4.1.1",
+    "video-react": "^0.8.5"
   },
   "devDependencies": {
     "json-loader": "^0.5.4",
