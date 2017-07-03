@@ -28,9 +28,9 @@ class StudentPageTest extends Component{
             var pair = vars[i].split("=");
             if (pair[0] == variable) {
                 if(pair[1] == "home"){
-                    return (<Link to={`/${this.props.match.params.teacherID}`}>Back</Link>);
+                    return (<Link className="btn btn-default" to={`/${this.props.match.params.teacherID}`}>Back</Link>);
                 } else if(pair[1] == "studentslist") {
-                    return (<Link to={`/${this.props.match.params.teacherID}/students`}>Back</Link>);
+                    return (<Link className="btn btn-default" to={`/${this.props.match.params.teacherID}/students`}>Back</Link>);
                 }
             }
         }
