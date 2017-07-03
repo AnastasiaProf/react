@@ -31,14 +31,14 @@ const CourseStudentQuery = gql`
     `;
 
 class StudentList extends React.Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-      this.state = {
-      filter: null,
-      courses: []
-    };
-  }
+        this.state = {
+            filter: null,
+            courses: []
+        };
+    }
 
 
     componentWillReceiveProps(nextProps){
@@ -47,67 +47,69 @@ class StudentList extends React.Component {
         }
     }
 
-  updateSearch (e) {
-    let filter = this.state.filter;
-    
-    this.setState({filter: e.target.value})
-  }
 
 
+    updateSearch (e) {
+        let filter = this.state.filter;
 
-  render() {
-
-
-    if (this.props.loading){
-      return <div>Loading...</div>;
-    }
-
-    let courses = this.props.courses;
-
-    let studentsDisplay = [];
-
-    if(this.state.filter){
-      {courses.map(course => {
-        studentsDisplay[course.courseID] = course.students.filter( student =>
-          student.lastName.toLowerCase().match(this.state.filter.toLowerCase())
-        )
-      })}
-    } else {
-      {courses.map(course => {
-        studentsDisplay[course.courseID] = course.students
-      })}
+        this.setState({filter: e.target.value})
     }
 
 
 
-    return (
-    <div>
-      <Grid>
-        <input className="search" type="text" placeholder="Search for a student by name" onChange={this.updateSearch.bind(this)}/>
-        {courses.map(course => {
-          if(studentsDisplay[course.courseID].length > 0){
-            return (
-              <Row key={course.courseID}>
-                <div className="classetitle">
-                  <h1>{course.courseName}</h1>
-                </div>
-                {studentsDisplay[course.courseID].map(student => {
-                  return (
-                    <Col xs={4} sm={4} md={3} key={student.userID} >
-                      <Thumbnail className="profile"> <img src={student.photoURL} alt="student picture"/>
-                        <Link to={`students/${student.userID}`}><h3>{student.lastName}</h3></Link>
-                      </Thumbnail>
-                    </Col>
-                  );
-                })}
-              </Row>
-            );
-          }
-        })}
-      </Grid>
-    </div>
-    );
-  }
+    render() {
+
+
+        if (this.props.loading){
+            return <div>Loading...</div>;
+        }
+
+        let courses = this.props.courses;
+
+        let studentsDisplay = [];
+
+        if(this.state.filter){
+            {courses.map(course => {
+                studentsDisplay[course.courseID] = course.students.filter( student =>
+                    student.lastName.toLowerCase().match(this.state.filter.toLowerCase())
+                )
+            })}
+        } else {
+            {courses.map(course => {
+                studentsDisplay[course.courseID] = course.students
+            })}
+        }
+
+
+
+        return (
+            <div>
+              <Grid>
+                <input className="search" type="text" placeholder="Search for a student by name" onChange={this.updateSearch.bind(this)}/>
+                  {courses.map(course => {
+                      if(studentsDisplay[course.courseID].length > 0){
+                          return (
+                              <Row key={course.courseID}>
+                                <div className="classetitle">
+                                  <h1>{course.courseName}</h1>
+                                </div>
+                                  {studentsDisplay[course.courseID].map(student => {
+                                      return (
+                                          <Col xs={4} md={2} key={student.userID} >
+                                            <Thumbnail className="profile"> <img src={student.photoURL} alt="student picture"/>
+                                              <Link to={`students/${student.userID}/?oldurl=studentslist`}><h3>{student.lastName}</h3></Link>
+                                            </Thumbnail>
+                                          </Col>
+                                      );
+                                  })}
+                              </Row>
+                          );
+                      }
+                  })}
+              </Grid>
+            </div>
+        );
+    }
 
 }
 
