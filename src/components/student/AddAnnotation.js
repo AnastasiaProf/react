@@ -5,27 +5,6 @@ import { graphql } from 'react-apollo';
 import Panel from 'react-bootstrap/lib/Panel';
 import Button from 'react-bootstrap/lib/Button';
 import getStudentInfo from '../../queries/fetchAnnotations';
-/*const getStudentInfo = gql`
- query getStudentInfo($userID: ID!)
- {
- student(studentID: $userID) {
- lastName
- photoURL
- }
- annotations(filterStudentIDs: [$userID]) {
- annotationID
- contentType
- mediaURL
- thumbnailURL
- text
- transcript
- classDate
- createdAt
- updatedAt
- transcribedAt
- }
- }
- `;*/
 
 class AddAnnotation extends Component{
     constructor(props){
@@ -40,6 +19,7 @@ class AddAnnotation extends Component{
             tags:''
         };
     }
+
 
     onSubmit(event){
         event.preventDefault();
@@ -62,6 +42,7 @@ class AddAnnotation extends Component{
             }]
         }).then(() => this.setState({text: ''}));
     }
+
 
 
     render(){
