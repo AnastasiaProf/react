@@ -110,15 +110,13 @@ class StudentHomeListTest extends React.Component {
         });
     }
 
-
-
     renderStudents(){
         let students = [];
 
         let annotations = [];
 
         let annot = false;
-
+        console.log(this)
         if(this.state.sortStud){
             switch(this.state.sortStud) {
                 case "name":
@@ -159,7 +157,7 @@ class StudentHomeListTest extends React.Component {
                 <Col xs={4} md={2} key={userID}>
                     <Thumbnail className="profile">
                         <img src={photoURL} alt="student profile picture"/>
-                        <Link to={`/${teacherID}/students/${userID}/?oldurl=home`}><h3>{firstName} {lastName}{annot_nbr}</h3></Link>;
+                        <Link to={`/${teacherID}/students/${userID}/?oldurl=home&course=${this.props.filterStudValue}`}><h3>{firstName} {lastName}{annot_nbr}</h3></Link>;
                     </Thumbnail>
                 </Col>
             );

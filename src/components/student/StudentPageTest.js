@@ -18,16 +18,18 @@ import getStudentInfo from '../../queries/fetchAnnotations';
 
 class StudentPageTest extends Component{
 
-    getQueryVariable(variable) {
+    getQueryVariable(variable, value = false) {
         var query = window.location.search.substring(1);
         var vars = query.split("&");
         for (var i=0;i<vars.length;i++) {
             var pair = vars[i].split("=");
             if (pair[0] == variable) {
                 if(pair[1] == "home"){
-                    return (<Link to={`/${this.props.match.params.teacherID}`}>Back</Link>);
+                    return (<Link to={`/${this.props.match.params.teacherID}/?course=${this.getQueryVariable("course", true)}`}>Back</Link>);
                 } else if(pair[1] == "studentslist") {
                     return (<Link to={`/${this.props.match.params.teacherID}/students`}>Back</Link>);
+                } else if(value) {
+                    return pair[1];
                 }
             }
         }
