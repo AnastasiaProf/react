@@ -67,18 +67,21 @@ class StudentHomeListTest extends React.Component {
 
                 let dates = e.createdAt.split("-");
 
-                if(!(e.students[0].userID == undefined)){
-                    if(month && current_month == dates[1] && current_year == dates[0]){
-                        if(counterarray[e.students[0].userID] == undefined){
-                            counterarray[e.students[0].userID] = 0;
-                        } else {
-                            counterarray[e.students[0].userID] += 1;
-                        }
-                    } else if(!month){
-                        if(counterarray[e.students[0].userID] == undefined){
-                            counterarray[e.students[0].userID] = 0;
-                        } else {
-                            counterarray[e.students[0].userID] += 1;
+
+                if(!(e.students[0] === null) && !(e.students[0] === undefined) ){
+                    if(!(e.students[0].userID === undefined)){
+                        if(month && current_month == dates[1] && current_year == dates[0]){
+                            if(counterarray[e.students[0].userID] == undefined){
+                                counterarray[e.students[0].userID] = 0;
+                            } else {
+                                counterarray[e.students[0].userID] += 1;
+                            }
+                        } else if(!month){
+                            if(counterarray[e.students[0].userID] == undefined){
+                                counterarray[e.students[0].userID] = 0;
+                            } else {
+                                counterarray[e.students[0].userID] += 1;
+                            }
                         }
                     }
                 }
@@ -108,10 +111,13 @@ class StudentHomeListTest extends React.Component {
     }
 
 
+
     renderStudents(){
         let students = [];
 
         let annotations = [];
+
+        let annot = false;
 
         if(this.state.sortStud){
             switch(this.state.sortStud) {
@@ -121,19 +127,21 @@ class StudentHomeListTest extends React.Component {
 
                 case "fbmonth"://TODO
 
-                    var annot = "fbmonth";
+                    annot = true;
                     annotations = this.countAnnot(this.props.data.annotations, true);
                     students = this.sortAnnotAll(this.props.data.students, annotations);
                     break;
 
 
                 case "fball"://Comprends pas erreur
+                    annot = true;
                     annotations = this.countAnnot(this.props.data.annotations);
                     students = this.sortAnnotAll(this.props.data.students, annotations);
                     break;
 
                 default:
                     students = this.sortName(this.props.data.students);
+
                     break;
 
             }
@@ -142,11 +150,16 @@ class StudentHomeListTest extends React.Component {
         var teacherID = this.props.teacherID;
 
         return students.map(({firstName, lastName, photoURL, userID}) => {
+            let annot_nbr = "";
+
+            if(annot){
+                annot_nbr = ' - '+annotations[userID];
+            }
             return (
                 <Col xs={4} md={2} key={userID}>
                     <Thumbnail className="profile">
                         <img src={photoURL} alt="student profile picture"/>
-                        <Link to={`/${teacherID}/students/${userID}`}><h3>{firstName} {lastName}</h3></Link>
+                        <Link to={`/${teacherID}/students/${userID}/?oldurl=home`}><h3>{firstName} {lastName}{annot_nbr}</h3></Link>;
                     </Thumbnail>
                 </Col>
             );

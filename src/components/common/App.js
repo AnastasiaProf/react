@@ -11,7 +11,6 @@ import Home from './Home';
 class App extends Component {
   render() {
     var teacherID = window.location.pathname.split("/")[1];
-    console.log(window.location.pathname)
     return (
       <div>
         <Grid>
