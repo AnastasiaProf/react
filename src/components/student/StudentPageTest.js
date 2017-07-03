@@ -9,8 +9,11 @@ import Panel from 'react-bootstrap/lib/Panel';
 import Button from 'react-bootstrap/lib/Button';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import FormControl from 'react-bootstrap/lib/FormControl';
+import ReactPlayer from 'react-player';
+import ReactAudioPlayer from 'react-audio-player';
 
 import AddAnnotation from './AddAnnotation';
+import DeleteAnnotation from './DeleteAnnotation';
 import getStudentInfo from '../../queries/fetchAnnotations';
 
 
@@ -32,7 +35,7 @@ class StudentPageTest extends Component{
 
         return (
             <div>
-                <Link to="/">Back</Link>
+                <Link className="btn btn-default" to="/">Back</Link>
 
                 <div key={student.userID}>
                     <Grid>
@@ -55,13 +58,15 @@ class StudentPageTest extends Component{
                                             <Panel header={title} key={annotation.annotationID}>
                                                 <p>{annotation.contentType}</p>
                                                 <img src={annotation.mediaURL} />
+                                                <p><DeleteAnnotation/></p>
                                             </Panel>
                                         );
                                     }else if(annotation.contentType == "video"){
                                         return (
                                             <Panel header={title} key={annotation.annotationID}>
                                                 <p>{annotation.contentType}</p>
-                                                <video><source src={annotation.mediaURL} type="video/mp4"/></video>
+                                                <ReactPlayer url={annotation.mediaURL} controls/>
+                                                <p><DeleteAnnotation/></p>
                                             </Panel>
                                         );
                                     }else if(annotation.contentType == "text"){
@@ -69,18 +74,21 @@ class StudentPageTest extends Component{
                                             <Panel header={title} key={annotation.annotationID}>
                                                 <p>{annotation.contentType}</p>
                                                 <p>{annotation.text}</p>
+                                                <p><DeleteAnnotation/></p>
                                             </Panel>
                                         );
                                     }else if(annotation.contentType == "audio"){
                                         return (
                                             <Panel header={title} key={annotation.annotationID}>
                                                 <p>{annotation.contentType}</p>
+                                                <ReactAudioPlayer src={annotation.mediaURL} controls />
                                                 <p>{annotation.transcript}</p>
-                                                <audio src={annotation.mediaURL}></audio>
+                                                <p><DeleteAnnotation/></p>
                                             </Panel>
                                         );
                                     }
                                 })}
+                                
                             </Col>
                         </Row>
                     </Grid>

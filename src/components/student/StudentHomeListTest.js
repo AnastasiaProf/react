@@ -143,7 +143,7 @@ class StudentHomeListTest extends React.Component {
 
         return students.map(({firstName, lastName, photoURL, userID}) => {
             return (
-                <Col xs={4} md={2} key={userID}>
+                <Col xs={4} sm={4} md={3} key={userID}>
                     <Thumbnail className="profile">
                         <img src={photoURL} alt="student profile picture"/>
                         <Link to={`/${teacherID}/students/${userID}`}><h3>{firstName} {lastName}</h3></Link>

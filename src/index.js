@@ -9,7 +9,7 @@ import './index.css';
 import './style/style.css';
 
 import App from './components/common/App';
-import Teachers from './components/common/Teachers';
+import Teachers from './components/teacher/Teachers';
 import Home from './components/common/Home';
 import Students from './components/common/Students';
 import Configuration from './components/common/Configuration';

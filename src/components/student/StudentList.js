@@ -93,7 +93,7 @@ class StudentList extends React.Component {
                 </div>
                 {studentsDisplay[course.courseID].map(student => {
                   return (
-                    <Col xs={4} md={2} key={student.userID} >
+                    <Col xs={4} sm={4} md={3} key={student.userID} >
                       <Thumbnail className="profile"> <img src={student.photoURL} alt="student picture"/>
                         <Link to={`students/${student.userID}`}><h3>{student.lastName}</h3></Link>
                       </Thumbnail>

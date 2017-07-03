@@ -11,7 +11,7 @@ class Teachers extends Component{
 	render(){
 		return(
 			<div>
-        		{/*display the list of students*/}
+        		{/*display the list of teachers*/}
         		<TeacherList/>
      		</div>
 		);
