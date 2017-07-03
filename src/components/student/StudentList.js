@@ -68,7 +68,6 @@ class StudentList extends React.Component {
 
         let studentsDisplay = [];
 
-
         if(this.state.filter){
             {courses.map(course => {
                 studentsDisplay[course.courseID] = course.students.filter( student =>

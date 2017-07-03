@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import Panel from 'react-bootstrap/lib/Panel';
 import Button from 'react-bootstrap/lib/Button';
+import FormControl from 'react-bootstrap/lib/FormControl';
 import getStudentInfo from '../../queries/fetchAnnotations';
 
 class AddAnnotation extends Component{
@@ -51,7 +52,17 @@ class AddAnnotation extends Component{
 				<Button bsSize="large" block onClick={ ()=> this.setState({ open: !this.state.open })}> + Add a comment</Button>
 				<Panel collapsible expanded={this.state.open} >
 					<form onSubmit={this.onSubmit.bind(this)}>
-						<input value= {this.state.text} onChange={event => this.setState({ text: event.target.value})}/>
+						<input className="students" value= {this.state.text} onChange={event => this.setState({ text: event.target.value})}/>
+                        <div className="formsubmit">
+                            <FormControl className="tags" componentClass="select" placeholder="select">
+                                <option value="">No feedback type</option>
+                                <option value="strenght">Strengths</option>
+                                <option value="weakness">Weaknesses</option>
+                                <option value="action">Action plan</option>
+                                <option value="parent">Parent update</option>
+                            </FormControl>
+                            <Button className="submit" type="submit">Submit</Button>
+                        </div>
 					</form>
 				</Panel>
 			</div>

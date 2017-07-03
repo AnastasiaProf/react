@@ -5,6 +5,8 @@ import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Thumbnail from 'react-bootstrap/lib/Thumbnail';
+import ListGroup from 'react-bootstrap/lib/ListGroup';
+import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
 //import StudentsQuery from '../../queries/fetchStudents';
 
 const TeacherQuery = gql`
@@ -47,8 +49,8 @@ class TeacherList extends React.Component {
     return (
       <ul>
       {teachers.map((teacher) => {
-            return (
-              <li key={teacher.userID}><Link to={`/${teacher.userID}`}><h3>{teacher.firstName} {teacher.lastName}</h3></Link></li>
+            return ( 
+              <ListGroupItem key={teacher.userID} ><Link to={`/${teacher.userID}`}><h4>{teacher.firstName} {teacher.lastName}</h4></Link></ListGroupItem>  
             );
       })}
       </ul>
@@ -61,9 +63,12 @@ class TeacherList extends React.Component {
     } 
     return(
       <div>
+        <h2 className="title">Select the teacher</h2>
         <Grid>
           <Row>
-            {this.renderTeachers()}
+            <Col xs={12} md={8} mdOffset={2}>
+              {this.renderTeachers()}  
+            </Col>
           </Row>
         </Grid>
       </div>

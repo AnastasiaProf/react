@@ -66,10 +66,32 @@ ul.header li a {
 
 /*student page */
 
-/*.studentpicture{
+.students{
+  width: 100%;
+}
+
+.tags{
+  margin-top: 20px;
+  width: 20%;
+  float: left;
   display: inline-block;
 }
 
-.studentname{
-  display: inline-block;
-}*/
+.submit{
+  display: inline-block !important;
+  float: right !important;
+  margin-top: 20px !important;
+}
+
+.delete-annotation{
+  margin-top: 20px !important;
+  float: right;
+}
+
+/*teacher home*/
+
+.title{
+  text-align: center;
+  margin-top: 2% !important;
+  margin-bottom: 2% !important;
+}
