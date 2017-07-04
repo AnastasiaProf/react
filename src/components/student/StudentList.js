@@ -14,6 +14,7 @@ const CourseStudentQuery = gql`
         courses(teacherID: $teacherID) {
             students {
               userID
+              firstName
               lastName
               email
               photoURL
@@ -71,8 +72,12 @@ class StudentList extends React.Component {
         if(this.state.filter){
             {courses.map(course => {
                 studentsDisplay[course.courseID] = course.students.filter( student =>
-                    student.lastName.toLowerCase().match(this.state.filter.toLowerCase())
-                )
+                    student.lastName.toLowerCase().match(this.state.filter.toLowerCase()) 
+                ) 
+                // studentsDisplay[course.courseID] = course.students.filter( studentf =>
+                //     studentf.firstName.toLowerCase().match(this.state.filter.toLowerCase()) 
+                // )
+                
             })}
         } else {
             {courses.map(course => {
@@ -97,7 +102,7 @@ class StudentList extends React.Component {
                                       return (
                                           <Col xs={4} md={2} key={student.userID} >
                                             <Thumbnail className="profile"> <img src={student.photoURL} alt="student picture"/>
-                                              <Link to={`students/${student.userID}/?oldurl=studentslist`}><h3>{student.lastName}</h3></Link>
+                                              <Link to={`students/${student.userID}/?oldurl=studentslist`}><h4>{student.firstName} {student.lastName}</h4></Link>
                                             </Thumbnail>
                                           </Col>
                                       );

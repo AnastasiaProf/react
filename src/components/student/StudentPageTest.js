@@ -64,7 +64,13 @@ class StudentPageTest extends Component{
                                 <img src={student.photoURL} alt="242x200"/>
                             </Col>
                             <Col xs={6} md={4} >
-                                <h1>{student.lastName}</h1>
+                                <h1>{student.firstName} {student.lastName}</h1>
+                                <FormControl componentClass="select" placeholder="select">
+                                    <option value="strength">Strengths</option>
+                                    <option value="weakness">Weaknesses</option>
+                                    <option value="action">Action plan</option>
+                                    <option value="parent">Parent update</option>
+                                </FormControl>
                             </Col>
                         </Row>
                         <Row>
