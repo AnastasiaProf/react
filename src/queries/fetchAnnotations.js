@@ -16,6 +16,7 @@ const getStudentInfo = gql`
             mediaURL
             thumbnailURL
             text
+            tags
             transcript
             classDate
             createdAt
