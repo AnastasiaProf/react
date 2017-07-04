@@ -33,11 +33,10 @@ class AddAnnotation extends Component{
 
         let studentID = this.props.studentID;
         let teacherID = this.props.teacherID;
-        console.log(this)
         let tags = [];
 
         if(!(this.state.strength) == ""){
-            tags.push("Strenght")
+            tags.push("Strength")
         }
 
         if(!(this.state.weakness) == ""){
@@ -55,7 +54,7 @@ class AddAnnotation extends Component{
         if(tags.length == 0){
             tags = ["No Feedback type"]
         }
-        console.log(tags)
+
         this.props.mutate({
             variables: {
                 "annotation": {
