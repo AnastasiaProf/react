@@ -50,7 +50,7 @@ class StudentPageTest extends Component{
         console.log(e.target.value)
         console.log(this.props.match.params.userID)
         if(e.target.value == ""){
-            this.props.data.refetch({ userID: this.props.match.params.userID, tags: ["Strength", "Weakness", "Action Plan", "Parent Update"] })
+            this.props.data.refetch({ userID: this.props.match.params.userID, tags: ["No Feedback type", "Strength", "Weakness", "Action Plan", "Parent Update"] })
         } else {
             this.props.data.refetch({userID: this.props.match.params.userID, tags: [e.target.value]})
         }
