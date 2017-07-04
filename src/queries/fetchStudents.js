@@ -4,6 +4,7 @@ const StudentsQuery = gql`
   query StudentsQuery {
     students {
       userID
+      firstName
       lastName
       photoURL
     }

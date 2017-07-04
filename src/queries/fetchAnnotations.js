@@ -7,6 +7,7 @@ const getStudentInfo = gql`
     query getStudentInfo($userID: ID!)
     {
         student(studentID: $userID) {
+            firstName
             lastName
             photoURL
         }
