@@ -1,18 +1,23 @@
+/**
+ * Home Component
+ * Composed of the course filter & the sort dropdown for the student list
+ * Child : StudentHomeListTest
+ */
+
 import React, {Component} from 'react';
 import { graphql ,gql} from 'react-apollo';
-import DropdownButton from 'react-bootstrap/lib/DropdownButton';
-import {ControlLabel} from 'react-bootstrap';
 import {FormControl} from 'react-bootstrap';
-import MenuItem from 'react-bootstrap/lib/MenuItem';
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
-import Thumbnail from 'react-bootstrap/lib/Thumbnail';
 
-//import StudentHomeList from '../student/StudentHomeList';
 import StudentHomeListTest from '../student/StudentHomeListTest';
 
 
+/*
+ * get course to populate the filter dropdown
+ * @args: $teacherID: ID!
+ */
 const CourseQuery = gql`
   query CourseQuery($teacherID: ID!) {
     courses(teacherID: $teacherID) {
@@ -29,6 +34,7 @@ const CourseQuery = gql`
     }
 `;
 
+
 class Home extends Component{
     constructor(props) {
         super(props);
@@ -41,17 +47,17 @@ class Home extends Component{
 
 
 
-    componentDidMount(e){
+    componentDidMount(){
         this.setState({list: this.child});
-
     }
 
+    //onChange set StudentHomeListTest.state.sortStud at dropdown value
     sortStud(e){
         this.child.setState({sortStud: e.target.value})
     }
 
 
-
+    //onChange set Home.state.filterStud at dropdown value
     filterStud(e){
         this.setState({filterStud: e.target.value})
     }
@@ -63,7 +69,8 @@ class Home extends Component{
         }
 
         let course = "";
-        console.log(this)
+
+        //If state empty then assign first courseId
         if(this.state.filterStud == ""){
             course = this.props.data.courses[0].courseID;
         } else {
@@ -96,6 +103,7 @@ class Home extends Component{
                     </Row>
                 </Grid>
 
+                {/*assign StudentHomeListTest as a child and pass into it the selected Course object & the current teacherID*/}
                 <StudentHomeListTest ref={(child) => {
                     if(!(child == null )){
                         this.child = child.getWrappedInstance();

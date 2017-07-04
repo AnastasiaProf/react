@@ -1,12 +1,23 @@
-import React, {Component} from 'react';
+/**
+ * StudentHomeList Component
+ * Made of card representing a student. On each card a link that take to the student page is here.
+ * Th data fetched are reorder and filtered by the two dropdown on the Home component
+ * Child : StudentHomeListTest
+ */
+
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { graphql ,gql} from 'react-apollo';
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Thumbnail from 'react-bootstrap/lib/Thumbnail';
-//import StudentsQuery from '../../queries/fetchStudents';
 
+
+/*
+ * get students to show on the Home component
+ * @args: $courseID: ID!, $teacherID: ID!
+ */
 const StudentsQuery = gql`
   query StudentsQuery($courseID: ID!, $teacherID: ID!) {
     students(courseID: $courseID) {
@@ -33,7 +44,10 @@ class StudentHomeListTest extends React.Component {
         };
     }
 
-
+    /**
+     * Function to sort an array of objects by looking at the objects values
+     * @args: [ Object, Object, ..., Object ]
+     */
     dynamicSort(property) {
         var sortOrder = 1;
         if(property[0] === "-") {
@@ -47,7 +61,11 @@ class StudentHomeListTest extends React.Component {
     }
 
 
-
+    /*
+     * Function to count the number of annotation per student
+     * @args: array: [ annotation, annotation, ... , annotation ], month: boolean
+     * @return: [ (String)studentid: (int)nbrannot, ... , (String)studentid: (int)nbrannot ]
+     */
     countAnnot(array, month = false){
         let counterarray = [];
 
@@ -64,18 +82,20 @@ class StudentHomeListTest extends React.Component {
         if(!(array == undefined)){
 
             array.forEach(function(e){
-
+                //Get the annotation date information
                 let dates = e.createdAt.split("-");
 
 
                 if(!(e.students[0] === null) && !(e.students[0] === undefined) ){
                     if(!(e.students[0].userID === undefined)){
+                        //If month then only count the one of the current mont
                         if(month && current_month == dates[1] && current_year == dates[0]){
                             if(counterarray[e.students[0].userID] == undefined){
                                 counterarray[e.students[0].userID] = 0;
                             } else {
                                 counterarray[e.students[0].userID] += 1;
                             }
+                            //Else count everyone of them
                         } else if(!month){
                             if(counterarray[e.students[0].userID] == undefined){
                                 counterarray[e.students[0].userID] = 0;
@@ -87,6 +107,7 @@ class StudentHomeListTest extends React.Component {
                 }
             });
         }
+        //If a students is shown but has no annotation set his number to 0
         this.props.data.students.forEach(function(e){
             if(!counterarray.hasOwnProperty(e.userID)){
                 counterarray[e.userID] = 0;
@@ -95,10 +116,13 @@ class StudentHomeListTest extends React.Component {
         return counterarray;
     }
 
+    //Sort students list by name
     sortName(students) {
         return students.concat().sort(this.dynamicSort("lastName"));
     }
 
+    //Sort student list by annotations number
+    //Sort student list by annotations number
     sortAnnotAll(students, annotations) {
         return students.concat().sort(function(a, b){
             if (annotations[a.userID] < annotations[b.userID])
@@ -116,14 +140,14 @@ class StudentHomeListTest extends React.Component {
         let annotations = [];
 
         let annot = false;
-        console.log(this)
+
         if(this.state.sortStud){
             switch(this.state.sortStud) {
                 case "name":
                     students = this.sortName(this.props.data.students);
                     break;
 
-                case "fbmonth"://TODO
+                case "fbmonth":
 
                     annot = true;
                     annotations = this.countAnnot(this.props.data.annotations, true);
@@ -168,7 +192,7 @@ class StudentHomeListTest extends React.Component {
         if (this.props.data.loading){
             return <div>Loading...</div>;
         }
-        console.log(this)
+
         return(
             <div>
                 <Grid>

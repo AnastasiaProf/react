@@ -1,3 +1,9 @@
+/**
+ * Page layout, reused through the whole application
+ * In .content it calls the child associated to the route
+ */
+
+
 import React, { Component } from 'react';
 import '../../App.css';
 import Grid from 'react-bootstrap/lib/Grid';
@@ -9,29 +15,30 @@ import logo from '../../blacklogo.png';
 import Home from './Home';
 
 class App extends Component {
-  render() {
-    var teacherID = window.location.pathname.split("/")[1];
-    return (
-      <div>
-        <Grid>
-          <Row>
-            <Col xs={12} md={12}>
-              <ul className="header">
-                <li> <img src={logo} className="EF-logo" alt="EF logo" /> </li>
-                <li><Link to={`/${teacherID}`}>Home</Link></li>
-                <li><Link to={`/${teacherID}/students`}>Students</Link></li>
-                <li><Link to={`/${teacherID}/configuration`}>Settings</Link></li>
-              </ul>
-            </Col>
-          </Row>
-        </Grid>
-        <div className="content">
-          {this.props.children}
-        </div>
-      </div>
+    render() {
+        //get teacherID from URL
+        var teacherID = window.location.pathname.split("/")[1];
+        return (
+            <div>
+                <Grid>
+                    <Row>
+                        <Col xs={12} md={12}>
+                            <ul className="header">
+                                <li> <img src={logo} className="EF-logo" alt="EF logo" /> </li>
+                                <li><Link to={`/${teacherID}`}>Home</Link></li>
+                                <li><Link to={`/${teacherID}/students`}>Students</Link></li>
+                                <li><Link to={`/${teacherID}/configuration`}>Settings</Link></li>
+                            </ul>
+                        </Col>
+                    </Row>
+                </Grid>
+                <div className="content">
+                    {this.props.children}
+                </div>
+            </div>
 
-    );
-  }
+        );
+    }
 }
 
 export default App;
