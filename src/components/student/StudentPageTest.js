@@ -20,6 +20,15 @@ import getStudentInfo from '../../queries/fetchAnnotations';
 
 
 class StudentPageTest extends Component{
+    constructor(props){
+        super(props);
+
+        this.state = {
+            filterAnnot: ""
+        }
+    }
+
+
 
     getQueryVariable(variable, value = false) {
         var query = window.location.search.substring(1);
@@ -37,17 +46,27 @@ class StudentPageTest extends Component{
         return null;
     }
 
+    filterAnnot(e){
+        console.log(e.target.value)
+        console.log(this.props.match.params.userID)
+        if(e.target.value == ""){
+            this.props.data.refetch({ userID: this.props.match.params.userID, tags: ["Strength", "Weakness", "Action Plan", "Parent Update"] })
+        } else {
+            this.props.data.refetch({userID: this.props.match.params.userID, tags: [e.target.value]})
+        }
+    }
+
+
     render(){
 
         const { student } = this.props.data;
         const title = (<h3>Annotation</h3>);
-
+        console.log(this);
 
         let back = this.getQueryVariable("oldurl");
 
 
         if (!student) { return <div>Loading...</div>}
-        console.log(this.props.data.annotations.annotationID);
         let teacherID = this.props.match.params.teacherID;
         let studentID = this.props.match.params.userID;
         let annotations = this.props.data.annotations.concat().reverse();
@@ -65,11 +84,12 @@ class StudentPageTest extends Component{
                             </Col>
                             <Col xs={6} md={4} >
                                 <h1>{student.firstName} {student.lastName}</h1>
-                                <FormControl componentClass="select" placeholder="select">
-                                    <option value="strength">Strengths</option>
-                                    <option value="weakness">Weaknesses</option>
-                                    <option value="action">Action plan</option>
-                                    <option value="parent">Parent update</option>
+                                <FormControl onChange={this.filterAnnot.bind(this)} componentClass="select" placeholder="select">
+                                    <option value="">No Filter</option>
+                                    <option value="Strength">Strengths</option>
+                                    <option value="Weakness">Weaknesses</option>
+                                    <option value="Action Plan">Action plan</option>
+                                    <option value="Parent Update">Parent update</option>
                                 </FormControl>
                             </Col>
                         </Row>
@@ -153,6 +173,13 @@ class StudentPageTest extends Component{
                 </div>
             </div>
         );
+    }
+}
+
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        active: ownProps.filter === state.visibilityFilter
     }
 }
 

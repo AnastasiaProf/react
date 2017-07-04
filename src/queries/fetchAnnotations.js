@@ -4,14 +4,14 @@
 import gql from 'graphql-tag';
 
 const getStudentInfo = gql`
-    query getStudentInfo($userID: ID!)
+    query getStudentInfo($userID: ID!, $tags: [String])
     {
         student(studentID: $userID) {
             firstName
             lastName
             photoURL
         }
-        annotations(filterStudentIDs: [$userID]) {
+        annotations(filterStudentIDs: [$userID], tags: $tags) {
             annotationID
             contentType
             mediaURL
