@@ -19,6 +19,10 @@ class AddAnnotation extends Component{
             text: '',
             studentIDs: [props.studentID],
             teacherID: props.teacherID,
+            strength: '',
+            weakness: false,
+            action: false,
+            parent: false,
 
         };
     }
@@ -29,7 +33,7 @@ class AddAnnotation extends Component{
 
         let studentID = this.props.studentID;
         let teacherID = this.props.teacherID;
-
+        console.log(this)
         let tags = [];
 
         if(!(this.state.strength) == ""){
@@ -51,6 +55,7 @@ class AddAnnotation extends Component{
         if(tags.length == 0){
             tags = ["No Feedback type"]
         }
+        console.log(tags)
         this.props.mutate({
             variables: {
                 "annotation": {
@@ -69,6 +74,37 @@ class AddAnnotation extends Component{
     }
 
 
+    handleChangeStrength(){
+        if(this.state.strength == ""){
+            this.setState({strength: "on"})
+        } else {
+            this.setState({strength: ""})
+        }
+    }
+
+    handleChangeWeakness(){
+        if(this.state.weakness == ""){
+            this.setState({weakness: "on"})
+        } else {
+            this.setState({weakness: ""})
+        }
+    }
+
+    handleChangeAction(){
+        if(this.state.action == ""){
+            this.setState({action: "on"})
+        } else {
+            this.setState({action: ""})
+        }
+    }
+
+    handleChangeParent(){
+        if(this.state.parent == ""){
+            this.setState({parent: "on"})
+        } else {
+            this.setState({parent: ""})
+        }
+    }
 
     render(){
         return(
@@ -79,19 +115,19 @@ class AddAnnotation extends Component{
 						<input className="students" value= {this.state.text} onChange={event => this.setState({ text: event.target.value})}/>
                         <div className="formsubmit">
                             <FormGroup className="tags">
-                                <Checkbox onChange={event => this.setState({ strength: event.target.value})} value={this.state.strength} inline>
+                                <Checkbox onChange={this.handleChangeStrength.bind(this)} value={this.state.strength_value} inline>
                                     Strengths
                                 </Checkbox >
                                 {' '}
-                                <Checkbox onChange={event => this.setState({ weakness: event.target.value})} value={this.state.weakness} inline>
+                                <Checkbox onChange={this.handleChangeWeakness.bind(this)} value={this.state.weakness_value} inline>
                                     Weaknesses
                                 </Checkbox>
                                 {' '}
-                                <Checkbox onChange={event => this.setState({ action: event.target.value})} value={this.state.action} inline>
+                                <Checkbox onChange={this.handleChangeAction.bind(this)} value={this.state.action_value} inline>
                                     Action plan
                                 </Checkbox>
                                 {' '}
-                                <Checkbox onChange={event => this.setState({ parent: event.target.value})} value={this.state.parent} inline>
+                                <Checkbox onChange={this.handleChangeParent.bind(this)} value={this.state.parent_value} inline>
                                     Parent update
                                 </Checkbox>
                             </FormGroup>
