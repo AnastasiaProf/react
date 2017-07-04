@@ -78,12 +78,12 @@ class StudentPageTest extends Component{
                                             <Panel header={title} key={annotation.annotationID}>
                                                 <p>{annotation.contentType}</p>
                                                 <img src={annotation.mediaURL} />
-                                                {
+                                                { !(annotation.tags === null) ?
                                                     annotation.tags.map(tag => {
                                                         return(
                                                             <p key={tag}>{tag}</p>
                                                         );
-                                                    })
+                                                    }) : null
                                                 }
                                                 <p><DeleteAnnotation/></p>
                                             </Panel>
@@ -93,12 +93,12 @@ class StudentPageTest extends Component{
                                             <Panel header={title} key={annotation.annotationID}>
                                                 <p>{annotation.contentType}</p>
                                                 <ReactPlayer url={annotation.mediaURL} controls/>
-                                                {
+                                                { !(annotation.tags === null) ?
                                                     annotation.tags.map(tag => {
                                                         return(
                                                             <p key={tag}>{tag}</p>
                                                         );
-                                                    })
+                                                    }) : null
                                                 }
                                                 <p><DeleteAnnotation/></p>
                                             </Panel>
@@ -108,12 +108,12 @@ class StudentPageTest extends Component{
                                             <Panel header={title} key={annotation.annotationID}>
                                                 <p>{annotation.contentType}</p>
                                                 <p>{annotation.text}</p>
-                                                {
+                                                { !(annotation.tags === null) ?
                                                     annotation.tags.map(tag => {
                                                         return(
                                                             <p key={tag}>{tag}</p>
                                                         );
-                                                    })
+                                                    }) : null
                                                 }
                                                 <p><DeleteAnnotation/></p>
                                             </Panel>
@@ -124,12 +124,12 @@ class StudentPageTest extends Component{
                                                 <p>{annotation.contentType}</p>
                                                 <ReactAudioPlayer src={annotation.mediaURL} controls />
                                                 <p>{annotation.transcript}</p>
-                                                {
+                                                { !(annotation.tags === null) ?
                                                     annotation.tags.map(tag => {
                                                         return(
                                                             <p key={tag}>{tag}</p>
                                                         );
-                                                    })
+                                                    }) : null
                                                 }
                                                 <p><DeleteAnnotation/></p>
                                             </Panel>
