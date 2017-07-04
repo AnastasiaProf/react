@@ -1,13 +1,18 @@
+/**
+ * Student Page Component
+ * Composed of the course filter & the sort dropdown for the student list
+ * Child : AddAnnotation, DeleteAnnotation
+ * TODO Update Annotation
+ * TODO Improve tags filtering system
+ */
+
 import React, {Component} from 'react';
-import { Switch, Router, Route, BrowserRouter, Link, IndexRoute} from 'react-router-dom';
-import gql from 'graphql-tag';
+import { Link, IndexRoute} from 'react-router-dom';
 import { graphql } from 'react-apollo';
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
-import Button from 'react-bootstrap/lib/Button';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import ReactPlayer from 'react-player';
 import ReactAudioPlayer from 'react-audio-player';
@@ -29,7 +34,7 @@ class StudentPageTest extends Component{
     }
 
 
-
+    //Function to get url parameter to manage the back button link
     getQueryVariable(variable, value = false) {
         var query = window.location.search.substring(1);
         var vars = query.split("&");
@@ -46,9 +51,8 @@ class StudentPageTest extends Component{
         return null;
     }
 
+    //onChange of the filter dropdown refetch graphql query
     filterAnnot(e){
-        console.log(e.target.value)
-        console.log(this.props.match.params.userID)
         if(e.target.value == ""){
             this.props.data.refetch({ userID: this.props.match.params.userID, tags: ["No Feedback type", "Strength", "Weakness", "Action Plan", "Parent Update"] })
         } else {
@@ -61,7 +65,6 @@ class StudentPageTest extends Component{
 
         const { student } = this.props.data;
         const title = (<h3>Annotation</h3>);
-        console.log(this);
 
         let back = this.getQueryVariable("oldurl");
 
@@ -105,6 +108,7 @@ class StudentPageTest extends Component{
                                                 <Panel header={title} key={annotation.annotationID}>
                                                     <p>{annotation.contentType}</p>
                                                     <img src={annotation.mediaURL} />
+                                                    {/*if no tags then do not try to loop over it (Code breakage prevention)*/}
                                                     { !(annotation.tags === null) ?
                                                         annotation.tags.map(tag => {
                                                             return(
@@ -173,13 +177,5 @@ class StudentPageTest extends Component{
         );
     }
 }
-
-
-const mapStateToProps = (state, ownProps) => {
-    return {
-        active: ownProps.filter === state.visibilityFilter
-    }
-}
-
 
 export default graphql(getStudentInfo, { options:  (props) => { return { variables: { userID: props.match.params.userID} } } },)(StudentPageTest);

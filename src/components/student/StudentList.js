@@ -1,4 +1,10 @@
-import React, {Component} from 'react';
+/**
+ * Student List Component
+ * Show all the student sof the teacher, grouped by class. Possibility of filter them by keying in a string.
+ * TODO filter on lastname & firstname
+ */
+
+import React from 'react';
 import { Link } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
@@ -8,7 +14,10 @@ import Col from 'react-bootstrap/lib/Col';
 import Thumbnail from 'react-bootstrap/lib/Thumbnail';
 
 
-
+/*
+ * Query to retrieve the students
+ * @args $teacherID: ID
+ */
 const CourseStudentQuery = gql`
     query CourseStudentQuery($teacherID: ID){
         courses(teacherID: $teacherID) {
@@ -41,7 +50,7 @@ class StudentList extends React.Component {
         };
     }
 
-
+    //on new properties coming set StudentList.state.courses to the new query returned value
     componentWillReceiveProps(nextProps){
         if(!(nextProps.courses == undefined)){
             this.setState({courses: nextProps.courses});
@@ -49,7 +58,7 @@ class StudentList extends React.Component {
     }
 
 
-
+    //onChange of the input text update StudentList.state.filter
     updateSearch (e) {
         let filter = this.state.filter;
 
@@ -73,11 +82,7 @@ class StudentList extends React.Component {
             {courses.map(course => {
                 studentsDisplay[course.courseID] = course.students.filter( student =>
                     student.lastName.toLowerCase().match(this.state.filter.toLowerCase()) 
-                ) 
-                // studentsDisplay[course.courseID] = course.students.filter( studentf =>
-                //     studentf.firstName.toLowerCase().match(this.state.filter.toLowerCase()) 
-                // )
-                
+                )
             })}
         } else {
             {courses.map(course => {

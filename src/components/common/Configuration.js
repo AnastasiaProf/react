@@ -1,3 +1,7 @@
+/**
+ * Configuration Component
+ * TODO
+ */
 import React, {Component} from 'react';
 
 class Configuration extends Component{

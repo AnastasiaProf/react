@@ -1,10 +1,15 @@
+/**
+ * Add Annotation Application
+ * Composed of input text for annotation content, checkboxes for tags
+ * TODO improve logic for tags to make it more dynamic
+ */
+
 import React, {Component} from 'react';
-import { Switch, Router, Route, BrowserRouter, Link, IndexRoute} from 'react-router-dom';
+import { IndexRoute} from 'react-router-dom';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import Panel from 'react-bootstrap/lib/Panel';
 import Button from 'react-bootstrap/lib/Button';
-import FormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
 import getStudentInfo from '../../queries/fetchAnnotations';
@@ -20,14 +25,14 @@ class AddAnnotation extends Component{
             studentIDs: [props.studentID],
             teacherID: props.teacherID,
             strength: '',
-            weakness: false,
-            action: false,
-            parent: false,
+            weakness: '',
+            action: '',
+            parent: '',
 
         };
     }
 
-
+    //onSubmit create tags array and run the mutation, then set annotation content to empty
     onSubmit(event){
         event.preventDefault();
 
@@ -51,6 +56,7 @@ class AddAnnotation extends Component{
             tags.push("Parent Update")
         }
 
+        //If nothing in tag assign "No Feedback type"
         if(tags.length == 0){
             tags = ["No Feedback type"]
         }
@@ -72,7 +78,7 @@ class AddAnnotation extends Component{
         }).then(() => this.setState({text: ''}));
     }
 
-
+    //Handle strength checkbox change
     handleChangeStrength(){
         if(this.state.strength == ""){
             this.setState({strength: "on"})
@@ -81,6 +87,7 @@ class AddAnnotation extends Component{
         }
     }
 
+    //Handle weakness checkbox change
     handleChangeWeakness(){
         if(this.state.weakness == ""){
             this.setState({weakness: "on"})
@@ -89,6 +96,7 @@ class AddAnnotation extends Component{
         }
     }
 
+    //Handle action checkbox change
     handleChangeAction(){
         if(this.state.action == ""){
             this.setState({action: "on"})
@@ -97,6 +105,7 @@ class AddAnnotation extends Component{
         }
     }
 
+    //Handle parent checkbox change
     handleChangeParent(){
         if(this.state.parent == ""){
             this.setState({parent: "on"})
@@ -140,6 +149,10 @@ class AddAnnotation extends Component{
 
 }
 
+/*
+ * Mutation Query
+ * @args $annotation: AnnotationInput!
+ */
 const mutation = gql`
 	mutation AddAnnotation ($annotation: AnnotationInput!){
   		addAnnotation(annotation:$annotation)	

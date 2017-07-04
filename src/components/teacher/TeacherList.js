@@ -1,13 +1,15 @@
-import React, {Component} from 'react';
+/**
+ * Student Page Component
+ * Retrieve all teacher from the database to navigate as one.
+ */
+
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { graphql ,gql} from 'react-apollo';
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
-import Thumbnail from 'react-bootstrap/lib/Thumbnail';
-import ListGroup from 'react-bootstrap/lib/ListGroup';
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
-//import StudentsQuery from '../../queries/fetchStudents';
 
 const TeacherQuery = gql`
   query TeacherQuery {
