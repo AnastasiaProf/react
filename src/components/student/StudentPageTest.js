@@ -103,7 +103,6 @@ class StudentPageTest extends Component{
                                         if(annotation.contentType == "image"){
                                             return (
                                                 <Panel header={title} key={annotation.annotationID}>
-                                                {annotation.annotationID}
                                                     <p>{annotation.contentType}</p>
                                                     <img src={annotation.mediaURL} />
                                                     { !(annotation.tags === null) ?
@@ -134,7 +133,6 @@ class StudentPageTest extends Component{
                                         }else if(annotation.contentType == "text"){
                                             return (
                                                 <Panel header={title} key={annotation.annotationID}>
-                                                {annotation.annotationID}
                                                     <p>{annotation.contentType}</p>
                                                     <p>{annotation.text}</p>
                                                     { !(annotation.tags === null) ?
