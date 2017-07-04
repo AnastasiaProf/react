@@ -50,7 +50,7 @@ class StudentPageTest extends Component{
         console.log(e.target.value)
         console.log(this.props.match.params.userID)
         if(e.target.value == ""){
-            this.props.data.refetch({ userID: this.props.match.params.userID })
+            this.props.data.refetch({ userID: this.props.match.params.userID, tags: ["Strength", "Weakness", "Action Plan", "Parent Update"] })
         } else {
             this.props.data.refetch({userID: this.props.match.params.userID, tags: [e.target.value]})
         }
@@ -85,6 +85,7 @@ class StudentPageTest extends Component{
                             <Col xs={6} md={4} >
                                 <h1>{student.firstName} {student.lastName}</h1>
                                 <FormControl onChange={this.filterAnnot.bind(this)} componentClass="select" placeholder="select">
+                                    <option value="">No Filter</option>
                                     <option value="Strength">Strengths</option>
                                     <option value="Weakness">Weaknesses</option>
                                     <option value="Action Plan">Action plan</option>
