@@ -8,13 +8,38 @@ import getStudentInfo from '../../queries/fetchAnnotations';
 
 
 class DeleteAnnotation extends Component{
+	
+	onAnnotationDelete() {
+		console.log(this);
+		this.props.mutate({ 
+			variables: {
+				annotationID: this.props.annotation.annotationID,
+				annotation:{
+					deleted: true
+				},
+			},
+			refetchQueries: [{ 
+				query: getStudentInfo,
+                variables: { userID: this.props.studentID }
+            }]  
+		});
+	}
 
 	render(){
 		return(
-			<Button className="delete-annotation"> Delete</Button>
+			<Button className="delete-annotation" onClick={this.onAnnotationDelete.bind(this)}> Delete</Button>
 		);
 	}
 
 }
 
-export default DeleteAnnotation;
+
+const mutation = gql`
+	mutation DeleteAnnotation ($annotationID: ID! , $annotation: AnnotationInput!){
+	  updateAnnotation(annotationID:$annotationID, annotation:$annotation) {
+	    deleted
+	  } 
+	}
+`;
+
+export default graphql(mutation)(DeleteAnnotation);

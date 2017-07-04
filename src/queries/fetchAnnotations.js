@@ -23,6 +23,7 @@ const getStudentInfo = gql`
             createdAt
             updatedAt
             transcribedAt
+            deleted
         }
     }
 `;

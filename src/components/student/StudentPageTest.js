@@ -79,67 +79,71 @@ class StudentPageTest extends Component{
                                 <AddAnnotation studentID={studentID} teacherID={teacherID}/>
 
                                 {annotations.map(annotation => {
-                                    if(annotation.contentType == "image"){
-                                        return (
-                                            <Panel header={title} key={annotation.annotationID}>
-                                                <p>{annotation.contentType}</p>
-                                                <img src={annotation.mediaURL} />
-                                                { !(annotation.tags === null) ?
-                                                    annotation.tags.map(tag => {
-                                                        return(
-                                                            <p key={tag}>{tag}</p>
-                                                        );
-                                                    }) : null
-                                                }
-                                                <p><DeleteAnnotation/></p>
-                                            </Panel>
-                                        );
-                                    }else if(annotation.contentType == "video"){
-                                        return (
-                                            <Panel header={title} key={annotation.annotationID}>
-                                                <p>{annotation.contentType}</p>
-                                                <ReactPlayer url={annotation.mediaURL} controls/>
-                                                { !(annotation.tags === null) ?
-                                                    annotation.tags.map(tag => {
-                                                        return(
-                                                            <p key={tag}>{tag}</p>
-                                                        );
-                                                    }) : null
-                                                }
-                                                <p><DeleteAnnotation/></p>
-                                            </Panel>
-                                        );
-                                    }else if(annotation.contentType == "text"){
-                                        return (
-                                            <Panel header={title} key={annotation.annotationID}>
-                                                <p>{annotation.contentType}</p>
-                                                <p>{annotation.text}</p>
-                                                { !(annotation.tags === null) ?
-                                                    annotation.tags.map(tag => {
-                                                        return(
-                                                            <p key={tag}>{tag}</p>
-                                                        );
-                                                    }) : null
-                                                }
-                                                <p><DeleteAnnotation/></p>
-                                            </Panel>
-                                        );
-                                    }else if(annotation.contentType == "audio"){
-                                        return (
-                                            <Panel header={title} key={annotation.annotationID}>
-                                                <p>{annotation.contentType}</p>
-                                                <ReactAudioPlayer src={annotation.mediaURL} controls />
-                                                <p>{annotation.transcript}</p>
-                                                { !(annotation.tags === null) ?
-                                                    annotation.tags.map(tag => {
-                                                        return(
-                                                            <p key={tag}>{tag}</p>
-                                                        );
-                                                    }) : null
-                                                }
-                                                <p><DeleteAnnotation/></p>
-                                            </Panel>
-                                        );
+                                    if(!(annotation.deleted == true)){
+                                        if(annotation.contentType == "image"){
+                                            return (
+                                                <Panel header={title} key={annotation.annotationID}>
+                                                {annotation.annotationID}
+                                                    <p>{annotation.contentType}</p>
+                                                    <img src={annotation.mediaURL} />
+                                                    { !(annotation.tags === null) ?
+                                                        annotation.tags.map(tag => {
+                                                            return(
+                                                                <p key={tag}>{tag}</p>
+                                                            );
+                                                        }) : null
+                                                    }
+                                                    <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
+                                                </Panel>
+                                            );
+                                        }else if(annotation.contentType == "video"){
+                                            return (
+                                                <Panel header={title} key={annotation.annotationID}>
+                                                    <p>{annotation.contentType}</p>
+                                                    <ReactPlayer url={annotation.mediaURL} controls/>
+                                                    { !(annotation.tags === null) ?
+                                                        annotation.tags.map(tag => {
+                                                            return(
+                                                                <p key={tag}>{tag}</p>
+                                                            );
+                                                        }) : null
+                                                    }
+                                                    <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
+                                                </Panel>
+                                            );
+                                        }else if(annotation.contentType == "text"){
+                                            return (
+                                                <Panel header={title} key={annotation.annotationID}>
+                                                {annotation.annotationID}
+                                                    <p>{annotation.contentType}</p>
+                                                    <p>{annotation.text}</p>
+                                                    { !(annotation.tags === null) ?
+                                                        annotation.tags.map(tag => {
+                                                            return(
+                                                                <p key={tag}>{tag}</p>
+                                                            );
+                                                        }) : null
+                                                    }
+                                                    <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
+                                                </Panel>
+                                            );
+                                        }else if(annotation.contentType == "audio"){
+                                            return (
+                                                <Panel header={title} key={annotation.annotationID}>
+                                                    <p>{annotation.contentType}</p>
+                                                    <ReactAudioPlayer src={annotation.mediaURL} controls />
+                                                    <p>{annotation.transcript}</p>
+                                                    { !(annotation.tags === null) ?
+                                                        annotation.tags.map(tag => {
+                                                            return(
+                                                                <p key={tag}>{tag}</p>
+                                                            );
+                                                        }) : null
+                                                    }
+                                                    <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
+                                                </Panel>
+                                            );
+                                        }
                                     }
                                 })}
 
