@@ -13,7 +13,7 @@ import Teachers from './components/teacher/Teachers';
 import Home from './components/common/Home';
 import Students from './components/common/Students';
 import Configuration from './components/common/Configuration';
-import StudentPageTest from './components/student/StudentPageTest';
+import StudentPage from './components/student/StudentPage';
 
 const client = new ApolloCLient({
    networkInterface: createNetworkInterface({ uri: 'https://effeedbackapp-qa.herokuapp.com/api/graphql'}),
@@ -31,7 +31,7 @@ const Root = () => {
             <Route  exact path="/:teacherID/configuration" component={Configuration}/>   
             <Route  exact path="/:teacherID/students" component={Students}/> 
             <Route  exact path="/:teacherID" component={Home}/> 
-            <Route  path="/:teacherID/students/:userID" component={StudentPageTest}/>
+            <Route  path="/:teacherID/students/:userID" component={StudentPage}/>
           </Switch>
         </App>
       </BrowserRouter >

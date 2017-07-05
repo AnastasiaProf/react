@@ -1,7 +1,7 @@
 /**
  * Home Component
  * Composed of the course filter & the sort dropdown for the student list
- * Child : StudentHomeListTest
+ * Child : StudentHomeList
  */
 
 import React, {Component} from 'react';
@@ -11,7 +11,7 @@ import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
-import StudentHomeListTest from '../student/StudentHomeListTest';
+import StudentHomeList from '../student/StudentHomeList';
 
 
 /*
@@ -51,7 +51,7 @@ class Home extends Component{
         this.setState({list: this.child});
     }
 
-    //onChange set StudentHomeListTest.state.sortStud at dropdown value
+    //onChange set StudentHomeList.state.sortStud at dropdown value
     sortStud(e){
         this.child.setState({sortStud: e.target.value})
     }
@@ -103,8 +103,8 @@ class Home extends Component{
                     </Row>
                 </Grid>
 
-                {/*assign StudentHomeListTest as a child and pass into it the selected Course object & the current teacherID*/}
-                <StudentHomeListTest ref={(child) => {
+                {/*assign StudentHomeList as a child and pass into it the selected Course object & the current teacherID*/}
+                <StudentHomeList ref={(child) => {
                     if(!(child == null )){
                         this.child = child.getWrappedInstance();
                     }

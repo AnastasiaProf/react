@@ -1,7 +1,7 @@
 /**
  * Delete Annotation Component
  * Composed of the course filter & the sort dropdown for the student list
- * Child : StudentHomeListTest
+ * Child : StudentHomeList
  */
 
 import React, {Component} from 'react';

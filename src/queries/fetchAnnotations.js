@@ -1,6 +1,3 @@
-/**
- * Created by Thomas on 2/07/2017.
- */
 import gql from 'graphql-tag';
 
 const getStudentInfo = gql`
