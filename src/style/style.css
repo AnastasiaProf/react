@@ -38,11 +38,34 @@ ul.header li a {
   margin-bottom: 10px;
 }
 
-
 /*thumbnail*/
 
 .profile{
+  position: relative;
   text-align: center;
+  height: 247px !important;
+}
+
+.caption{
+   overflow: hidden;
+}
+
+.number-annotation {
+  position: absolute;
+  top: 5%;
+  right: 3%;
+  display:inline-block;
+  border-radius: 50%;
+  width: 40px; 
+  font-size: 24px;
+  border: 2px solid #666;
+  background-color: #666;
+}
+.number-annotation span {
+  text-align: center;
+  line-height: 40px;
+  display: block;
+  color: white;
 }
 
 /* student list */
@@ -66,6 +89,16 @@ ul.header li a {
 
 /*student page */
 
+.annotation{
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.annotation-bottom{
+  width: 100%;
+  border-top: 0.5px solid #7C7676;
+}
+
 .students{
   width: 100%;
 }
@@ -86,6 +119,51 @@ ul.header li a {
 .delete-annotation{
   margin-top: 20px !important;
   float: right;
+  display: inline-block;
+}
+
+.date{
+  margin-top: 20px !important;
+  float: left;
+  display: inline-block;
+}
+
+.back{
+  border: none;
+  background-color: rgb(242, 242, 242);
+}
+
+.back :active{
+  box-shadow: none !important;
+}
+
+.student-picture{
+  float: left;
+  display: inline-block;
+  border-radius: 10px;
+  width: 10%;
+  cursor: pointer;
+}
+
+.student-name{
+  float: left;
+  display: inline-block;
+  font-size: 30px;
+  margin-left: 5%;
+}
+
+.tag-filter{
+  float: right;
+  display: inline-block;
+  width: 50%;
+  background-color: rgb(242, 242, 242);
+  border-radius: 50px !important;
+  border: 1px black solid !important;
+}
+
+.img-modal{
+  width: 100%;
+  height: auto;
 }
 
 /*teacher home*/

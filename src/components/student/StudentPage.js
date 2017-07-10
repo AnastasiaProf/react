@@ -13,7 +13,10 @@ import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Panel from 'react-bootstrap/lib/Panel';
+import Button from 'react-bootstrap/lib/Button';
 import FormControl from 'react-bootstrap/lib/FormControl';
+import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import Modal from 'react-bootstrap/lib/Modal';
 import ReactPlayer from 'react-player';
 import ReactAudioPlayer from 'react-audio-player';
 
@@ -42,9 +45,9 @@ class StudentPage extends Component{
             var pair = vars[i].split("=");
             if (pair[0] == variable) {
                 if(pair[1] == "home"){
-                    return (<Link className="btn btn-default" to={`/${this.props.match.params.teacherID}`}>Back</Link>);
+                    return (<Link className="btn back" to={`/${this.props.match.params.teacherID}`}> <Glyphicon glyph="chevron-left" /> Back to class </Link>);
                 } else if(pair[1] == "studentslist") {
-                    return (<Link className="btn btn-default" to={`/${this.props.match.params.teacherID}/students`}>Back</Link>);
+                    return (<Link className="btn back" to={`/${this.props.match.params.teacherID}/students`}><Glyphicon glyph="chevron-left" /> Back to class </Link>);
                 }
             }
         }
@@ -54,17 +57,30 @@ class StudentPage extends Component{
     //onChange of the filter dropdown refetch graphql query
     filterAnnot(e){
         if(e.target.value == ""){
-            this.props.data.refetch({ userID: this.props.match.params.userID, tags: ["No Feedback type", "Strength", "Weakness", "Action Plan", "Parent Update"] })
+            this.props.data.refetch({ userID: this.props.match.params.userID, tags: ["No Feedback type", "Strength", "Weakness", "Action Plan", "Parent Update", "", null] })
         } else {
             this.props.data.refetch({userID: this.props.match.params.userID, tags: [e.target.value]})
         }
+    }
+
+    //modal init
+    getInitialState() {
+        return { showModal: false };
+    }
+
+    close() {
+        this.setState({ showModal: false });
+    }
+
+    open() {
+        console.log(this);
+        this.setState({ showModal: true });
     }
 
 
     render(){
 
         const { student } = this.props.data;
-        const title = (<h3>Annotation</h3>);
 
         let back = this.getQueryVariable("oldurl");
 
@@ -76,18 +92,27 @@ class StudentPage extends Component{
 
         return (
             <div>
-                {
-                    this.getQueryVariable("oldurl")
-                }
                 <div key={student.userID}>
                     <Grid>
                         <Row>
-                            <Col xs={6} md={2} mdOffset={4} >
-                                <img src={student.photoURL} alt="242x200"/>
-                            </Col>
-                            <Col xs={6} md={4} >
-                                <h1>{student.firstName} {student.lastName}</h1>
-                                <FormControl onChange={this.filterAnnot.bind(this)} componentClass="select" placeholder="select">
+                            <Col xs={6} md={8} mdOffset={2} >
+                                <div>
+                                    {
+                                        this.getQueryVariable("oldurl")
+                                    }
+                                </div>
+                                <img onClick={this.open.bind(this)} className="student-picture" src={student.photoURL} alt="242x200"/>
+                                <Modal  bsSize="small" show={this.state.showModal} onHide={this.close.bind(this)}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>{student.firstName} {student.lastName}</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        <img className="img-modal" src={student.photoURL} />
+                                    </Modal.Body>
+                                </Modal>
+
+                                <h1 className="student-name">{student.firstName} {student.lastName}</h1>
+                                <FormControl className="btn-secondary tag-filter" onChange={this.filterAnnot.bind(this)} componentClass="select" placeholder="select">
                                     <option value="">No Filter</option>
                                     <option value="Strength">Strengths</option>
                                     <option value="Weakness">Weaknesses</option>
@@ -105,9 +130,8 @@ class StudentPage extends Component{
                                     if(!(annotation.deleted == true)){
                                         if(annotation.contentType == "image"){
                                             return (
-                                                <Panel header={title} key={annotation.annotationID}>
-                                                    <p>{annotation.contentType}</p>
-                                                    <img src={annotation.mediaURL} />
+                                                <Panel className="annotation" key={annotation.annotationID}>
+                                                   
                                                     {/*if no tags then do not try to loop over it (Code breakage prevention)*/}
                                                     { !(annotation.tags === null) ?
                                                         annotation.tags.map(tag => {
@@ -116,14 +140,17 @@ class StudentPage extends Component{
                                                             );
                                                         }) : null
                                                     }
-                                                    <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
+                                                    <img src={annotation.mediaURL} />
+
+                                                    <div>
+                                                        <p className="date">{annotation.createdAt}</p>
+                                                        <DeleteAnnotation annotation={annotation} studentID={studentID}/>
+                                                    </div>
                                                 </Panel>
                                             );
                                         }else if(annotation.contentType == "video"){
                                             return (
-                                                <Panel header={title} key={annotation.annotationID}>
-                                                    <p>{annotation.contentType}</p>
-                                                    <ReactPlayer url={annotation.mediaURL} controls/>
+                                                <Panel className="annotation" key={annotation.annotationID}>
                                                     { !(annotation.tags === null) ?
                                                         annotation.tags.map(tag => {
                                                             return(
@@ -131,30 +158,35 @@ class StudentPage extends Component{
                                                             );
                                                         }) : null
                                                     }
-                                                    <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
+                                                    <ReactPlayer url={annotation.mediaURL} controls/>
+
+                                                    <div>
+                                                        <p className="date">{annotation.createdAt}</p>
+                                                        <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
+                                                    </div>
                                                 </Panel>
                                             );
                                         }else if(annotation.contentType == "text"){
                                             return (
-                                                <Panel header={title} key={annotation.annotationID}>
-                                                    <p>{annotation.contentType}</p>
-                                                    <p>{annotation.text}</p>
-                                                    { !(annotation.tags === null) ?
+                                                <Panel className="annotation" key={annotation.annotationID}>
+                                                     { !(annotation.tags === null) ?
                                                         annotation.tags.map(tag => {
                                                             return(
                                                                 <p key={tag}>{tag}</p>
                                                             );
                                                         }) : null
                                                     }
-                                                    <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
+                                                    <p>{annotation.text}</p>
+
+                                                    <div className="annotation-bottom">
+                                                        <p className="date">{annotation.createdAt}</p>
+                                                        <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
+                                                    </div>
                                                 </Panel>
                                             );
                                         }else if(annotation.contentType == "audio"){
                                             return (
-                                                <Panel header={title} key={annotation.annotationID}>
-                                                    <p>{annotation.contentType}</p>
-                                                    <ReactAudioPlayer src={annotation.mediaURL} controls />
-                                                    <p>{annotation.transcript}</p>
+                                                <Panel className="annotation" key={annotation.annotationID}>
                                                     { !(annotation.tags === null) ?
                                                         annotation.tags.map(tag => {
                                                             return(
@@ -162,7 +194,13 @@ class StudentPage extends Component{
                                                             );
                                                         }) : null
                                                     }
-                                                    <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
+                                                    <ReactAudioPlayer src={annotation.mediaURL} controls />
+                                                    <p>{annotation.transcript}</p>
+
+                                                    <div className="annotation-bottom">
+                                                        <p className="date">{annotation.createdAt}</p>
+                                                        <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
+                                                    </div>
                                                 </Panel>
                                             );
                                         }
