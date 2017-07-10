@@ -26,7 +26,7 @@ const TeacherQuery = gql`
       updatedAt
     }
   }
-`
+`;
 
 class TeacherList extends React.Component {
   constructor(props) {

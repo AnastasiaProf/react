@@ -33,6 +33,7 @@ const CourseStudentQuery = gql`
               updatedAt
             }
           courseID
+          description
           courseName
           createdAt
           updatedAt
@@ -65,6 +66,17 @@ class StudentList extends React.Component {
         this.setState({filter: e.target.value})
     }
 
+    arrayUnique(array) {
+    var a = array.concat();
+    for(var i=0; i<a.length; ++i) {
+        for(var j=i+1; j<a.length; ++j) {
+            if(a[i] === a[j])
+                a.splice(j--, 1);
+        }
+    }
+
+    return a;
+}
 
 
     render() {
@@ -76,14 +88,24 @@ class StudentList extends React.Component {
 
         let courses = this.props.courses;
 
+        let studentsLast = [];
+        let studentsFirst = [];
         let studentsDisplay = [];
 
         if(this.state.filter){
             {courses.map(course => {
-                studentsDisplay[course.courseID] = course.students.filter( student =>
+                studentsLast[course.courseID] = course.students.filter( student =>
                     student.lastName.toLowerCase().match(this.state.filter.toLowerCase()) 
-                )
+                );
+
+                studentsFirst[course.courseID] = course.students.filter( student =>
+                    student.firstName.toLowerCase().match(this.state.filter.toLowerCase())
+                );
+
+                studentsDisplay[course.courseID] = this.arrayUnique(studentsLast[course.courseID].concat(studentsFirst[course.courseID]))
             })}
+
+
         } else {
             {courses.map(course => {
                 studentsDisplay[course.courseID] = course.students
@@ -101,7 +123,7 @@ class StudentList extends React.Component {
                           return (
                               <Row key={course.courseID}>
                                 <div className="classetitle">
-                                  <h1>{course.courseName}</h1>
+                                  <h1>{course.description}</h1>
                                 </div>
                                   {studentsDisplay[course.courseID].map(student => {
                                       return (

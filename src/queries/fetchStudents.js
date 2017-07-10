@@ -9,4 +9,4 @@ const StudentsQuery = gql`
       photoURL
     }
   }
-`
+`;

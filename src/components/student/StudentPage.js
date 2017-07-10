@@ -42,7 +42,7 @@ class StudentPage extends Component{
             var pair = vars[i].split("=");
             if (pair[0] == variable) {
                 if(pair[1] == "home"){
-                    return (<Link className="btn btn-default" to={`/${this.props.match.params.teacherID}`}>Back</Link>);
+                    return (<Link className="btn btn-default" to={`/${this.props.match.params.teacherID}/${this.props.match.params.courseID}`}>Back</Link>);
                 } else if(pair[1] == "studentslist") {
                     return (<Link className="btn btn-default" to={`/${this.props.match.params.teacherID}/students`}>Back</Link>);
                 }

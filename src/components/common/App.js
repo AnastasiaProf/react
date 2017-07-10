@@ -12,8 +12,6 @@ import Col from 'react-bootstrap/lib/Col';
 import { Link } from 'react-router-dom';
 import logo from '../../blacklogo.png';
 
-import Home from './Home';
-
 class App extends Component {
     render() {
         //get teacherID from URL
