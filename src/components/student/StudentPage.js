@@ -19,6 +19,7 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import Modal from 'react-bootstrap/lib/Modal';
 import ReactPlayer from 'react-player';
 import ReactAudioPlayer from 'react-audio-player';
+import MultiSelect from 'react-selectize';
 
 import AddAnnotation from './AddAnnotation';
 import DeleteAnnotation from './DeleteAnnotation';
@@ -45,7 +46,7 @@ class StudentPage extends Component{
             var pair = vars[i].split("=");
             if (pair[0] == variable) {
                 if(pair[1] == "home"){
-                    return (<Link className="btn back" to={`/${this.props.match.params.teacherID}/${this.props.match.params.courseID}`}> <Glyphicon glyph="chevron-left" /> Back</Link>);
+                    return (<Link className="btn back" to={`/${this.props.match.params.teacherID}/${this.props.match.params.courseID}`}> <Glyphicon glyph="chevron-left" /> Back to class</Link>);
                 } else if(pair[1] == "studentslist") {
                     return (<Link className="btn back" to={`/${this.props.match.params.teacherID}/students`}><Glyphicon glyph="chevron-left" /> Back to class </Link>);
                 }
@@ -63,6 +64,13 @@ class StudentPage extends Component{
         }
     }
 
+    //getInitialState :: a -> UIState
+    // getInitialState(){
+    //     return {tags: [this.props.data.annotations.tags].map(function(tag){
+    //         return {label: tag, value: tag};
+    //     })};
+    // }
+
     //modal init
     getInitialState() {
         return { showModal: false };
@@ -79,6 +87,10 @@ class StudentPage extends Component{
 
 
     render(){
+
+        var self = this;
+
+       
 
         const { student } = this.props.data;
 
@@ -112,7 +124,7 @@ class StudentPage extends Component{
                                 </Modal>
 
                                 <h1 className="student-name">{student.firstName} {student.lastName}</h1>
-                                <FormControl className="btn-secondary tag-filter" onChange={this.filterAnnot.bind(this)} componentClass="select" placeholder="select">
+                                <FormControl className="tag-filter" onChange={this.filterAnnot.bind(this)} componentClass="select" placeholder="select">
                                     <option value="">No Filter</option>
                                     <option value="Strength">Strengths</option>
                                     <option value="Weakness">Weaknesses</option>
@@ -123,7 +135,7 @@ class StudentPage extends Component{
                         </Row>
                         <Row>
                             <Col xs={12} md={8} mdOffset={2}>
-                                <h1>All the feedback posts</h1>
+
                                 <AddAnnotation studentID={studentID} teacherID={teacherID}/>
 
                                 {annotations.map(annotation => {
@@ -136,7 +148,9 @@ class StudentPage extends Component{
                                                     { !(annotation.tags === null) ?
                                                         annotation.tags.map(tag => {
                                                             return(
+                                                                <div key={tag}>
                                                                 <p key={tag}>{tag}</p>
+                                                                </div>
                                                             );
                                                         }) : null
                                                     }
@@ -154,7 +168,9 @@ class StudentPage extends Component{
                                                     { !(annotation.tags === null) ?
                                                         annotation.tags.map(tag => {
                                                             return(
+                                                                <div key={tag}>
                                                                 <p key={tag}>{tag}</p>
+                                                                </div>
                                                             );
                                                         }) : null
                                                     }
@@ -172,7 +188,10 @@ class StudentPage extends Component{
                                                      { !(annotation.tags === null) ?
                                                         annotation.tags.map(tag => {
                                                             return(
+                                                                <div key={tag}>
+                                                               
                                                                 <p key={tag}>{tag}</p>
+                                                                </div>  
                                                             );
                                                         }) : null
                                                     }
@@ -190,7 +209,9 @@ class StudentPage extends Component{
                                                     { !(annotation.tags === null) ?
                                                         annotation.tags.map(tag => {
                                                             return(
+                                                                <div key={tag}>
                                                                 <p key={tag}>{tag}</p>
+                                                                </div>
                                                             );
                                                         }) : null
                                                     }

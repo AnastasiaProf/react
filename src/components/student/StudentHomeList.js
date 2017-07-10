@@ -178,14 +178,14 @@ class StudentHomeList extends React.Component {
             if(annot){
                 annot_nbr = annotations[userID];
                 return (
-                <Col xs={4} sm={4} md={3} key={userID}>
-                    <Thumbnail className="profile">
-                        <div className="number-annotation"><span >{annot_nbr}</span></div>
-                        <img src={photoURL} alt="student profile picture"/>
-                        <Link to={`/${teacherID}/students/${userID}/?oldurl=home`}><h3>{firstName} {lastName}</h3></Link>
-                    </Thumbnail>
-                </Col>
-            );
+                    <Col xs={4} sm={4} md={3} key={userID}>
+                        <Thumbnail className="profile">
+                            <div className="number-annotation"><span >{annot_nbr}</span></div>
+                            <img src={photoURL} alt="student profile picture"/>
+                            <Link to={`/${teacherID}/students/${userID}/?oldurl=home`}><h3>{firstName} {lastName}</h3></Link>
+                        </Thumbnail>
+                    </Col>
+                );
             }else{
 
                 return (
@@ -197,7 +197,7 @@ class StudentHomeList extends React.Component {
                     </Col>
                 );
             }
-        });
+        }));
     }
 
     render(){
