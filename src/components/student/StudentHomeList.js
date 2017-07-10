@@ -70,14 +70,14 @@ class StudentHomeList extends React.Component {
         let counterarray = [];
 
         // Return today's date and time
-        var currentTime = new Date()
+        var currentTime = new Date();
 
         // returns the month (from 0 to 11)
-        var current_month = currentTime.getMonth() + 1
+        var current_month = currentTime.getMonth() + 1;
 
 
         // returns the year (four digits)
-        var current_year = currentTime.getFullYear()
+        var current_year = currentTime.getFullYear();
 
         if(!(array == undefined)){
 
@@ -171,8 +171,9 @@ class StudentHomeList extends React.Component {
 
         var teacherID = this.props.teacherID;
 
-        return students.map(({firstName, lastName, photoURL, userID}) => {
-            let annot_nbr = "";
+        return (
+            students.map(({firstName, lastName, photoURL, userID}) => {
+                let annot_nbr = "";
 
             if(annot){
                 annot_nbr = annotations[userID];
@@ -186,6 +187,7 @@ class StudentHomeList extends React.Component {
                 </Col>
             );
             }else{
+
                 return (
                     <Col xs={4} sm={4} md={3} key={userID}>
                         <Thumbnail className="profile">
