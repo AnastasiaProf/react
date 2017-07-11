@@ -175,30 +175,29 @@ class StudentHomeList extends React.Component {
             students.map(({firstName, lastName, photoURL, userID}) => {
                 let annot_nbr = "";
 
-                if(annot){
-                    annot_nbr = annotations[userID];
-                    return (
-                        <Col xs={4} sm={4} md={3} key={userID}>
-                            <Thumbnail className="profile">
-                                <div className="number-annotation"><span >{annot_nbr}</span></div>
-                                <img src={photoURL} alt="student profile picture"/>
-                                <Link to={`/${teacherID}/${this.props.filterStudValue}/students/${userID}/?oldurl=home`}><h3>{firstName} {lastName}</h3></Link>
-                            </Thumbnail>
-                        </Col>
-                    );
-                }else{
+            if(annot){
+                annot_nbr = annotations[userID];
+                return (
+                    <Col xs={4} sm={4} md={3} key={userID}>
+                        <Thumbnail className="profile">
+                            <div className="number-annotation"><span >{annot_nbr}</span></div>
+                            <img src={photoURL} alt="student profile picture"/>
+                            <Link to={`/${teacherID}/${this.props.filterStudValue}/students/${userID}/?oldurl=home`}><h3>{firstName} {lastName}</h3></Link>
+                        </Thumbnail>
+                    </Col>
+                );
+            }else{
 
-                    return (
-                        <Col xs={4} sm={4} md={3} key={userID}>
-                            <Thumbnail className="profile">
-                                <img src={photoURL} alt="student profile picture"/>
-                                <Link to={`/${teacherID}/${this.props.filterStudValue}/students/${userID}/?oldurl=home`}><h3>{firstName} {lastName}{annot_nbr}</h3></Link>
-                            </Thumbnail>
-                        </Col>
-                    );
-                }
-            })
-        );
+                return (
+                    <Col xs={4} sm={4} md={3} key={userID}>
+                        <Thumbnail className="profile">
+                            <img src={photoURL} alt="student profile picture"/>
+                            <Link to={`/${teacherID}/${this.props.filterStudValue}/students/${userID}/?oldurl=home`}><h3>{firstName} {lastName}{annot_nbr}</h3></Link>
+                        </Thumbnail>
+                    </Col>
+                );
+            }
+        }));
     }
 
     render(){

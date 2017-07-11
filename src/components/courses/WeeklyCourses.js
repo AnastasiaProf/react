@@ -193,8 +193,8 @@ class WeeklyCourses extends React.Component {
                     }
                     if(day.length > 0 ){
                     return(
-                        <div key={index}>
-                            {dayname}
+                        <div key={index} >
+                            <div className="day-name">{dayname}</div>
                             <ul>
                                 {day.map((course) => {
                                     return (

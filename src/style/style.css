@@ -5,6 +5,12 @@ body {
   background-color: rgb(242, 242, 242);
   width: 100%; 
 }
+
+a h4{
+  cursor: pointer;
+}
+
+/* header */
 h1, h2, p, ul, li {
   font-family: Helvetica, Arial, sans-serif;
 }
@@ -38,7 +44,48 @@ ul.header li a {
   margin-bottom: 10px;
 }
 
-/*thumbnail*/
+/* home with courses & schedule */
+
+.tab{
+  float: none !important;
+  display: inline-block !important;
+}
+
+.home-nav{
+  text-align: center;
+  float: none !important;
+}
+
+.day-name{
+  text-align: center;
+}
+
+.courses{
+  float: left !important;
+}
+
+.course-description{
+  text-align: center;
+  float: none !important;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  margin-left: 25%;
+  border: 1px solid black;
+  padding: 3%;
+  width: 50%;
+}
+
+.class{
+  float: left;
+}
+
+.class-tag-filter{
+  float: right;
+  display: inline-block;
+  width: 20%;
+}
+
+/*thumbnail for students*/
 
 .profile{
   position: relative;
@@ -131,6 +178,8 @@ ul.header li a {
 .back{
   border: none;
   background-color: rgb(242, 242, 242);
+  padding-left: 0px !important;
+  padding-bottom: 2%;
 }
 
 .back :active{
@@ -153,18 +202,44 @@ ul.header li a {
 }
 
 .tag-filter{
+  margin-top: 20px;
+  -webkit-appearance: none;
+  appearance: none;
   float: right;
   display: inline-block;
-  width: 50%;
+  width: 25%;
   background-color: rgb(242, 242, 242);
   border-radius: 50px !important;
   border: 1px black solid !important;
+  background: url("../chevron-down.png") no-repeat 90% 50%;
 }
 
 .img-modal{
   width: 100%;
   height: auto;
 }
+
+.text-tag{
+  margin-top: 3%;
+}
+
+.panel{
+  border:none !important;
+  border-radius: 20px;
+}
+
+.panel-default{
+  border:none !important;
+}
+
+.add-annoation{
+  border-radius: 30px;
+  color: white;
+  background-color: #0F6ED8;
+  text-shadow: none !important;
+  background-image: none !important;
+}
+
 
 /*teacher home*/
 

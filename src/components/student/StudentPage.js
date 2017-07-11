@@ -9,17 +9,15 @@
 import React, {Component} from 'react';
 import { Link, IndexRoute} from 'react-router-dom';
 import { graphql } from 'react-apollo';
-import Grid from 'react-bootstrap/lib/Grid';
-import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
-import Panel from 'react-bootstrap/lib/Panel';
-import FormControl from 'react-bootstrap/lib/FormControl';
+import {Grid, Row, Col, Panel, FormControl} from 'react-bootstrap';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import Modal from 'react-bootstrap/lib/Modal';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
+import Checkbox from 'react-bootstrap/lib/Checkbox';
 import ReactPlayer from 'react-player';
 import ReactAudioPlayer from 'react-audio-player';
 import currentWeekNumber from 'current-week-number';
-
+import MultiSelect from 'react-selectize';
 
 import AddAnnotation from './AddAnnotation';
 import DeleteAnnotation from './DeleteAnnotation';
@@ -34,7 +32,8 @@ class StudentPage extends Component{
 
         this.state = {
             filterAnnot: "",
-            all : true
+            all : true,
+            modify: []
         }
     }
 
@@ -47,7 +46,7 @@ class StudentPage extends Component{
             var pair = vars[i].split("=");
             if (pair[0] == variable) {
                 if(pair[1] == "home"){
-                    return (<Link className="btn back" to={`/${this.props.match.params.teacherID}/${this.props.match.params.courseID}`}> <Glyphicon glyph="chevron-left" /> Back</Link>);
+                    return (<Link className="btn back" to={`/${this.props.match.params.teacherID}/${this.props.match.params.courseID}`}> <Glyphicon glyph="chevron-left" /> Back to class</Link>);
                 } else if(pair[1] == "studentslist") {
                     return (<Link className="btn back" to={`/${this.props.match.params.teacherID}/students`}><Glyphicon glyph="chevron-left" /> Back to class </Link>);
                 }
@@ -80,7 +79,7 @@ class StudentPage extends Component{
             if(parseInt(dateparts[0]) == parseInt(currentyear)){
                 let nicedate = dateparts[1]+'/'+dateparts[2]+'/'+dateparts[0];
                 let annotweek = currentWeekNumber(nicedate);
-                if(!(annotweek === undefined)){
+                if(!(annotweek === undefined) && !(e.deleted == true)){
                     if(annotsort[annotweek] === undefined){
                         annotsort[annotweek] = [];
                         annotsort[annotweek]["week_nbr"] = annotweek;
@@ -92,6 +91,14 @@ class StudentPage extends Component{
         return annotsort;
     }
 
+
+    initiateUpdate(event){
+        event.preventDefault();
+
+        let current = this.state.modify;
+        current.push(event.target.id);
+        this.setState({modify: current})
+    }
 
     //modal init
     getInitialState() {
@@ -109,6 +116,7 @@ class StudentPage extends Component{
 
     render(){
 
+
         const { student } = this.props.data;
 
         let back = this.getQueryVariable("oldurl");
@@ -118,7 +126,7 @@ class StudentPage extends Component{
         let teacherID = this.props.match.params.teacherID;
         let studentID = this.props.match.params.userID;
         let annotations = [];
-
+        console.log(this.state)
         if(this.state.all){
             annotations = this.props.data.annotations.concat().reverse();
         } else {
@@ -126,18 +134,12 @@ class StudentPage extends Component{
         }
         let weeks = this.compareWeek(annotations);
         weeks.sort(function(a, b){
-            console.log("a : ",a["week_nbr"])
-            console.log("b : ",b["week_nbr"])
-
             if(parseInt(a["week_nbr"]) < parseInt(b["week_nbr"])){
-                console.log("a descend")
                 return -1;
             } else if(parseInt(a["week_nbr"]) > parseInt(b["week_nbr"])){
-                console.log("a monte")
                 return 1;
             }
         }).reverse();
-            console.log(weeks)
         return (
             <div>
                 <div key={student.userID}>
@@ -160,7 +162,7 @@ class StudentPage extends Component{
                                 </Modal>
 
                                 <h1 className="student-name">{student.firstName} {student.lastName}</h1>
-                                <FormControl className="btn-secondary tag-filter" onChange={this.filterAnnot.bind(this)} componentClass="select" placeholder="select">
+                                <FormControl className="tag-filter" onChange={this.filterAnnot.bind(this)} componentClass="select" placeholder="select">
                                     <option value="all">All Annotations</option>
                                     <option value="null">No Feedback Type</option>
                                     <option value="Strength">Strengths</option>
@@ -172,7 +174,7 @@ class StudentPage extends Component{
                         </Row>
                         <Row>
                             <Col xs={12} md={8} mdOffset={2}>
-                                <h1>All the feedback posts</h1>
+
                                 <AddAnnotation studentID={studentID} teacherID={teacherID}/>
                                 {weeks.map((week) => {
                                     return(
@@ -183,7 +185,6 @@ class StudentPage extends Component{
                                                     if(annotation.contentType == "image"){
                                                         return (
                                                             <Panel className="annotation" key={annotation.annotationID}>
-
                                                                 {/*if no tags then do not try to loop over it (Code breakage prevention)*/}
                                                                 { !(annotation.tags === null) ?
                                                                     annotation.tags.map(tag => {
@@ -219,23 +220,55 @@ class StudentPage extends Component{
                                                             </Panel>
                                                         );
                                                     }else if(annotation.contentType == "text"){
-                                                        return (
-                                                            <Panel className="annotation" key={annotation.annotationID}>
-                                                                { !(annotation.tags === null) ?
-                                                                    annotation.tags.map(tag => {
-                                                                        return(
-                                                                            <p key={tag}>{tag}</p>
-                                                                        );
-                                                                    }) : <p>No Feedback Type</p>
-                                                                }
-                                                                <p>{annotation.text}</p>
+                                                        if(this.state.modify.includes(annotation.annotationID)){
+                                                            return (
+                                                                <Panel className="annotation" key={annotation.annotationID}>
+                                                                    <a onClick={this.initiateUpdate.bind(this)} id={annotation.annotationID} href="#">Update Annotation</a>
+                                                                    <FormGroup className="tags">
+                                                                        <Checkbox onChange={this.handleChangeStrength.bind(this)} value={this.state.strength_value}  inline>
+                                                                            Strengths
+                                                                        </Checkbox >
+                                                                        {' '}
+                                                                        <Checkbox onChange={this.handleChangeWeakness.bind(this)} value={this.state.weakness_value} { !(annotation.tags.includes("Weaknesses")) ? checked : null } inline>
+                                                                            Weaknesses
+                                                                        </Checkbox>
+                                                                        {' '}
+                                                                        <Checkbox onChange={this.handleChangeAction.bind(this)} value={this.state.action_value} { !(annotation.tags.includes("Action Plan")) ? checked : null } inline>
+                                                                            Action plan
+                                                                        </Checkbox>
+                                                                        {' '}
+                                                                        <Checkbox onChange={this.handleChangeParent.bind(this)} value={this.state.parent_value} { !(annotation.tags.includes("Parent Update")) ? checked : null } inline>
+                                                                            Parent update
+                                                                        </Checkbox>
+                                                                    </FormGroup>
+                                                                    <p>{annotation.text}</p>
 
-                                                                <div className="annotation-bottom">
-                                                                    <p className="date">{annotation.createdAt}</p>
-                                                                    <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
-                                                                </div>
-                                                            </Panel>
-                                                        );
+                                                                    <div className="annotation-bottom">
+                                                                        <p className="date">{annotation.createdAt}</p>
+                                                                        <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
+                                                                    </div>
+                                                                </Panel>
+                                                            );
+                                                        } else {
+                                                            return (
+                                                                <Panel className="annotation" key={annotation.annotationID}>
+                                                                    <a onClick={this.initiateUpdate.bind(this)} id={annotation.annotationID} href="#">Modify</a>
+                                                                    { !(annotation.tags === null) ?
+                                                                        annotation.tags.map(tag => {
+                                                                            return(
+                                                                                <p key={tag}>{tag}</p>
+                                                                            );
+                                                                        }) : <p>No Feedback Type</p>
+                                                                    }
+                                                                    <p>{annotation.text}</p>
+
+                                                                    <div className="annotation-bottom">
+                                                                        <p className="date">{annotation.createdAt}</p>
+                                                                        <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
+                                                                    </div>
+                                                                </Panel>
+                                                            );
+                                                        }
                                                     }else if(annotation.contentType == "audio"){
                                                         return (
                                                             <Panel className="annotation" key={annotation.annotationID}>

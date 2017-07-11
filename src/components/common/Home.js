@@ -34,12 +34,12 @@ class Home extends Component{
             <div>
                 <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                     <Row className="clearfix">
-                        <Col sm={12}>
+                        <Col sm={12} md={8} mdOffset={2} className="home-nav">
                             <Nav bsStyle="pills">
-                                <NavItem eventKey="first">
+                                <NavItem eventKey="first" className="tab">
                                     This Week
                                 </NavItem>
-                                <NavItem eventKey="second">
+                                <NavItem eventKey="second" className="tab">
                                     All Classes
                                 </NavItem>
                             </Nav>

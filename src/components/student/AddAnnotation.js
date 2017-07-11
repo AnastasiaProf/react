@@ -116,8 +116,8 @@ class AddAnnotation extends Component{
 
     render(){
         return(
-			<div>
-				<Button bsSize="large" block onClick={ ()=> this.setState({ open: !this.state.open })}> + Add a comment</Button>
+			<div className="text-tag">
+				<Button className="add-annoation" bsSize="large" block onClick={ ()=> this.setState({ open: !this.state.open })}> + Add a comment</Button>
 				<Panel collapsible expanded={this.state.open} >
 					<form onSubmit={this.onSubmit.bind(this)}>
 						<input className="students" value= {this.state.text} onChange={event => this.setState({ text: event.target.value})}/>

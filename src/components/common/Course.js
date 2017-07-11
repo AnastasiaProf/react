@@ -11,6 +11,7 @@ import {FormControl} from 'react-bootstrap';
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
+import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import StudentHomeList from '../student/StudentHomeList';
 
@@ -52,13 +53,13 @@ class Home extends Component{
 
         return(
             <div>
-                <h2>{this.props.data.course.description}</h2>
                 <Grid>
-                    <Link className="btn btn-default" to={`/${this.props.match.params.teacherID}`}>Back</Link>
                     <Row className="show-grid">
                         {/*dropdown for sorting by ...*/}
-                        <Col xs={6} md={4} mdOffset={4}>
-                            <FormControl onChange={this.sortStud.bind(this)} componentClass="select" placeholder="select">
+                        <Col xs={12} md={12} >
+                            <div className="course-description"><h2>{this.props.data.course.description}</h2></div>
+                            <Link className="btn back class" to={`/${this.props.match.params.teacherID}`}><Glyphicon glyph="chevron-left" /> Back</Link> 
+                            <FormControl className="class-tag-filter" onChange={this.sortStud.bind(this)} componentClass="select" placeholder="select">
                                 <option value="name">Name</option>
                                 <option value="fbmonth">Feedback this month</option>
                                 <option value="fball">All feedback</option>
