@@ -73,8 +73,7 @@ class Home extends Component{
                     if(!(child == null )){
                         this.child = child.getWrappedInstance();
                     }
-                } } filterStudValue={this.props.match.params.courseID} teacherID={this.props.match.params.teacherID}
-                />
+                } } filterStudValue={this.props.match.params.courseID} teacherID={this.props.match.params.teacherID}/>
 
 
             </div>
