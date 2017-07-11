@@ -238,7 +238,7 @@ class StudentPage extends Component{
                                                                     </div>
                                                                 </Panel>
                                                             );
-                                                        
+
                                                     }else if(annotation.contentType == "audio"){
                                                         return (
                                                             <Panel className="annotation" key={annotation.annotationID}>
