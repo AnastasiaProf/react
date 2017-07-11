@@ -220,36 +220,6 @@ class StudentPage extends Component{
                                                             </Panel>
                                                         );
                                                     }else if(annotation.contentType == "text"){
-                                                        if(this.state.modify.includes(annotation.annotationID)){
-                                                            return (
-                                                                <Panel className="annotation" key={annotation.annotationID}>
-                                                                    <a onClick={this.initiateUpdate.bind(this)} id={annotation.annotationID} href="#">Update Annotation</a>
-                                                                    <FormGroup className="tags">
-                                                                        <Checkbox onChange={this.handleChangeStrength.bind(this)} value={this.state.strength_value}  inline>
-                                                                            Strengths
-                                                                        </Checkbox >
-                                                                        {' '}
-                                                                        <Checkbox onChange={this.handleChangeWeakness.bind(this)} value={this.state.weakness_value} { !(annotation.tags.includes("Weaknesses")) ? checked : null } inline>
-                                                                            Weaknesses
-                                                                        </Checkbox>
-                                                                        {' '}
-                                                                        <Checkbox onChange={this.handleChangeAction.bind(this)} value={this.state.action_value} { !(annotation.tags.includes("Action Plan")) ? checked : null } inline>
-                                                                            Action plan
-                                                                        </Checkbox>
-                                                                        {' '}
-                                                                        <Checkbox onChange={this.handleChangeParent.bind(this)} value={this.state.parent_value} { !(annotation.tags.includes("Parent Update")) ? checked : null } inline>
-                                                                            Parent update
-                                                                        </Checkbox>
-                                                                    </FormGroup>
-                                                                    <p>{annotation.text}</p>
-
-                                                                    <div className="annotation-bottom">
-                                                                        <p className="date">{annotation.createdAt}</p>
-                                                                        <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
-                                                                    </div>
-                                                                </Panel>
-                                                            );
-                                                        } else {
                                                             return (
                                                                 <Panel className="annotation" key={annotation.annotationID}>
                                                                     <a onClick={this.initiateUpdate.bind(this)} id={annotation.annotationID} href="#">Modify</a>
@@ -268,7 +238,7 @@ class StudentPage extends Component{
                                                                     </div>
                                                                 </Panel>
                                                             );
-                                                        }
+                                                        
                                                     }else if(annotation.contentType == "audio"){
                                                         return (
                                                             <Panel className="annotation" key={annotation.annotationID}>
