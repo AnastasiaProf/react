@@ -58,7 +58,7 @@ class AddAnnotation extends Component{
 
         //If nothing in tag assign "No Feedback type"
         if(tags.length == 0){
-            tags = ["No Feedback type"]
+            tags = null;
         }
 
         this.props.mutate({

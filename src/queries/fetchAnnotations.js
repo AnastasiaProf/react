@@ -8,7 +8,21 @@ const getStudentInfo = gql`
             lastName
             photoURL
         }
-        annotations(filterStudentIDs: [$userID], tags: $tags) {
+        annotations(filterStudentIDs: [$userID]) {
+            annotationID
+            contentType
+            mediaURL
+            thumbnailURL
+            text
+            tags
+            transcript
+            classDate
+            createdAt
+            updatedAt
+            transcribedAt
+            deleted
+        }
+        filteredAnnotation : annotations(filterStudentIDs: [$userID], tags: $tags) {
             annotationID
             contentType
             mediaURL

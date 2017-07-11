@@ -30,10 +30,10 @@ const Root = () => {
                     <Switch>
                         <Route  exact path="/" component={Teachers}/>
                         <Route  exact path="/:teacherID/configuration" component={Configuration}/>
-                        <Route  exact path="/:teacherID/students" component={Students}/>
+                        <Route  exact path="/:teacherID/students/" component={Students}/>
                         <Route  exact path="/:teacherID/:courseID" component={Course}/>
                         <Route  exact path="/:teacherID" component={Home}/>
-                        <Route  path="/:teacherID/students/:userID" component={StudentPage}/>
+                        <Route  path="/:teacherID/:courseID/students/:userID" component={StudentPage}/>
                     </Switch>
                 </App>
             </BrowserRouter >

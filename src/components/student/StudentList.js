@@ -129,7 +129,7 @@ class StudentList extends React.Component {
                                       return (
                                           <Col xs={4} md={2} key={student.userID} >
                                             <Thumbnail className="profile"> <img src={student.photoURL} alt="student picture"/>
-                                              <Link to={`students/${student.userID}/?oldurl=studentslist`}><h4>{student.firstName} {student.lastName}</h4></Link>
+                                              <Link to={`${course.courseID}/students/${student.userID}/?oldurl=studentslist`}><h4>{student.firstName} {student.lastName}</h4></Link>
                                             </Thumbnail>
                                           </Col>
                                       );
