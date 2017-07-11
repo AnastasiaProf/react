@@ -17,8 +17,7 @@ import Checkbox from 'react-bootstrap/lib/Checkbox';
 import ReactPlayer from 'react-player';
 import ReactAudioPlayer from 'react-audio-player';
 import currentWeekNumber from 'current-week-number';
-import MultiSelect from 'react-selectize';
-
+import Moment from 'react-moment';
 import AddAnnotation from './AddAnnotation';
 import DeleteAnnotation from './DeleteAnnotation';
 import getStudentInfo from '../../queries/fetchAnnotations';
@@ -179,7 +178,7 @@ class StudentPage extends Component{
                                 {weeks.map((week) => {
                                     return(
                                         <div key={week['week_nbr']}>
-                                            <h1>Week {week['week_nbr']}</h1>
+                                            <h1 className="week-nbr">Week {week['week_nbr']}</h1>
                                             {week.map(annotation => {
                                                 if(!(annotation.deleted == true)){
                                                     if(annotation.contentType == "image"){
@@ -196,7 +195,7 @@ class StudentPage extends Component{
                                                                 <img src={annotation.mediaURL} />
 
                                                                 <div>
-                                                                    <p className="date">{annotation.createdAt}</p>
+                                                                    <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
                                                                     <DeleteAnnotation annotation={annotation} studentID={studentID}/>
                                                                 </div>
                                                             </Panel>
@@ -214,7 +213,7 @@ class StudentPage extends Component{
                                                                 <ReactPlayer url={annotation.mediaURL} controls/>
 
                                                                 <div>
-                                                                    <p className="date">{annotation.createdAt}</p>
+                                                                    <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
                                                                     <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
                                                                 </div>
                                                             </Panel>
@@ -233,7 +232,7 @@ class StudentPage extends Component{
                                                                     <p>{annotation.text}</p>
 
                                                                     <div className="annotation-bottom">
-                                                                        <p className="date">{annotation.createdAt}</p>
+                                                                        <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
                                                                         <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
                                                                     </div>
                                                                 </Panel>
@@ -253,7 +252,7 @@ class StudentPage extends Component{
                                                                 <p>{annotation.transcript}</p>
 
                                                                 <div className="annotation-bottom">
-                                                                    <p className="date">{annotation.createdAt}</p>
+                                                                    <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
                                                                     <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
                                                                 </div>
                                                             </Panel>

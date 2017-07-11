@@ -79,10 +79,22 @@ ul.header li a {
   float: left;
 }
 
+.class:active{
+  -webkit-box-shadow:none !important;
+  box-shadow:none !important;
+}
+
 .class-tag-filter{
+  margin-top: 20px;
+  -webkit-appearance: none;
+  appearance: none;
   float: right;
   display: inline-block;
   width: 20%;
+  background-color: rgb(242, 242, 242);
+  border-radius: 50px !important;
+  border: 1px black solid !important;
+  background: url("../chevron-down.png") no-repeat 90% 50%;
 }
 
 /*thumbnail for students*/
@@ -182,8 +194,14 @@ ul.header li a {
   padding-bottom: 2%;
 }
 
+a.btn.back{
+  -webkit-box-shadow:none !important;
+  box-shadow: none !important;
+}
+
 .back :active{
   box-shadow: none !important;
+  -webkit-box-shadow:none !important;
 }
 
 .student-picture{
@@ -240,6 +258,11 @@ ul.header li a {
   background-image: none !important;
 }
 
+.week-nbr{
+  text-align: center;
+  font-size: 24px;
+  font-style: bold;
+}
 
 /*teacher home*/
 
