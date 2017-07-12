@@ -169,10 +169,25 @@ ul.header li a {
   display: inline-block;
 }
 
+.tag{
+  display: inline-block;
+  margin-left: 2px;
+  margin-right: 10px;
+  margin-bottom: 0px !important;
+}
+
+.update{
+  float: right;
+}
+
 .submit{
   display: inline-block !important;
   float: right !important;
   margin-top: 20px !important;
+}
+
+.change{
+  margin-left: 2%;
 }
 
 .delete-annotation{
@@ -262,6 +277,20 @@ a.btn.back{
   text-align: center;
   font-size: 24px;
   font-style: bold;
+}
+
+.content-text{
+  font-size: 18px;
+  position: relative;
+  margin-top: 40px;
+}
+
+.tag-container{
+  background-color: rgb(242, 242, 242);
+  border-radius: 40px;
+  width: auto;
+  position: absolute;
+  padding: 5px;
 }
 
 /*teacher home*/

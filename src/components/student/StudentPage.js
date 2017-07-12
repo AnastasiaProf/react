@@ -186,7 +186,12 @@ class StudentPage extends Component{
 
     }
 
+    handleChange(event){
+        this.setState({text: event.target.value})
+    }
+
     onSubmit(event){
+
         event.preventDefault();
 
         let studentID = this.props.match.params.userID;
@@ -209,11 +214,14 @@ class StudentPage extends Component{
         this.props.mutate({
             variables: {
                 "annotationID": annotID,
-                "annotation": {"tags": updatetags }
+                "annotation": {
+                    "tags": updatetags,
+                    "text": this.state.text
+                }
             },
             refetchQueries: [{
                 query: getStudentInfo,
-                variables: { userID: studentID, tags: filterTag},
+                variables: { userID: studentID, tags: filterTag, text: this.state.text},
             }]
         }).then(() =>
             this.setState({modify: modannot})
@@ -235,7 +243,6 @@ class StudentPage extends Component{
 
 
     render(){
-
 
         const { student } = this.props.data;
 
@@ -265,7 +272,7 @@ class StudentPage extends Component{
                 <div key={student.userID}>
                     <Grid>
                         <Row>
-                            <Col xs={6} md={8} mdOffset={2} >
+                            <Col xs={12} md={8} mdOffset={2} >
                                 <div>
                                     {
                                         this.getQueryVariable("oldurl")
@@ -305,14 +312,16 @@ class StudentPage extends Component{
                                                     if(annotation.contentType == "image"){
                                                         return (
                                                             <Panel className="annotation" key={annotation.annotationID}>
-                                                                {/*if no tags then do not try to loop over it (Code breakage prevention)*/}
-                                                                { !(annotation.tags === null) ?
-                                                                    annotation.tags.map(tag => {
-                                                                        return(
-                                                                            <p key={tag}>{tag}</p>
-                                                                        );
-                                                                    }) : null
-                                                                }
+                                                                <div className="tag-container" >
+                                                                    {/*if no tags then do not try to loop over it (Code breakage prevention)*/}
+                                                                    { !(annotation.tags === null) ?
+                                                                        annotation.tags.map(tag => {
+                                                                            return(
+                                                                                <p className="tag" key={tag}>{tag}</p>
+                                                                            );
+                                                                        }) : null
+                                                                    }
+                                                                </div>
                                                                 <img src={annotation.mediaURL} />
 
                                                                 <div>
@@ -324,13 +333,15 @@ class StudentPage extends Component{
                                                     }else if(annotation.contentType == "video"){
                                                         return (
                                                             <Panel className="annotation" key={annotation.annotationID}>
-                                                                { !(annotation.tags === null) ?
-                                                                    annotation.tags.map(tag => {
-                                                                        return(
-                                                                            <p key={tag}>{tag}</p>
-                                                                        );
-                                                                    }) : null
-                                                                }
+                                                                <div className="tag-container" >
+                                                                    { !(annotation.tags === null) ?
+                                                                        annotation.tags.map(tag => {
+                                                                            return(
+                                                                                <p className="tag" key={tag}>{tag}</p>
+                                                                            );
+                                                                        }) : null
+                                                                    }
+                                                                </div>
                                                                 <ReactPlayer url={annotation.mediaURL} controls/>
 
                                                                 <div>
@@ -347,11 +358,11 @@ class StudentPage extends Component{
                                                                         {
                                                                             this.preChecking(annotation.annotationID)
                                                                         }
-                                                                        <p>{annotation.text}</p>
+                                                                        <p className="content-text"><input type="text" defaultValue={annotation.text} onChange={this.handleChange.bind(this)} /></p>
 
                                                                         <div className="annotation-bottom">
-                                                                            <p className="date">{annotation.createdAt}</p>
-                                                                            <Button className="submit" type="submit">Submit</Button>
+                                                                            <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
+                                                                            <Button className="submit change" type="submit">Submit</Button>
                                                                             <p><DeleteAnnotation annotation={annotation} studentID={studentID}/></p>
                                                                         </div>
                                                                     </form>
@@ -360,15 +371,19 @@ class StudentPage extends Component{
                                                         } else {
                                                             return (
                                                                 <Panel className="annotation" key={annotation.annotationID}>
-                                                                    <a onClick={this.initiateUpdate.bind(this)} id={annotation.annotationID} href="#">Modify</a>
-                                                                    { !(annotation.tags === null) ?
-                                                                        annotation.tags.map(tag => {
-                                                                            return(
-                                                                                <p key={tag}>{tag}</p>
-                                                                            );
-                                                                        }) : <p>No Feedback Type</p>
-                                                                    }
-                                                                    <p>{annotation.text}</p>
+                                                                    <a className="update" onClick={this.initiateUpdate.bind(this)} id={annotation.annotationID} href="#">Modify</a>
+                                                                    <div className="tag-container">
+                                                                        { !(annotation.tags === null) ?
+                                                                            annotation.tags.map(tag => {
+                                                                                return(
+                                                                                   
+                                                                                    <p className="tag" key={tag}>{tag}</p>    
+                                                                                );
+                                                                            }) : <p>No Feedback Type</p>
+                                                                        }
+                                                                    </div>
+                                                                    <p></p>
+                                                                    <p className="content-text">{annotation.text}</p>
 
                                                                     <div className="annotation-bottom">
                                                                         <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
@@ -380,15 +395,17 @@ class StudentPage extends Component{
                                                     }else if(annotation.contentType == "audio"){
                                                         return (
                                                             <Panel className="annotation" key={annotation.annotationID}>
-                                                                { !(annotation.tags === null) ?
-                                                                    annotation.tags.map(tag => {
-                                                                        return(
-                                                                            <p key={tag}>{tag}</p>
-                                                                        );
-                                                                    }) : null
-                                                                }
+                                                                <div className="tag-container" >
+                                                                    { !(annotation.tags === null) ?
+                                                                        annotation.tags.map(tag => {
+                                                                            return(
+                                                                                <p className="tag" key={tag}>{tag}</p>
+                                                                            );
+                                                                        }) : null
+                                                                    }
+                                                                </div>
                                                                 <ReactAudioPlayer src={annotation.mediaURL} controls />
-                                                                <p>{annotation.transcript}</p>
+                                                                <p className="content-text">{annotation.transcript}</p>
 
                                                                 <div className="annotation-bottom">
                                                                     <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
@@ -420,6 +437,7 @@ const mutation = gql`
     mutation UpdateAnnotationTag ($annotationID: ID! , $annotation: AnnotationInput!){
         updateAnnotation(annotationID:$annotationID, annotation:$annotation) {
         tags
+        text
         } 
     }
 `;
