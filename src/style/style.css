@@ -146,6 +146,31 @@ ul.header li a {
   margin: 1% 25% 1% 25%;
 }
 
+.class-link-button a {
+  text-decoration: none !important;
+  color: white;
+  height: auto;
+  border-radius: 20px;
+  background-color: #0F6ED8;
+  color: white !important;
+  padding: 1%;
+}
+
+.class-link-button:hover{
+  background-color: transparent;
+}
+
+.class-link{
+  text-align: center;
+  padding-bottom: 2% ;
+  font-size: 18px ;  
+}
+
+.class-link:hover{
+  text-decoration: none !important;
+  color: #0F6ED8;
+}
+
 /*student page */
 
 .annotation{

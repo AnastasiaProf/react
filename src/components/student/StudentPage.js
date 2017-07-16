@@ -273,6 +273,7 @@ class StudentPage extends Component{
                     <Grid>
                         <Row>
                             <Col xs={12} md={8} mdOffset={2} >
+                                <div></div>
                                 <div>
                                     {
                                         this.getQueryVariable("oldurl")

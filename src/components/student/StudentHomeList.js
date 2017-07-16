@@ -25,6 +25,7 @@ const StudentsQuery = gql`
       firstName
       lastName
       photoURL
+
     }
     annotations(filterTeacherID: $teacherID){
     annotationID
@@ -198,7 +199,7 @@ class StudentHomeList extends React.Component {
                                 <h3>{firstName} {lastName}{annot_nbr}</h3>
                             </Link>
                         </Thumbnail>
-                    </Col>
+                    </Col> 
                 );
             }
         }));
@@ -208,10 +209,18 @@ class StudentHomeList extends React.Component {
         if (this.props.data.loading){
             return <div>Loading...</div>;
         }
+         var teacherID = this.props.teacherID;
 
         return(
             <div>
                 <Grid>
+                    <Row>
+                        <Col xs={12} md={8} mdOffset={2} className="class-link" >
+                            <div className="class-link-button">
+                                <Link to={`/${teacherID}/${this.props.filterStudValue}/class`}>  Comment for all class </Link>              
+                            </div>
+                        </Col>
+                    </Row>
                     <Row>
                         {this.renderStudents()}
                     </Row>
