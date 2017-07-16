@@ -8,10 +8,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { graphql ,gql} from 'react-apollo';
-import Grid from 'react-bootstrap/lib/Grid';
-import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
-import Thumbnail from 'react-bootstrap/lib/Thumbnail';
+import { Grid, Row, Col, Thumbnail } from 'react-bootstrap';
+import currentWeekNumber from 'current-week-number';
+
 
 
 /*
@@ -40,7 +39,7 @@ class StudentHomeList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            sortStud: "name"
+            sortStud: "name",
         };
     }
 
@@ -66,38 +65,63 @@ class StudentHomeList extends React.Component {
      * @args: array: [ annotation, annotation, ... , annotation ], month: boolean
      * @return: [ (String)studentid: (int)nbrannot, ... , (String)studentid: (int)nbrannot ]
      */
-    countAnnot(array, month = false){
+    countAnnot(array, type){
         let counterarray = [];
 
         // Return today's date and time
-        var currentTime = new Date();
+        let currentTime = new Date();
 
         // returns the month (from 0 to 11)
-        var current_month = currentTime.getMonth() + 1;
+        let current_month = currentTime.getMonth() + 1;
 
 
         // returns the year (four digits)
-        var current_year = currentTime.getFullYear();
+        let current_year = currentTime.getFullYear();
 
-        if(!(array == undefined)){
+
+        //get current week
+        let currentWeekNbr = currentWeekNumber();
+
+        if(type === "selweek") {
+            currentWeekNbr = this.state.weekNbr;
+        }
+
+        if(!(array === undefined)){
 
             array.forEach(function(e){
                 //Get the annotation date information
                 let dates = e.createdAt.split("-");
 
+                //Format date to compare week nbrs
+                let dateparts = e.createdAt.split("T")[0].split("-");
+                let nicedate = dateparts[1]+'/'+dateparts[2]+'/'+dateparts[0];
+                let annotweek = currentWeekNumber(nicedate);
 
                 if(!(e.students[0] === null) && !(e.students[0] === undefined) ){
                     if(!(e.students[0].userID === undefined)){
                         //If month then only count the one of the current mont
-                        if(month && current_month == dates[1] && current_year == dates[0]){
+                        if(type === "month" && current_month === parseInt(dates[1]) && current_year === parseInt(dates[0])){
                             if(counterarray[e.students[0].userID] == undefined){
                                 counterarray[e.students[0].userID] = 0;
                             } else {
                                 counterarray[e.students[0].userID] += 1;
                             }
+                        } else if(type === "currweek" && parseInt(annotweek) === parseInt(currentWeekNbr) && current_year === parseInt(dates[0])){
+                            if(counterarray[e.students[0].userID] === undefined){
+                                counterarray[e.students[0].userID] = 0;
+                            } else {
+                                counterarray[e.students[0].userID] += 1;
+                            }
                             //Else count everyone of them
-                        } else if(!month){
-                            if(counterarray[e.students[0].userID] == undefined){
+                        } else if(type === "selweek" && parseInt(annotweek) === parseInt(currentWeekNbr) && current_year === parseInt(dates[0])){
+                            if(counterarray[e.students[0].userID] === undefined){
+                                counterarray[e.students[0].userID] = 0;
+                            } else {
+                                counterarray[e.students[0].userID] += 1;
+                            }
+                            //Else count everyone of them
+                        }else if(type === "all") {
+                            if(counterarray[e.students[0].userID] === undefined){
                                 counterarray[e.students[0].userID] = 0;
                             } else {
                                 counterarray[e.students[0].userID] += 1;
@@ -121,7 +145,6 @@ class StudentHomeList extends React.Component {
         return students.concat().sort(this.dynamicSort("lastName"));
     }
 
-    //Sort student list by annotations number
     //Sort student list by annotations number
     sortAnnotAll(students, annotations) {
         return students.concat().sort(function(a, b){
@@ -150,14 +173,28 @@ class StudentHomeList extends React.Component {
                 case "fbmonth":
 
                     annot = true;
-                    annotations = this.countAnnot(this.props.data.annotations, true);
+                    annotations = this.countAnnot(this.props.data.annotations, "month");
+                    students = this.sortAnnotAll(this.props.data.students, annotations);
+                    break;
+
+                case "fbcurrweek":
+
+                    annot = true;
+                    annotations = this.countAnnot(this.props.data.annotations, "currweek");
+                    students = this.sortAnnotAll(this.props.data.students, annotations);
+                    break;
+
+                case "fbselweek":
+
+                    annot = true;
+                    annotations = this.countAnnot(this.props.data.annotations, "selweek");
                     students = this.sortAnnotAll(this.props.data.students, annotations);
                     break;
 
 
-                case "fball"://Comprends pas erreur
+                case "fball":
                     annot = true;
-                    annotations = this.countAnnot(this.props.data.annotations);
+                    annotations = this.countAnnot(this.props.data.annotations, "all");
                     students = this.sortAnnotAll(this.props.data.students, annotations);
                     break;
 

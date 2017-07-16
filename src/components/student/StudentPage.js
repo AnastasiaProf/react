@@ -302,7 +302,7 @@ class StudentPage extends Component{
                         <Row>
                             <Col xs={12} md={8} mdOffset={2}>
 
-                                <AddAnnotation studentID={studentID} teacherID={teacherID}/>
+                                <AddAnnotation studentID={studentID} teacherID={teacherID} courseID={this.props.match.params.courseID}/>
                                 {weeks.map((week) => {
                                     return(
                                         <div key={week['week_nbr']}>
@@ -445,4 +445,4 @@ const mutation = gql`
 
 export default compose(
     graphql(mutation),
-    graphql(getStudentInfo, { options:  (props) => { return { variables: { userID: props.match.params.userID} } } },))(StudentPage);
+    graphql(getStudentInfo, { options:  (props) => { return { variables: { userID: props.match.params.userID } } } },))(StudentPage);

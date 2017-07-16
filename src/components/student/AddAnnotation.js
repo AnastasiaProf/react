@@ -8,11 +8,28 @@ import React, {Component} from 'react';
 import { IndexRoute} from 'react-router-dom';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import { compose } from 'react-apollo';
 import Panel from 'react-bootstrap/lib/Panel';
 import Button from 'react-bootstrap/lib/Button';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
 import getStudentInfo from '../../queries/fetchAnnotations';
+
+const getCourseInfo = gql`
+    query getCourseInfo($courseID: ID!)
+    {
+        course(courseID: $courseID){
+            courseID
+            description
+            courseStartDate
+            courseEndDate
+            courseStartWeekCode
+            courseEndWeekCode
+            createdAt
+            updatedAt
+        }
+    }
+`;
 
 class AddAnnotation extends Component{
     constructor(props){
@@ -38,6 +55,7 @@ class AddAnnotation extends Component{
 
         let studentID = this.props.studentID;
         let teacherID = this.props.teacherID;
+        let course = this.props.data.course;
         let tags = [];
 
         if(!(this.state.strength) == ""){
@@ -68,7 +86,10 @@ class AddAnnotation extends Component{
                     text: this.state.text,
                     teacherID: teacherID,
                     studentIDs: [studentID],
-                    tags: tags
+                    tags: tags,
+                    deleted: false,
+                    course: course
+
                 }
             },
             refetchQueries: [{
@@ -115,6 +136,7 @@ class AddAnnotation extends Component{
     }
 
     render(){
+        console.log(this.props)
         return(
 			<div className="text-tag">
 				<Button className="add-annoation" bsSize="large" block onClick={ ()=> this.setState({ open: !this.state.open })}> + Add a comment</Button>
@@ -159,4 +181,6 @@ const mutation = gql`
 	}
 `;
 
-export default graphql(mutation)(AddAnnotation);
+export default compose(
+    graphql(mutation),
+    graphql(getCourseInfo, { options:  (props) => { return { variables: { courseID: props.courseID} } } },))(AddAnnotation);
