@@ -8,12 +8,11 @@ import React, {Component} from 'react';
 import { IndexRoute} from 'react-router-dom';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { compose } from 'react-apollo';
 import Panel from 'react-bootstrap/lib/Panel';
 import Button from 'react-bootstrap/lib/Button';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
-import getStudentInfo from '../../queries/fetchAnnotations';
+import getAnnotations from '../../queries/fetchClassAnnotations';
 
 
 class AddAnnotation extends Component{
@@ -38,9 +37,8 @@ class AddAnnotation extends Component{
     onSubmit(event){
         event.preventDefault();
 
-        let studentID = this.props.studentID;
         let teacherID = this.props.teacherID;
-        let course = this.props.courseID;
+        let courseID = this.props.courseID;
         let tags = [];
 
         if(!(this.state.strength) == ""){
@@ -70,15 +68,14 @@ class AddAnnotation extends Component{
                     contentType: "text",
                     text: this.state.text,
                     teacherID: teacherID,
-                    studentIDs: [studentID],
                     tags: tags,
                     deleted: false,
-                    courseID: course,
+                    courseID: courseID,
                 }
             },
             refetchQueries: [{
-                query: getStudentInfo,
-                variables: { userID: studentID },
+                query: getAnnotations,
+                variables: { courseID: courseID },
             }]
         }).then(() => this.setState({text: ''}));
     }
@@ -120,7 +117,6 @@ class AddAnnotation extends Component{
     }
 
     render(){
-        console.log(this.props)
         return(
 			<div className="text-tag">
 				<Button className="add-annoation" bsSize="large" block onClick={ ()=> this.setState({ open: !this.state.open })}> + Add a comment</Button>
