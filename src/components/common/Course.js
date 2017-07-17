@@ -49,10 +49,10 @@ class Home extends Component{
             this.open()
         } else if(!(e.target.id === "")) {
             this.close();
-            this.setState({showNav: true});
+            this.child.setState({showNav: true});
             this.child.setState({sortStud: "fbselweek", weekNbr: parseInt(e.target.id)})
         } else {
-            this.setState({showNav: false});
+            this.child.setState({showNav: false});
             this.child.setState({sortStud: e.target.value})
         }
     }
@@ -89,6 +89,12 @@ class Home extends Component{
         return returnarray.sort()
     }
 
+    handler(e) {
+        e.preventDefault();
+        this.setState({
+            showModal: !this.state.showModal
+        })
+    }
 
 
     render(){
@@ -96,7 +102,7 @@ class Home extends Component{
         if (this.props.data.loading){
             return <div>Loading...</div>;
         }
-
+        console.log(this)
         let annotweek = this.generateWeeks();
 
         return(
@@ -129,15 +135,13 @@ class Home extends Component{
                         </Col>
                     </Row>
                 </Grid>
-                { this.state.showNav ?
-                    <div>zzzzz</div>
-                    : null }
+
                 {/*assign StudentHomeList as a child and pass into it the selected Course object & the current teacherID*/}
                 <StudentHomeList ref={(child) => {
                     if(!(child == null )){
                         this.child = child.getWrappedInstance();
                     }
-                } } filterStudValue={this.props.match.params.courseID} teacherID={this.props.match.params.teacherID}/>
+                } } filterStudValue={this.props.match.params.courseID} teacherID={this.props.match.params.teacherID} handler={this.handler.bind(this)}/>
 
 
             </div>

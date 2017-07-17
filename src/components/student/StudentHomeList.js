@@ -8,7 +8,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { graphql ,gql} from 'react-apollo';
-import { Grid, Row, Col, Thumbnail } from 'react-bootstrap';
+import { Grid, Row, Col, Thumbnail, Glyphicon } from 'react-bootstrap';
 import currentWeekNumber from 'current-week-number';
 
 
@@ -41,6 +41,7 @@ class StudentHomeList extends React.Component {
         super(props);
         this.state = {
             sortStud: "name",
+
         };
     }
 
@@ -247,7 +248,6 @@ class StudentHomeList extends React.Component {
             return <div>Loading...</div>;
         }
          var teacherID = this.props.teacherID;
-
         return(
             <div>
                 <Grid>
@@ -258,6 +258,9 @@ class StudentHomeList extends React.Component {
                             </div>
                         </Col>
                     </Row>
+                    { this.state.showNav ?
+                        <div><Row><Col xs={12} md={8} mdOffset={2} className="class-link" ><h2><a onClick={this.props.handler}>Week {this.state.weekNbr}    <small><Glyphicon glyph="pencil" /></small></a></h2></Col></Row></div>
+                        : null }
                     <Row>
                         {this.renderStudents()}
                     </Row>
