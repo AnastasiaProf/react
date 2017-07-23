@@ -122,10 +122,10 @@ class Home extends Component{
                             </FormControl>
                             <Modal  bsSize="small" show={this.state.showModal} onHide={this.close.bind(this)}>
                                 <Modal.Header closeButton>
-                                    <Modal.Title>Test</Modal.Title>
+                                    <Modal.Title>Select the week</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
-                                    <ul>
+                                    <ul className="week-selector">
                                         {annotweek.map((week) => {
                                             return <ListGroupItem key={week} id={week} onClick={this.sortStud.bind(this)}>{week}</ListGroupItem>
                                         })}
