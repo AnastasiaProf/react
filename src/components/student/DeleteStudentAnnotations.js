@@ -12,7 +12,7 @@ import Button from 'react-bootstrap/lib/Button';
 import getStudentInfo from '../../queries/fetchAnnotations';
 
 
-class DeleteAnnotation extends Component{
+class DeleteStudentAnnotations extends Component{
 
 	//onClick call the mutation and refetch data
 	onAnnotationDelete() {
@@ -43,11 +43,11 @@ class DeleteAnnotation extends Component{
  * @args $annotationID: ID! , $annotation: AnnotationInput!
  */
 const mutation = gql`
-	mutation DeleteAnnotation ($annotationID: ID! , $annotation: AnnotationInput!){
+	mutation DeleteStudentAnnotations ($annotationID: ID! , $annotation: AnnotationInput!){
 	  updateAnnotation(annotationID:$annotationID, annotation:$annotation) {
 	    deleted
 	  } 
 	}
 `;
 
-export default graphql(mutation)(DeleteAnnotation);
+export default graphql(mutation)(DeleteStudentAnnotations);
