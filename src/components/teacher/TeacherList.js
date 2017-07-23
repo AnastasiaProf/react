@@ -1,5 +1,5 @@
 /**
- * Student Page Component
+ * Teacher List Component
  * Retrieve all teacher from the database to navigate as one.
  */
 
@@ -35,14 +35,6 @@ class TeacherList extends React.Component {
       teachers: [],
     };
   }
-
-  componentWillReceiveProps(props){
-  }
-
-  componentDidMount(){
-  }
-
-
 
   renderTeachers(){
     let teachers = this.props.data.teachers;

@@ -8,7 +8,6 @@ import React, {Component} from 'react';
 import { IndexRoute} from 'react-router-dom';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { compose } from 'react-apollo';
 import Panel from 'react-bootstrap/lib/Panel';
 import Button from 'react-bootstrap/lib/Button';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
@@ -16,7 +15,7 @@ import Checkbox from 'react-bootstrap/lib/Checkbox';
 import getStudentInfo from '../../queries/fetchAnnotations';
 
 
-class AddAnnotation extends Component{
+class AddStudentAnnotation extends Component{
     constructor(props){
         super(props);
 
@@ -160,9 +159,9 @@ class AddAnnotation extends Component{
  * @args $annotation: AnnotationInput!
  */
 const mutation = gql`
-	mutation AddAnnotation ($annotation: AnnotationInput!){
+	mutation AddStudentAnnotation ($annotation: AnnotationInput!){
   		addAnnotation(annotation:$annotation)	
 	}
 `;
 
-export default graphql(mutation)(AddAnnotation);
+export default graphql(mutation)(AddStudentAnnotation);
