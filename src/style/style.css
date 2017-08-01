@@ -329,6 +329,11 @@ a.btn.back{
   padding: 5px;
 }
 
+.modify-text{
+  width: 100%;
+  height: auto;
+}
+
 /*teacher home*/
 
 .title{

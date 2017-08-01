@@ -226,7 +226,7 @@ class StudentsAnnotations extends Component{
                                             {
                                                 this.preChecking(annotation.annotationID)
                                             }
-                                            <p className="content-text"><input type="text" defaultValue={annotation.text} onChange={this.handleChange.bind(this)} /></p>
+                                            <p className="content-text"><textarea spellCheck="true" className="modify-text" defaultValue={annotation.text} onChange={this.handleChange.bind(this)} /></p>
 
                                             <div className="annotation-bottom">
                                                 <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
