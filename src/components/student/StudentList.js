@@ -104,8 +104,6 @@ class StudentList extends React.Component {
 
                 studentsDisplay[course.courseID] = this.arrayUnique(studentsLast[course.courseID].concat(studentsFirst[course.courseID]))
             })}
-
-
         } else {
             {courses.map(course => {
                 studentsDisplay[course.courseID] = course.students

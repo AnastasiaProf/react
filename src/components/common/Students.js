@@ -1,7 +1,7 @@
 /**
  * Students Component
  * Wrapper for StudentList, pass teacherID
- * Child : StudentHomeList
+ * Child : StudentList
  */
 import React, {Component} from 'react';
 

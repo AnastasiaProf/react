@@ -2,7 +2,7 @@
  * StudentHomeList Component
  * Made of card representing a student. On each card a link that take to the student page is here.
  * The data fetched are reorder and filtered by the two dropdown on the Home component
- * Child : StudentHomeList
+ * Parent : Course
  */
 
 import React from 'react';
@@ -14,7 +14,7 @@ import currentWeekNumber from 'current-week-number';
 
 
 /*
- * get students to show on the Home component
+ * get students to show on the Course component
  * @args: $courseID: ID!, $teacherID: ID!
  */
 const StudentsQuery = gql`
@@ -104,27 +104,27 @@ class StudentHomeList extends React.Component {
                         //If month then only count the one of the current mont
                         if(type === "month" && current_month === parseInt(dates[1]) && current_year === parseInt(dates[0])){
                             if(counterarray[e.students[0].userID] == undefined){
-                                counterarray[e.students[0].userID] = 0;
+                                counterarray[e.students[0].userID] = 1;
                             } else {
                                 counterarray[e.students[0].userID] += 1;
                             }
                         } else if(type === "currweek" && parseInt(annotweek) === parseInt(currentWeekNbr) && current_year === parseInt(dates[0])){
                             if(counterarray[e.students[0].userID] === undefined){
-                                counterarray[e.students[0].userID] = 0;
+                                counterarray[e.students[0].userID] = 1;
                             } else {
                                 counterarray[e.students[0].userID] += 1;
                             }
                             //Else count everyone of them
                         } else if(type === "selweek" && parseInt(annotweek) === parseInt(currentWeekNbr) && current_year === parseInt(dates[0])){
                             if(counterarray[e.students[0].userID] === undefined){
-                                counterarray[e.students[0].userID] = 0;
+                                counterarray[e.students[0].userID] = 1;
                             } else {
                                 counterarray[e.students[0].userID] += 1;
                             }
                             //Else count everyone of them
                         }else if(type === "all") {
                             if(counterarray[e.students[0].userID] === undefined){
-                                counterarray[e.students[0].userID] = 0;
+                                counterarray[e.students[0].userID] = 1;
                             } else {
                                 counterarray[e.students[0].userID] += 1;
                             }

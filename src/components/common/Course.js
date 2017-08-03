@@ -26,7 +26,7 @@ const CourseQuery = gql`
     }
     }`;
 
-class Home extends Component{
+class Course extends Component{
     constructor(props) {
         super(props);
 
@@ -102,7 +102,6 @@ class Home extends Component{
         if (this.props.data.loading){
             return <div>Loading...</div>;
         }
-        console.log(this)
         let annotweek = this.generateWeeks();
 
         return(
@@ -152,5 +151,5 @@ class Home extends Component{
 
 export default graphql(CourseQuery, {
     options:  (props) => {  { return { variables: { courseID: props.match.params.courseID, teacherID: props.match.params.teacherID} } } }
-})(Home);
+})(Course);
 
