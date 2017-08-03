@@ -104,8 +104,6 @@ class StudentList extends React.Component {
 
                 studentsDisplay[course.courseID] = this.arrayUnique(studentsLast[course.courseID].concat(studentsFirst[course.courseID]))
             })}
-
-
         } else {
             {courses.map(course => {
                 studentsDisplay[course.courseID] = course.students
@@ -150,7 +148,10 @@ class StudentList extends React.Component {
 
 
 export default graphql(CourseStudentQuery, {
-    props: ({data: { loading, courses }}) => ({
+    options:  (props) => {  { return { variables: { teacherID: props.teacherID} } } },
+    props: ({
+
+    data: { loading, courses }}) => ({
         loading,
         courses,
     })},)(StudentList);
