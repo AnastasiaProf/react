@@ -38,7 +38,6 @@ class Home extends Component{
     }
 
 
-
     componentDidMount(){
         this.setState({list: this.child});
     }
