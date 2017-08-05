@@ -212,7 +212,7 @@ class WeeklyCourses extends React.Component {
     }
 
     render(){
-        this.compareWeek(1,1)
+        console.log(this)
         if (this.props.data.loading){
             return <div>Loading...</div>;
         }

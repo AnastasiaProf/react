@@ -122,7 +122,7 @@ class AddAnnotation extends Component{
 				<Button className="add-annoation" bsSize="large" block onClick={ ()=> this.setState({ open: !this.state.open })}> + Add a comment</Button>
 				<Panel collapsible expanded={this.state.open} >
 					<form onSubmit={this.onSubmit.bind(this)}>
-						<input className="students" value= {this.state.text} onChange={event => this.setState({ text: event.target.value})}/>
+						<textarea className="students" value= {this.state.text} onChange={event => this.setState({ text: event.target.value})}/>
                         <div className="formsubmit">
                             <FormGroup className="tags">
                                 <Checkbox onChange={this.handleChangeStrength.bind(this)} value={this.state.strength_value} inline>
