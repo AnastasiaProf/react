@@ -7,6 +7,9 @@ import React, {Component} from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
+import {Grid,Row,Col} from 'react-bootstrap';
+import logo from '../../blacklogo.png';
+
 
 
 class Login extends Component{
@@ -41,11 +44,18 @@ class Login extends Component{
 
 		return(
 			<div>
-				<form onSubmit={this.onSubmit.bind(this)}>
-				<input type="text" className="username" required placeholder="Email" value= {this.state.email} onChange={event => this.setState({ email: event.target.value})}/>
-				<input type="password" className="password" required placeholder="Password" value= {this.state.password} onChange={event => this.setState({ password: event.target.value})}/>
-					<button type="submit">Login</button>
-				</form>
+				<Grid>
+                    <Row className="show-grid">
+                        <Col xs={12} md={12} >
+							<form className="form-signin" onSubmit={this.onSubmit.bind(this)}>
+							<img src={logo} className="login-EF-logo" alt="EF logo" />
+							<input type="text" className="email form-control" required placeholder="Email" value= {this.state.email} onChange={event => this.setState({ email: event.target.value})}/>
+							<input type="password" className="password form-control" required placeholder="Password" value= {this.state.password} onChange={event => this.setState({ password: event.target.value})}/>
+								<button className="login btn btn-lg btn-primary btn-block" type="submit">Login</button>
+							</form>
+						</Col>
+					</Row>
+				</Grid>
 			</div>
 		);
 	}
