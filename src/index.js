@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Switch, Redirect, Route, BrowserRouter, IndexRoute} from 'react-router-dom';
-import ApolloCLient from 'apollo-client';
+import ApolloClient from 'apollo-client';
 import { ApolloProvider, createNetworkInterface } from 'react-apollo';
 
 import './index.css';
@@ -18,10 +18,28 @@ import CoursePage from './components/courses/CoursePage'
 import Login from './components/common/Login'
 
 
-const client = new ApolloCLient({
-    //networkInterface: createNetworkInterface({ uri: 'https://effeedbackapp-qa.herokuapp.com/api/graphql'}),
-    networkInterface: createNetworkInterface({ uri: 'https://effeedbackapp-dev.herokuapp.com/api/graphql'}),
+const networkInterface = createNetworkInterface({
+    uri: 'https://effeedbackapp-dev.herokuapp.com/api/graphql'
+    //uri: 'https://effeedbackapp-qa.herokuapp.com/api/graphql'
 });
+
+networkInterface.use([{
+    applyMiddleware(req, next) {
+        if (!req.options.headers) {
+            req.options.headers = {};  // Create the header object if needed.
+        }
+        // get the authentication token from local storage if it exists
+        const token = localStorage.getItem('token');
+        token ? req.options.headers.authorization = `Bearer ${token}` : null;
+
+        next();
+    }
+}]);
+const client = new ApolloClient({
+    networkInterface,
+});
+
+
 
 const Root = () => {
     return (
@@ -30,12 +48,11 @@ const Root = () => {
                 <App>
                     <Switch>
                         <Route  exact path="/signin" component={Login}/>
-                        <AuthenticatedRoute  exact path="/" component={Teachers}/>
                         <AuthenticatedRoute  exact path="/:teacherID/configuration" component={Configuration}/>
                         <AuthenticatedRoute  exact path="/:teacherID/students/" component={Students}/>
                         <AuthenticatedRoute  exact path="/:teacherID/:courseID" component={Course}/>
                         <AuthenticatedRoute  exact path="/:teacherID/:courseID/class" component={CoursePage}/>
-                        <AuthenticatedRoute  exact path="/:teacherID" component={Home}/>
+                        <AuthenticatedRoute  exact path="/" component={Home}/>
                         <AuthenticatedRoute  path="/:teacherID/:courseID/students/:userID" component={StudentPage}/>
                     </Switch>
                 </App>
@@ -47,7 +64,7 @@ const Root = () => {
 
 const AuthenticatedRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => (
-        localStorage.getItem('phoenixAuthToken') ? (
+        localStorage.getItem('token') ? (
             <Component {...props}/>
         ) : (
             <Redirect to={{

@@ -27,7 +27,7 @@ class Home extends Component{
 
 
     render(){
-        let teacherID = this.props.match.params.teacherID;
+        let teacherID = localStorage.getItem('userID');
 
 
         return(

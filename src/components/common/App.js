@@ -26,6 +26,7 @@ class App extends Component {
                                 <li><Link to={`/${teacherID}`}>Home</Link></li>
                                 <li><Link to={`/${teacherID}/students`}>Students</Link></li>
                                 <li><Link to={`/${teacherID}/configuration`}>Settings</Link></li>
+                                <li><Link to={`/logout`}>Logout</Link></li>
                             </ul>
                         </Col>
                     </Row>

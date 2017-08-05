@@ -35,7 +35,9 @@ class Login extends Component{
 				"password": password
             }
         }).then((response) => {
-            localStorage.setItem('Token', "Bearer "+response.data.authToken.token);
+            localStorage.setItem('token', response.data.authToken.token);
+            localStorage.setItem('userID', response.data.authToken.user.userID);
+            window.location.replace('/');
         });
 	}
 

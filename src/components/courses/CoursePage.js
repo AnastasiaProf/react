@@ -5,7 +5,7 @@ import {Grid, Row, Col, FormControl, Glyphicon} from 'react-bootstrap';
 import currentWeekNumber from 'current-week-number';
 
 
-import AddAnnotation from './AddClassAnnotation';
+import AddClassAnnotations from './AddClassAnnotation';
 import CourseAnnotations from './CourseAnnotations';
 import getAnnotations from '../../queries/fetchClassAnnotations';
 
@@ -95,10 +95,10 @@ class CoursePage extends Component{
     }
 
     render(){
-        console.log(this)
+
         const { course } = this.props.data;
 
-        let back = this.getQueryVariable("oldurl");
+        //let back = this.getQueryVariable("oldurl");
 
 
         if (!course) { return <div>Loading...</div>}
@@ -147,7 +147,7 @@ class CoursePage extends Component{
                         <Row>
                             <Col xs={12} md={8} mdOffset={2}>
 
-                                <AddAnnotation courseID={courseID} teacherID={teacherID}/>
+                                <AddClassAnnotations courseID={courseID} teacherID={teacherID}/>
                                 {weeks.map((week) => {
                                     return(
                                         <div key={week['week_nbr']}>
