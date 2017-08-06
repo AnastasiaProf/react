@@ -111,7 +111,7 @@ class Course extends Component{
                         {/*dropdown for sorting by ...*/}
                         <Col xs={12} md={12} >
                             <div className="course-description"><h2>{this.props.data.course.description}</h2></div>
-                            <Link className="btn back class" to={`/${this.props.match.params.teacherID}`}><Glyphicon glyph="chevron-left" /> Back</Link>
+                            <Link className="btn back class" to={`/`}><Glyphicon glyph="chevron-left" /> Back</Link>
                             <FormControl className="class-tag-filter" onChange={this.sortStud.bind(this)} componentClass="select" placeholder="select">
                                 <option value="name">Name</option>
                                 <option value="fbmonth">Feedback this month</option>
@@ -140,7 +140,7 @@ class Course extends Component{
                     if(!(child == null )){
                         this.child = child.getWrappedInstance();
                     }
-                } } filterStudValue={this.props.match.params.courseID} teacherID={this.props.match.params.teacherID} handler={this.handler.bind(this)}/>
+                } } filterStudValue={this.props.match.params.courseID} teacherID={localStorage.getItem('userID')} handler={this.handler.bind(this)}/>
 
 
             </div>
@@ -150,6 +150,6 @@ class Course extends Component{
 }
 
 export default graphql(CourseQuery, {
-    options:  (props) => {  { return { variables: { courseID: props.match.params.courseID, teacherID: props.match.params.teacherID} } } }
+    options:  (props) => {  { return { variables: { courseID: props.match.params.courseID, teacherID: localStorage.getItem('userID')} } } }
 })(Course);
 

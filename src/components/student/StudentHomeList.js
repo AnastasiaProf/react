@@ -220,7 +220,7 @@ class StudentHomeList extends React.Component {
                     <Col xs={4} sm={4} md={3} key={userID}>
                         <Thumbnail className="profile">
                             <div className="number-annotation"><span >{annot_nbr}</span></div>
-                            <Link to={`/${teacherID}/${this.props.filterStudValue}/students/${userID}/?oldurl=home`}>
+                            <Link to={`/${this.props.filterStudValue}/students/${userID}/?oldurl=home`}>
                                 <img src={photoURL} alt="student profile picture"/>
                                 <h3>{firstName} {lastName}</h3>
                             </Link>
@@ -232,7 +232,7 @@ class StudentHomeList extends React.Component {
                 return (
                     <Col xs={4} sm={4} md={3} key={userID}>
                         <Thumbnail className="profile">
-                            <Link to={`/${teacherID}/${this.props.filterStudValue}/students/${userID}/?oldurl=home`}>
+                            <Link to={`/${this.props.filterStudValue}/students/${userID}/?oldurl=home`}>
                                 <img src={photoURL} alt="student profile picture"/>
                                 <h3>{firstName} {lastName}{annot_nbr}</h3>
                             </Link>
@@ -254,7 +254,7 @@ class StudentHomeList extends React.Component {
                     <Row>
                         <Col xs={12} md={8} mdOffset={2} className="class-link" >
                             <div className="class-link-button">
-                                <Link to={`/${teacherID}/${this.props.filterStudValue}/class`}>  Comment for all class </Link>              
+                                <Link to={`/${this.props.filterStudValue}/class`}>  Comment for all class </Link>
                             </div>
                         </Col>
                     </Row>

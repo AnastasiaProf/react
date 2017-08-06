@@ -31,9 +31,9 @@ class CoursePage extends Component{
             var pair = vars[i].split("=");
             if (pair[0] == variable) {
                 if(pair[1] == "home"){
-                    return (<Link className="btn back" to={`/${this.props.match.params.teacherID}/${this.props.match.params.courseID}`}> <Glyphicon glyph="chevron-left" /> Back to class</Link>);
+                    return (<Link className="btn back" to={`/${this.props.match.params.courseID}`}> <Glyphicon glyph="chevron-left" /> Back to class</Link>);
                 } else if(pair[1] == "studentslist") {
-                    return (<Link className="btn back" to={`/${this.props.match.params.teacherID}/students`}><Glyphicon glyph="chevron-left" /> Back to class </Link>);
+                    return (<Link className="btn back" to={`/students`}><Glyphicon glyph="chevron-left" /> Back to class </Link>);
                 }
             }
         }
@@ -102,7 +102,7 @@ class CoursePage extends Component{
 
 
         if (!course) { return <div>Loading...</div>}
-        let teacherID = this.props.match.params.teacherID;
+        let teacherID = localStorage.getItem('userID');
         let courseID = this.props.match.params.courseID;
         let annotations = [];
 

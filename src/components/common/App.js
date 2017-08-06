@@ -14,8 +14,6 @@ import logo from '../../blacklogo.png';
 
 class App extends Component {
     render() {
-        //get teacherID from URL
-        var teacherID = window.location.pathname.split("/")[1];
         return (
             <div>
                 <Grid>
@@ -23,9 +21,9 @@ class App extends Component {
                         <Col xs={12} md={12}>
                             <ul className="header">
                                 <li> <img src={logo} className="EF-logo" alt="EF logo" /> </li>
-                                <li><Link to={`/${teacherID}`}>Home</Link></li>
-                                <li><Link to={`/${teacherID}/students`}>Students</Link></li>
-                                <li><Link to={`/${teacherID}/configuration`}>Settings</Link></li>
+                                <li><Link to={`/`}>Home</Link></li>
+                                <li><Link to={`/students`}>Students</Link></li>
+                                <li><Link to={`/configuration`}>Settings</Link></li>
                                 <li><Link to={`/logout`}>Logout</Link></li>
                             </ul>
                         </Col>

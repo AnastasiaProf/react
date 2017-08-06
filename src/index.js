@@ -48,12 +48,12 @@ const Root = () => {
                 <App>
                     <Switch>
                         <Route  exact path="/signin" component={Login}/>
-                        <AuthenticatedRoute  exact path="/:teacherID/configuration" component={Configuration}/>
-                        <AuthenticatedRoute  exact path="/:teacherID/students/" component={Students}/>
-                        <AuthenticatedRoute  exact path="/:teacherID/:courseID" component={Course}/>
-                        <AuthenticatedRoute  exact path="/:teacherID/:courseID/class" component={CoursePage}/>
+                        <AuthenticatedRoute  exact path="/configuration" component={Configuration}/>
+                        <AuthenticatedRoute  exact path="/students/" component={Students}/>
+                        <AuthenticatedRoute  exact path="/:courseID" component={Course}/>
+                        <AuthenticatedRoute  exact path="/:courseID/class" component={CoursePage}/>
                         <AuthenticatedRoute  exact path="/" component={Home}/>
-                        <AuthenticatedRoute  path="/:teacherID/:courseID/students/:userID" component={StudentPage}/>
+                        <AuthenticatedRoute  path="/:courseID/students/:userID" component={StudentPage}/>
                     </Switch>
                 </App>
             </BrowserRouter >

@@ -198,7 +198,7 @@ class WeeklyCourses extends React.Component {
                             <ul>
                                 {day.map((course) => {
                                     return (
-                                        <ListGroupItem key={course.courseID} ><Link to={`/${teacherID}/${course.courseID}`}><h4>{course.name} - {course.startStudyTime}</h4></Link></ListGroupItem>
+                                        <ListGroupItem key={course.courseID} ><Link to={`/${course.courseID}`}><h4>{course.name} - {course.startStudyTime}</h4></Link></ListGroupItem>
                                     );
                                 })}
                             </ul>

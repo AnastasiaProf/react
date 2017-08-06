@@ -27,7 +27,7 @@ class AllCourses extends React.Component {
             <ul>
                 {courses.map((course) => {
                     return (
-                        <ListGroupItem key={course.courseID} ><Link to={`/${teacherID}/${course.courseID}`}><h4>{course.description}</h4></Link></ListGroupItem>
+                        <ListGroupItem key={course.courseID} ><Link to={`/${course.courseID}`}><h4>{course.description}</h4></Link></ListGroupItem>
                     );
                 })}
             </ul>

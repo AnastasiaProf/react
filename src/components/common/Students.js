@@ -10,7 +10,7 @@ import StudentList from '../student/StudentList';
 
 class Students extends Component{
 	render(){
-		var teacherID = window.location.pathname.split("/")[1];
+		var teacherID = localStorage.getItem('userID');
 		return(
 			<div>
         		{/*display the list of students*/}
