@@ -44,6 +44,41 @@ ul.header li a {
   margin-bottom: 10px;
 }
 
+/* Login Page*/
+
+.form-signin {
+  max-width: 380px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,0.1);  
+}
+
+.form-control {
+  position: relative;
+  font-size: 16px;
+  height: auto;
+  padding: 10px;
+  margin-top: 2%;
+}
+
+.login{
+  position: relative;
+  padding: 10px;
+  margin-top: 5%;
+}   
+
+.login-EF-logo{
+   height: 60px;
+   padding-left: 35%;
+   margin-bottom: 2%;
+   margin-top: 2%;
+} 
+
+.logout{
+  float: right;
+}
+
 /* home with courses & schedule */
 
 .tab{
