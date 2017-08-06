@@ -13,22 +13,41 @@ import { Link } from 'react-router-dom';
 import logo from '../../blacklogo.png';
 
 class App extends Component {
+
+    constructor(props) {
+        super(props);
+        this.logout = () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userID')
+            .then(() =>
+                props.client.resetStore()
+            )
+            .catch(err =>
+                console.error('Logout failed', err)
+            );
+        }
+    }
+
     render() {
         //get teacherID from URL
         var teacherID = window.location.pathname.split("/")[1];
+
+        
         return (
             <div>
                 <Grid>
                     <Row>
-                        <Col xs={12} md={12}>
-                            <ul className="header">
-                                <li> <img src={logo} className="EF-logo" alt="EF logo" /> </li>
-                                <li><Link to={`/${teacherID}`}>Home</Link></li>
-                                <li><Link to={`/${teacherID}/students`}>Students</Link></li>
-                                <li><Link to={`/${teacherID}/configuration`}>Settings</Link></li>
-                                <li><Link to={`/logout`}>Logout</Link></li>
-                            </ul>
-                        </Col>
+                        {localStorage.getItem('token') ?
+                            <Col xs={12} md={12}>
+                                <ul className="header">
+                                    <li> <img src={logo} className="EF-logo" alt="EF logo" /> </li>
+                                    <li><Link to={`/${teacherID}`}>Home</Link></li>
+                                    <li><Link to={`/${teacherID}/students`}>Students</Link></li>
+                                    <li><Link to={`/${teacherID}/configuration`}>Settings</Link></li>
+                                    <li className="logout"><Link onClick={this.logout} to={`/signin`}>Logout</Link></li>
+                                </ul>
+                            </Col>
+                        : null}
                     </Row>
                 </Grid>
                 <div className="content">

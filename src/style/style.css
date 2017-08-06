@@ -70,7 +70,14 @@ ul.header li a {
 
 .login-EF-logo{
    height: 60px;
+   padding-left: 35%;
+   margin-bottom: 2%;
+   margin-top: 2%;
 } 
+
+.logout{
+  float: right;
+}
 
 /* home with courses & schedule */
 
