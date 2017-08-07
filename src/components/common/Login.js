@@ -7,7 +7,7 @@ import React, {Component} from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
-import {Grid,Row,Col} from 'react-bootstrap';
+import {Grid,Row,Col, Alert} from 'react-bootstrap';
 import logo from '../../blacklogo.png';
 
 
@@ -19,6 +19,7 @@ class Login extends Component{
         this.state = {
             email: '',
             password: '',
+            error: false
 
         };
     }
@@ -35,9 +36,14 @@ class Login extends Component{
 				"password": password
             }
         }).then((response) => {
-            localStorage.setItem('token', response.data.authToken.token);
-            localStorage.setItem('userID', response.data.authToken.user.userID);
-            window.location.replace('/');
+            if(response.data.authToken){
+                localStorage.setItem('token', response.data.authToken.token);
+                localStorage.setItem('userID', response.data.authToken.user.userID);
+                window.location.replace('/');
+            } else {
+                this.setState({error: true})
+            }
+
         });
 	}
 
@@ -50,6 +56,13 @@ class Login extends Component{
                     <Row className="show-grid">
                         <Col xs={12} md={12} >
 							<form className="form-signin" onSubmit={this.onSubmit.bind(this)}>
+                                {this.state.error ?
+                                    <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}>
+                                        <h4>We have encountered an error.</h4>
+                                        <p>Please reload the page and sign in again.</p>
+                                    </Alert>
+                                    : null
+                                }
 							<img src={logo} className="login-EF-logo" alt="EF logo" />
 							<input type="text" className="email form-control" required placeholder="Email" value= {this.state.email} onChange={event => this.setState({ email: event.target.value})}/>
 							<input type="password" className="password form-control" required placeholder="Password" value= {this.state.password} onChange={event => this.setState({ password: event.target.value})}/>
