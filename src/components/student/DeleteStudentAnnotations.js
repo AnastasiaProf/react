@@ -16,13 +16,18 @@ class DeleteStudentAnnotations extends Component{
 
 	//onClick call the mutation and refetch data
 	onAnnotationDelete() {
-		this.props.mutate({
-			variables: {
-				annotationID: this.props.annotation.annotationID,
-				annotation:{
-					deleted: true
-				},
-			},
+        let teacherID = localStorage.getItem('userID');
+        let courseID = this.props.courseID;
+        this.props.mutate({
+            variables: {
+                annotationID: this.props.annotation.annotationID,
+                annotation:{
+                    contentType: "text",
+                    teacherID: teacherID,
+                    courseID: courseID,
+                    deleted: true
+                },
+            },
 			refetchQueries: [{ 
 				query: getStudentInfo,
                 variables: { userID: this.props.studentID }

@@ -135,6 +135,8 @@ class CourseAnnotations extends Component{
 
         let annotID = event.target.id;
         let modannot = this.state.modify;
+        let teacherID = localStorage.getItem('userID');
+        let courseID = this.props.courseID;
 
         let index = modannot.indexOf(annotID);
         modannot.splice(index, 1);
@@ -151,10 +153,13 @@ class CourseAnnotations extends Component{
 
         this.props.mutate({
             variables: {
-                "annotationID": annotID,
-                "annotation": {
-                    "tags": updatetags,
-                    "text": this.state.text
+                annotationID: annotID,
+                annotation: {
+                    contentType: "text",
+                    teacherID: teacherID,
+                    courseID: courseID,
+                    tags: updatetags,
+                    text: this.state.text
                 }
             },
             refetchQueries: [{
