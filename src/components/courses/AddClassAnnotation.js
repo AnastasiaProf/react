@@ -62,6 +62,10 @@ class AddAnnotation extends Component{
             tags = null;
         }
 
+        let date = new Date();
+        let local = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + "T" +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()+"."+date.getMilliseconds()+"Z";
+
+
         this.props.mutate({
             variables: {
                 "annotation": {
@@ -71,6 +75,7 @@ class AddAnnotation extends Component{
                     tags: tags,
                     deleted: false,
                     courseID: courseID,
+                    //localCreatedAt : local,
                 }
             },
             refetchQueries: [{

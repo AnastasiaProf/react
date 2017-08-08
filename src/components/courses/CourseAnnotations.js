@@ -169,6 +169,9 @@ class CourseAnnotations extends Component{
 
     //Render annotation HTML depending of their type
     render(){
+
+
+
         var week = this.props.week;
         let courseID = this.props.courseID;
 
