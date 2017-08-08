@@ -136,6 +136,8 @@ class StudentsAnnotations extends Component{
         let studentID = this.props.studentID;
         let annotID = event.target.id;
         let modannot = this.state.modify;
+        let teacherID = localStorage.getItem('userID');
+        let courseID = this.props.courseID;
 
         let index = modannot.indexOf(annotID);
         modannot.splice(index, 1);
@@ -152,10 +154,13 @@ class StudentsAnnotations extends Component{
 
         this.props.mutate({
             variables: {
-                "annotationID": annotID,
-                "annotation": {
-                    "tags": updatetags,
-                    "text": this.state.text
+                annotationID: annotID,
+                annotation: {
+                    contentType: "text",
+                    teacherID: teacherID,
+                    courseID: courseID,
+                    tags: updatetags,
+                    text: this.state.text
                 }
             },
             refetchQueries: [{
@@ -194,7 +199,7 @@ class StudentsAnnotations extends Component{
 
                                     <div>
                                         <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
-                                        <DeleteStudentAnnotations annotation={annotation} studentID={studentID}/>
+                                        <DeleteStudentAnnotations annotation={annotation} studentID={studentID} courseID={this.props.courseID}/>
                                     </div>
                                 </Panel>
                             );
@@ -214,7 +219,7 @@ class StudentsAnnotations extends Component{
 
                                     <div>
                                         <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
-                                        <p><DeleteStudentAnnotations annotation={annotation} studentID={studentID}/></p>
+                                        <p><DeleteStudentAnnotations annotation={annotation} studentID={studentID} courseID={this.props.courseID}/></p>
                                     </div>
                                 </Panel>
                             );
@@ -231,7 +236,7 @@ class StudentsAnnotations extends Component{
                                             <div className="annotation-bottom">
                                                 <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
                                                 <Button className="submit change" type="submit">Submit</Button>
-                                                <p><DeleteStudentAnnotations annotation={annotation} studentID={studentID}/></p>
+                                                <p><DeleteStudentAnnotations annotation={annotation} studentID={studentID} courseID={this.props.courseID}/></p>
                                             </div>
                                         </form>
                                     </Panel>
@@ -255,7 +260,7 @@ class StudentsAnnotations extends Component{
 
                                         <div className="annotation-bottom">
                                             <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
-                                            <p><DeleteStudentAnnotations annotation={annotation} studentID={studentID}/></p>
+                                            <p><DeleteStudentAnnotations annotation={annotation} studentID={studentID} courseID={this.props.courseID}/></p>
                                         </div>
                                     </Panel>
                                 );
@@ -277,7 +282,7 @@ class StudentsAnnotations extends Component{
 
                                     <div className="annotation-bottom">
                                         <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
-                                        <p><DeleteStudentAnnotations annotation={annotation} studentID={studentID}/></p>
+                                        <p><DeleteStudentAnnotations annotation={annotation} studentID={studentID} courseID={this.props.courseID}/></p>
                                     </div>
                                 </Panel>
                             );

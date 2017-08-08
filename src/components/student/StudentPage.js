@@ -170,7 +170,7 @@ class StudentPage extends Component{
                                     return(
                                         <div key={week['week_nbr']}>
                                             <h1 className="week-nbr">Week {week['week_nbr']}</h1>
-                                            <StudentAnnotations week={week} annotations={this.props.data.annotations} studentID={studentID} />
+                                            <StudentAnnotations week={week} annotations={this.props.data.annotations} courseID={this.props.match.params.courseID} studentID={studentID} />
                                         </div>
                                     )
                                 })}
