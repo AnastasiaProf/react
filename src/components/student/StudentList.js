@@ -79,7 +79,7 @@ class StudentList extends React.Component {
                 if(!(e.students[0] === null) && !(e.students[0] === undefined) ){
                     if(!(e.students[0].userID === undefined)){
                         //If month then only count the one of the current mont
-                        if(current_month === parseInt(dates[1]) && current_year === parseInt(dates[0]) && e.deleted === false){
+                        if(current_month === parseInt(dates[1]) && current_year === parseInt(dates[0]) && !e.deleted === true){
                             if(counterarray[e.students[0].userID] == undefined){
                                 counterarray[e.students[0].userID] = 1;
                             } else {
