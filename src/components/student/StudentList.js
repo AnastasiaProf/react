@@ -38,6 +38,13 @@ const CourseStudentQuery = gql`
           createdAt
           updatedAt
         }
+        annotations(filterTeacherID: $teacherID){
+            annotationID
+            createdAt
+            students{
+                userID
+            }
+        }
     }
     `;
 
@@ -78,6 +85,52 @@ class StudentList extends React.Component {
     return a;
 }
 
+    countAnnot(array){
+        let counterarray = [];
+
+        // Return today's date and time
+        let currentTime = new Date();
+
+        // returns the month (from 0 to 11)
+        let current_month = currentTime.getMonth() + 1;
+
+
+        // returns the year (four digits)
+        let current_year = currentTime.getFullYear();
+
+        if(!(array === undefined)){
+
+            array.forEach(function(e){
+                //Get the annotation date information
+                let dates = e.createdAt.split("-");
+
+                //Format date to compare week nbrs
+                let dateparts = e.createdAt.split("T")[0].split("-");
+                let nicedate = dateparts[1]+'/'+dateparts[2]+'/'+dateparts[0];
+
+                if(!(e.students[0] === null) && !(e.students[0] === undefined) ){
+                    if(!(e.students[0].userID === undefined)){
+                        //If month then only count the one of the current mont
+                        if(current_month === parseInt(dates[1]) && current_year === parseInt(dates[0])){
+                            if(counterarray[e.students[0].userID] == undefined){
+                                counterarray[e.students[0].userID] = 1;
+                            } else {
+                                counterarray[e.students[0].userID] += 1;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        //If a students is shown but has no annotation set his number to 0
+/*        this.props.data.students.forEach(function(e){
+            if(!counterarray.hasOwnProperty(e.userID)){
+                counterarray[e.userID] = 0;
+            }
+        });*/
+        return counterarray;
+    }
+
 
     render() {
 
@@ -91,6 +144,8 @@ class StudentList extends React.Component {
         let studentsLast = [];
         let studentsFirst = [];
         let studentsDisplay = [];
+
+        let annotations = this.countAnnot(this.props.annotations);
 
         if(this.state.filter){
             {courses.map(course => {
@@ -124,10 +179,13 @@ class StudentList extends React.Component {
                                   <h1>{course.description}</h1>
                                 </div>
                                   {studentsDisplay[course.courseID].map(student => {
+                                      let annot_nbr = annotations[student.userID];
+
                                       return (
                                           <Col xs={4} md={2} key={student.userID} >
-                                            <Thumbnail className="profile"> 
-                                              <Link to={`${course.courseID}/students/${student.userID}/?oldurl=studentslist`}>
+                                            <Thumbnail className="profile">
+                                                <div className="number-annotation"><span >{annot_nbr ? annot_nbr : "0"}</span></div>
+                                                <Link to={`${course.courseID}/students/${student.userID}/?oldurl=studentslist`}>
                                                 <img src={student.photoURL} alt="student picture"/>
                                                 <h4>{student.firstName} {student.lastName}</h4>
                                               </Link>
@@ -148,10 +206,11 @@ class StudentList extends React.Component {
 
 
 export default graphql(CourseStudentQuery, {
-    options:  (props) => {  { return { variables: { teacherID: props.teacherID} } } },
+    options:  (props) => {  { return { variables: { teacherID: localStorage.getItem('userID')} } } },
     props: ({
 
-    data: { loading, courses }}) => ({
+    data: { loading, courses, annotations }}) => ({
         loading,
         courses,
+        annotations
     })},)(StudentList);
