@@ -101,7 +101,7 @@ class StudentHomeList extends React.Component {
                 let annotweek = currentWeekNumber(nicedate);
 
                 if(!(e.students[0] === null) && !(e.students[0] === undefined) ){
-                    if(!(e.students[0].userID === undefined) && e.deleted === false){
+                    if(!(e.students[0].userID === undefined) && !(e.deleted === true)){
                         //If month then only count the one of the current mont
                         if(type === "month" && current_month === parseInt(dates[1]) && current_year === parseInt(dates[0])){
                             if(counterarray[e.students[0].userID] == undefined){
