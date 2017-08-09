@@ -10,6 +10,8 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import Button from 'react-bootstrap/lib/Button';
 import getStudentInfo from '../../queries/fetchAnnotations';
+import CourseStudentQuery from '../../queries/fetchStudentsList'
+
 
 
 class DeleteStudentAnnotations extends Component{
@@ -31,7 +33,11 @@ class DeleteStudentAnnotations extends Component{
 			refetchQueries: [{ 
 				query: getStudentInfo,
                 variables: { userID: this.props.studentID }
-            }]  
+            },
+                {
+                    query: CourseStudentQuery,
+                    variables: { teacherID: localStorage.getItem('userID') },
+                }]
 		});
 	}
 
