@@ -231,6 +231,7 @@ ul.header li a {
 
 .students{
   width: 100%;
+  height: 100px;
 }
 
 .tags{
@@ -366,7 +367,7 @@ a.btn.back{
 
 .modify-text{
   width: 100%;
-  height: auto;
+  height: 100px;
 }
 
 /*teacher home*/
