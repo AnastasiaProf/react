@@ -12,42 +12,10 @@ import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Thumbnail from 'react-bootstrap/lib/Thumbnail';
+import CourseStudentQuery from '../../queries/fetchStudentsList'
 
 
-/*
- * Query to retrieve the students
- * @args $teacherID: ID
- */
-const CourseStudentQuery = gql`
-    query CourseStudentQuery($teacherID: ID){
-        courses(teacherID: $teacherID) {
-            students {
-              userID
-              firstName
-              lastName
-              email
-              photoURL
-              photoUID
-              langCode
-              createdAt
-              updatedAt
-            }
-          courseID
-          description
-          courseName
-          createdAt
-          updatedAt
-        }
-        annotations(filterTeacherID: $teacherID){
-            annotationID
-            deleted
-            createdAt
-            students{
-                userID
-            }
-        }
-    }
-    `;
+
 
 class StudentList extends React.Component {
     constructor(props) {
@@ -134,7 +102,6 @@ class StudentList extends React.Component {
 
     render() {
 
-
         if (this.props.loading){
             return <div>Loading...</div>;
         }
@@ -146,7 +113,6 @@ class StudentList extends React.Component {
         let studentsDisplay = [];
 
         let annotations = this.countAnnot(this.props.annotations);
-        console.log(annotations)
         if(this.state.filter){
             {courses.map(course => {
                 studentsLast[course.courseID] = course.students.filter( student =>
