@@ -13,6 +13,8 @@ import Button from 'react-bootstrap/lib/Button';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
 import getStudentInfo from '../../queries/fetchAnnotations';
+import CourseStudentQuery from '../../queries/fetchStudentsList'
+
 
 
 class AddStudentAnnotation extends Component{
@@ -83,7 +85,11 @@ class AddStudentAnnotation extends Component{
             refetchQueries: [{
                 query: getStudentInfo,
                 variables: { userID: studentID },
-            }]
+            },
+                {
+                    query: CourseStudentQuery,
+                    variables: { teacherID: localStorage.getItem('userID') },
+                }]
         }).then(() => this.setState({text: ''}));
     }
 
@@ -126,11 +132,11 @@ class AddStudentAnnotation extends Component{
     render(){
         console.log(this.props)
         return(
-			<div className="text-tag">
-				<Button className="add-annoation" bsSize="large" block onClick={ ()=> this.setState({ open: !this.state.open })}> + Add a comment</Button>
-				<Panel collapsible expanded={this.state.open} >
-					<form onSubmit={this.onSubmit.bind(this)}>
-						<textarea spellCheck="true" className="students" value= {this.state.text} onChange={event => this.setState({ text: event.target.value})}/>
+            <div className="text-tag">
+                <Button className="add-annoation" bsSize="large" block onClick={ ()=> this.setState({ open: !this.state.open })}> + Add a comment</Button>
+                <Panel collapsible expanded={this.state.open} >
+                    <form onSubmit={this.onSubmit.bind(this)}>
+                        <textarea spellCheck="true" className="students" value= {this.state.text} onChange={event => this.setState({ text: event.target.value})}/>
                         <div className="formsubmit">
                             <FormGroup className="tags">
                                 <Checkbox onChange={this.handleChangeStrength.bind(this)} value={this.state.strength_value} inline>
@@ -151,9 +157,9 @@ class AddStudentAnnotation extends Component{
                             </FormGroup>
                             <Button className="submit" type="submit">Submit</Button>
                         </div>
-					</form>
-				</Panel>
-			</div>
+                    </form>
+                </Panel>
+            </div>
         )
     }
 
