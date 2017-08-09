@@ -169,6 +169,8 @@ class StudentHomeList extends React.Component {
         if(this.state.sortStud){
             switch(this.state.sortStud) {
                 case "name":
+                    annot = true;
+                    annotations = this.countAnnot(this.props.data.annotations, "month");
                     students = this.sortName(this.props.data.students);
                     break;
 
