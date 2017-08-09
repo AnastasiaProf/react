@@ -130,7 +130,6 @@ class AddStudentAnnotation extends Component{
     }
 
     render(){
-        console.log(this.props)
         return(
             <div className="text-tag">
                 <Button className="add-annoation" bsSize="large" block onClick={ ()=> this.setState({ open: !this.state.open })}> + Add a comment</Button>

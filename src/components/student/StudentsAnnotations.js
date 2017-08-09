@@ -242,11 +242,19 @@ class StudentsAnnotations extends Component{
                                     </Panel>
                                 );
                             } else {
+                                let tag_verif = false;
+                                if(!(annotation.tags === null)){
+                                    if(!(annotation.tags.length == 0)){
+                                        tag_verif = true;
+                                    }
+                                }
+
+
                                 return (
                                     <Panel className="annotation" key={annotation.annotationID}>
                                         <a className="update" onClick={this.initiateUpdate.bind(this)} id={annotation.annotationID} href="#">Modify</a>
                                         <div className="tag-container">
-                                            { !(annotation.tags === null) ?
+                                            { tag_verif ?
                                                 annotation.tags.map(tag => {
                                                     return(
 
