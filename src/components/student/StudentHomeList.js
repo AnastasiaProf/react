@@ -28,6 +28,7 @@ const StudentsQuery = gql`
     }
     annotations(filterTeacherID: $teacherID){
     annotationID
+    deleted
     createdAt
         students{
             userID

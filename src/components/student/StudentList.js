@@ -40,6 +40,7 @@ const CourseStudentQuery = gql`
         }
         annotations(filterTeacherID: $teacherID){
             annotationID
+            deleted
             createdAt
             students{
                 userID
@@ -107,7 +108,6 @@ class StudentList extends React.Component {
                 //Format date to compare week nbrs
                 let dateparts = e.createdAt.split("T")[0].split("-");
                 let nicedate = dateparts[1]+'/'+dateparts[2]+'/'+dateparts[0];
-
                 if(!(e.students[0] === null) && !(e.students[0] === undefined) ){
                     if(!(e.students[0].userID === undefined)){
                         //If month then only count the one of the current mont
@@ -146,7 +146,7 @@ class StudentList extends React.Component {
         let studentsDisplay = [];
 
         let annotations = this.countAnnot(this.props.annotations);
-
+        console.log(annotations)
         if(this.state.filter){
             {courses.map(course => {
                 studentsLast[course.courseID] = course.students.filter( student =>
