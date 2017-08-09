@@ -98,9 +98,6 @@ class CoursePage extends Component{
 
         const { course } = this.props.data;
 
-        //let back = this.getQueryVariable("oldurl");
-
-
         if (!course) { return <div>Loading...</div>}
         let teacherID = localStorage.getItem('userID');
         let courseID = this.props.match.params.courseID;
@@ -128,9 +125,7 @@ class CoursePage extends Component{
                         <Row>
                             <Col xs={12} md={8} mdOffset={2} >
                                 <div>
-                                    {
-                                        this.getQueryVariable("oldurl")
-                                    }
+                                    <Link className="btn back" to={`/${courseID}`}><Glyphicon glyph="chevron-left" /> Back to class </Link>
                                 </div>
 
                                 <h1 className="student-name">{course.description}</h1>
