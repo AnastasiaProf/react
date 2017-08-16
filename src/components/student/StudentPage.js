@@ -98,7 +98,6 @@ class StudentPage extends Component{
 
 
     render(){
-        console.log(this)
         const { student } = this.props.data;
 
         let back = this.getQueryVariable("oldurl");
