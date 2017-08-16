@@ -55,10 +55,10 @@ class StudentsAnnotations extends Component{
     //If annotation is being updated will initialize checkbobxes state
     preChecking(annot){
 
-        let str = "Strength_"+annot;
-        let wk = "Weakness_"+annot;
+        let str = "Strengths_"+annot;
+        let wk = "Weaknesses_"+annot;
         let ap = "Action Plan_"+annot;
-        let pu = "Parent Update_"+annot;
+        let pu = "Parent update_"+annot;
 
         let str_checcked = <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={str} inline>Strengths</Checkbox >;
         let wk_checcked =  <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={wk} inline>Weaknesses</Checkbox>;
@@ -67,19 +67,19 @@ class StudentsAnnotations extends Component{
 
         this.state.checkboxes[annot].forEach(function(e){
             switch(e){
-                case "Strength":
+                case "Strengths":
                     str_checcked = <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={str} checked inline>Strengths</Checkbox >;
                     break;
 
-                case "Weakness":
+                case "Weaknesses":
                     wk_checcked =  <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={wk} checked inline>Weaknesses</Checkbox>;
                     break;
 
                 case "Action Plan":
-                    ap_checcked =  <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={ap} checked inline>Action plan</Checkbox>;
+                    ap_checcked =  <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={ap} checked inline>Action Plan</Checkbox>;
                     break;
 
-                case "Parent Update":
+                case "Parent update":
                     pu_checcked =  <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={pu} checked inline>Parent update</Checkbox>;
                     break;
             }
@@ -175,7 +175,6 @@ class StudentsAnnotations extends Component{
 
     //Render annotation HTML depending of their type
     render(){
-        console.log(this)
         var week = this.props.week;
         let studentID = this.props.studentID;
 
@@ -183,12 +182,19 @@ class StudentsAnnotations extends Component{
             <div>
                 {week.map(annotation => {
                     if(!(annotation.deleted == true)){
+                        let tag_verif = false;
+                        if(!(annotation.tags === null)){
+                            if(!(annotation.tags.length == 0)){
+                                tag_verif = true;
+                            }
+                        }
                         if(annotation.contentType == "image"){
+
                             return (
                                 <Panel className="annotation" key={annotation.annotationID}>
                                     <div className="tag-container" >
                                         {/*if no tags then do not try to loop over it (Code breakage prevention)*/}
-                                        { !(annotation.tags === null) ?
+                                        { tag_verif ?
                                             annotation.tags.map(tag => {
                                                 return(
                                                     <p className="tag" key={tag}>{tag}</p>
@@ -208,7 +214,7 @@ class StudentsAnnotations extends Component{
                             return (
                                 <Panel className="annotation" key={annotation.annotationID}>
                                     <div className="tag-container" >
-                                        { !(annotation.tags === null) ?
+                                        { tag_verif ?
                                             annotation.tags.map(tag => {
                                                 return(
                                                     <p className="tag" key={tag}>{tag}</p>
@@ -243,13 +249,6 @@ class StudentsAnnotations extends Component{
                                     </Panel>
                                 );
                             } else {
-                                let tag_verif = false;
-                                if(!(annotation.tags === null)){
-                                    if(!(annotation.tags.length == 0)){
-                                        tag_verif = true;
-                                    }
-                                }
-
 
                                 return (
                                     <Panel className="annotation" key={annotation.annotationID}>
@@ -278,7 +277,7 @@ class StudentsAnnotations extends Component{
                             return (
                                 <Panel className="annotation" key={annotation.annotationID}>
                                     <div className="tag-container" >
-                                        { !(annotation.tags === null) ?
+                                        { tag_verif ?
                                             annotation.tags.map(tag => {
                                                 return(
                                                     <p className="tag" key={tag}>{tag}</p>

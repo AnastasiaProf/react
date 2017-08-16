@@ -63,8 +63,8 @@ class CoursePage extends Component{
             this.props.data.refetch({ courseID: this.props.match.params.courseID });
             this.setState({all : true});
         } else if(e.target.value == "null"){
-            this.props.data.refetch({ courseID: this.props.match.params.courseID, tags: null });
-            this.setState({filterTags: null})
+            this.props.data.refetch({ courseID: this.props.match.params.courseID });
+            this.setState({filterTags: "no", all: true})
         } else {
             this.props.data.refetch({courseID: this.props.match.params.courseID, tags: [e.target.value]});
             this.setState({filterTags: [e.target.value]})
@@ -106,6 +106,13 @@ class CoursePage extends Component{
         if(this.state.all){
             annotations = this.getOnlyClassAnnot(this.props.data.annotations);
             annotations = annotations.concat().reverse();
+            if(this.state.filterTags == "no"){
+                annotations.forEach(function(e, i){
+                    if(e.tags.length > 0){
+                        annotations.splice(i, 1);
+                    }
+                })
+            }
         } else {
             annotations = this.getOnlyClassAnnot(this.props.data.filteredAnnotation);
             annotations = annotations.concat().reverse();
@@ -132,10 +139,10 @@ class CoursePage extends Component{
                                 <FormControl className="tag-filter" onChange={this.filterAnnot.bind(this)} componentClass="select" placeholder="select">
                                     <option value="all">All Annotations</option>
                                     <option value="null">No Feedback Type</option>
-                                    <option value="Strength">Strengths</option>
-                                    <option value="Weakness">Weaknesses</option>
+                                    <option value="Strengths">Strengths</option>
+                                    <option value="Weaknesses">Weaknesses</option>
                                     <option value="Action Plan">Action plan</option>
-                                    <option value="Parent Update">Parent update</option>
+                                    <option value="Parent update">Parent update</option>
                                 </FormControl>
                             </Col>
                         </Row>

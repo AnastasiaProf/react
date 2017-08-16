@@ -51,10 +51,10 @@ class StudentPage extends Component{
         this.setState({all : false});
         if(e.target.value == "all"){
             this.props.data.refetch({ userID: this.props.match.params.userID });
-            this.setState({all : true});
+            this.setState({all : true, filterTags: null});
         } else if(e.target.value == "null"){
-            this.props.data.refetch({ userID: this.props.match.params.userID, tags: null });
-            this.setState({filterTags: null})
+            this.props.data.refetch({ userID: this.props.match.params.userID});
+            this.setState({filterTags: "no", all : true})
         } else {
             this.props.data.refetch({userID: this.props.match.params.userID, tags: [e.target.value]});
             this.setState({filterTags: [e.target.value]})
@@ -98,7 +98,7 @@ class StudentPage extends Component{
 
 
     render(){
-
+        console.log(this)
         const { student } = this.props.data;
 
         let back = this.getQueryVariable("oldurl");
@@ -112,6 +112,13 @@ class StudentPage extends Component{
         //If not filter take the whole annotations array loaded
         if(this.state.all){
             annotations = this.props.data.annotations.concat().reverse();
+            if(this.state.filterTags == "no"){
+                annotations.forEach(function(e, i){
+                    if(e.tags.length > 0){
+                        annotations.splice(i, 1);
+                    }
+                })
+            }
         } else {
             annotations = this.props.data.filteredAnnotation.concat().reverse();
         }
@@ -155,10 +162,10 @@ class StudentPage extends Component{
                                 <FormControl className="tag-filter" onChange={this.filterAnnot.bind(this)} componentClass="select" placeholder="select">
                                     <option value="all">All Annotations</option>
                                     <option value="null">No Feedback Type</option>
-                                    <option value="Strength">Strengths</option>
-                                    <option value="Weakness">Weaknesses</option>
+                                    <option value="Strengths">Strengths</option>
+                                    <option value="Weaknesses">Weaknesses</option>
                                     <option value="Action Plan">Action plan</option>
-                                    <option value="Parent Update">Parent update</option>
+                                    <option value="Parent update">Parent update</option>
                                 </FormControl>
                             </Col>
                         </Row>

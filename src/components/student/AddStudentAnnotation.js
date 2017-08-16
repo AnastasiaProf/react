@@ -45,11 +45,11 @@ class AddStudentAnnotation extends Component{
         let tags = [];
 
         if(!(this.state.strength) == ""){
-            tags.push("Strength")
+            tags.push("Strengths")
         }
 
         if(!(this.state.weakness) == ""){
-            tags.push("Weakness")
+            tags.push("Weaknesses")
         }
 
         if(!(this.state.action) == ""){
@@ -57,17 +57,12 @@ class AddStudentAnnotation extends Component{
         }
 
         if(!(this.state.parent) == ""){
-            tags.push("Parent Update")
+            tags.push("Parent update")
         }
 
-        //If nothing in tag assign "No Feedback type"
-        if(tags.length == 0){
-            tags = null;
-        }
 
         let date = new Date();
         let local = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + "T" +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()+"."+date.getMilliseconds()+"Z";
-
 
         this.props.mutate({
             variables: {
@@ -161,7 +156,6 @@ class AddStudentAnnotation extends Component{
             </div>
         )
     }
-
 }
 
 /*
