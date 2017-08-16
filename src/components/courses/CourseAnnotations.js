@@ -199,7 +199,7 @@ class CourseAnnotations extends Component{
                                                 return(
                                                     <p className="tag" key={tag}>{tag}</p>
                                                 );
-                                            }) : null
+                                            }) : <p>No Feedback Type</p>
                                         }
                                     </div>
                                     <img src={annotation.mediaURL} />
@@ -219,7 +219,7 @@ class CourseAnnotations extends Component{
                                                 return(
                                                     <p className="tag" key={tag}>{tag}</p>
                                                 );
-                                            }) : null
+                                            }) : <p>No Feedback Type</p>
                                         }
                                     </div>
                                     <ReactPlayer url={annotation.mediaURL} controls/>
@@ -281,7 +281,7 @@ class CourseAnnotations extends Component{
                                                 return(
                                                     <p className="tag" key={tag}>{tag}</p>
                                                 );
-                                            }) : null
+                                            }) : <p>No Feedback Type</p>
                                         }
                                     </div>
                                     <ReactAudioPlayer src={annotation.mediaURL} controls />

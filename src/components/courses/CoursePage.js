@@ -61,7 +61,7 @@ class CoursePage extends Component{
         this.setState({all : false});
         if(e.target.value == "all"){
             this.props.data.refetch({ courseID: this.props.match.params.courseID });
-            this.setState({all : true});
+            this.setState({all : true, filterTags: null});
         } else if(e.target.value == "null"){
             this.props.data.refetch({ courseID: this.props.match.params.courseID });
             this.setState({filterTags: "no", all: true})
@@ -107,11 +107,15 @@ class CoursePage extends Component{
             annotations = this.getOnlyClassAnnot(this.props.data.annotations);
             annotations = annotations.concat().reverse();
             if(this.state.filterTags == "no"){
+                var newannot = [];
                 annotations.forEach(function(e, i){
-                    if(e.tags.length > 0){
-                        annotations.splice(i, 1);
+                    if(!(e.tags === null)){
+                        if(!(e.tags.length > 0)){
+                            newannot.push(e);
+                        }
                     }
-                })
+                });
+                annotations = newannot;
             }
         } else {
             annotations = this.getOnlyClassAnnot(this.props.data.filteredAnnotation);

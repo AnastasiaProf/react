@@ -112,11 +112,15 @@ class StudentPage extends Component{
         if(this.state.all){
             annotations = this.props.data.annotations.concat().reverse();
             if(this.state.filterTags == "no"){
+                var newannot = [];
                 annotations.forEach(function(e, i){
-                    if(e.tags.length > 0){
-                        annotations.splice(i, 1);
+                    if(!(e.tags === null)){
+                        if(!(e.tags.length > 0)){
+                            newannot.push(e);
+                        }
                     }
-                })
+                });
+                annotations = newannot;
             }
         } else {
             annotations = this.props.data.filteredAnnotation.concat().reverse();
