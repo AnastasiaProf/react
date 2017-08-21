@@ -40,6 +40,7 @@ class CoursePage extends Component{
         return null;
     }
 
+    //Get an array with only the annotation for the whole class inside
     getOnlyClassAnnot(annotations) {
         let returnarray = [];
         annotations.forEach(function(e){
@@ -56,27 +57,32 @@ class CoursePage extends Component{
         return returnarray
     }
 
-//onChange of the filter dropdown refetch graphql query
+    //onChange of the filter dropdown refetch graphql query
     filterAnnot(e){
         this.setState({all : false});
         if(e.target.value == "all"){
+            //Set all to true to use all the annotations in the DB & filtertags to null to apply no filter
             this.props.data.refetch({ courseID: this.props.match.params.courseID });
             this.setState({all : true, filterTags: null});
         } else if(e.target.value == "null"){
+            //Set all to true to use all the annotations in the DB & filtertags to "no" to apply "no feedbacktype"
             this.props.data.refetch({ courseID: this.props.match.params.courseID });
             this.setState({filterTags: "no", all: true})
         } else {
+            //Set all to true to use all the annotations in the DB & filtertags to e.target.value to apply the wanted filter
             this.props.data.refetch({courseID: this.props.match.params.courseID, tags: [e.target.value]});
             this.setState({filterTags: [e.target.value]})
         }
     }
 
+    //Function to sort all annotation bby week nummber
     compareWeek(annotations){
         let today = new Date();
         let currentyear = today.getFullYear();
 
         let annotsort = [];
 
+        //For each annotations create an index with the week number and associate an object with value {week number, array(annotations)}
         annotations.forEach(function(e){
             let dateparts = e.createdAt.split("T")[0].split("-");
             if(parseInt(dateparts[0]) == parseInt(currentyear)){

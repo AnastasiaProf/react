@@ -12,6 +12,7 @@ import currentWeekNumber from 'current-week-number';
 
 import StudentHomeList from '../student/StudentHomeList';
 
+
 const CourseQuery = gql`    
     query StudentsQuery($courseID: ID!, $teacherID: ID!) {
         course(courseID: $courseID){
@@ -65,6 +66,7 @@ class Course extends Component{
         this.setState({ showModal: true });
     }
 
+    //Generate an array that contains all the weeks where some annotations were created
     generateWeeks(){
         let returnarray = [];
 
@@ -123,6 +125,7 @@ class Course extends Component{
                                     <Modal.Title>Select the week</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
+                                    {/*show the list of the week where annotaions were created ...*/}
                                     <ul className="week-selector">
                                         {annotweek.map((week) => {
                                             return <ListGroupItem key={week} id={week} onClick={this.sortStud.bind(this)}>{week}</ListGroupItem>
@@ -136,6 +139,7 @@ class Course extends Component{
 
                 {/*assign StudentHomeList as a child and pass into it the selected Course object & the current teacherID*/}
                 <StudentHomeList ref={(child) => {
+                    //Assign this.child to the instance of the component studenthomelist
                     if(!(child == null )){
                         this.child = child.getWrappedInstance();
                     }

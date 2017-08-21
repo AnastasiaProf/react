@@ -1,6 +1,5 @@
 /**
  * Configuration Component
- * TODO
  */
 import React, {Component} from 'react';
 

@@ -16,6 +16,7 @@ class App extends Component {
 
     constructor(props) {
         super(props);
+        //On logout delete all the localsotrage and get rid of query cache
         this.logout = () => {
             localStorage.removeItem('token');
             localStorage.removeItem('userID')
@@ -29,6 +30,7 @@ class App extends Component {
     }
 
     render() {
+        //If the token is stored in a local storage then display the menu
         return (
             <div>
                 <Grid>

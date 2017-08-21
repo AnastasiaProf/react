@@ -29,7 +29,7 @@ class Home extends Component{
     render(){
         let teacherID = localStorage.getItem('userID');
 
-
+        //Create 2 tabs, one of this week agenda and one with all the course from th start of the DB
         return(
             <div>
                 <Tab.Container id="left-tabs-example" defaultActiveKey="first">
