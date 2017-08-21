@@ -50,12 +50,15 @@ class StudentPage extends Component{
     filterAnnot(e){
         this.setState({all : false});
         if(e.target.value == "all"){
+            //Set all to true to use all the annotations in the DB & filtertags to null to apply no filter
             this.props.data.refetch({ userID: this.props.match.params.userID });
             this.setState({all : true, filterTags: null});
         } else if(e.target.value == "null"){
+            //Set all to true to use all the annotations in the DB & filtertags to "no" to apply "no feedbacktype"
             this.props.data.refetch({ userID: this.props.match.params.userID});
             this.setState({filterTags: "no", all : true})
         } else {
+            //Set all to true to use all the annotations in the DB & filtertags to e.target.value to apply the wanted filter
             this.props.data.refetch({userID: this.props.match.params.userID, tags: [e.target.value]});
             this.setState({filterTags: [e.target.value]})
         }
@@ -68,6 +71,7 @@ class StudentPage extends Component{
 
         let annotsort = [];
 
+        //For each annotations create an index with the week number and associate an object with value {week number, array(annotations)}
         annotations.forEach(function(e){
             let dateparts = e.createdAt.split("T")[0].split("-");
             if(parseInt(dateparts[0]) == parseInt(currentyear)){
@@ -111,6 +115,7 @@ class StudentPage extends Component{
         //If not filter take the whole annotations array loaded
         if(this.state.all){
             annotations = this.props.data.annotations.concat().reverse();
+            //If filtertags == no then take only the annotations with no tag in it (empty array)
             if(this.state.filterTags == "no"){
                 var newannot = [];
                 annotations.forEach(function(e, i){

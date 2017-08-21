@@ -31,17 +31,20 @@ class StudentsAnnotations extends Component{
     //Initialization on update annotation click
     initiateUpdate(event){
         event.preventDefault();
-
+        //Add in current the id of the annotation
         let current = this.state.modify;
         current.push(event.target.id);
 
+        //Initialise the array of checkboxes in this.state.checkboxes with the annot.ID as the key
         let currentcheckboxes = this.state.checkboxes;
         currentcheckboxes[event.target.id] = [];
 
+        //Return the annotation object
         let result = this.props.annotations.filter(function( obj ) {
             return obj.annotationID == event.target.id;
         })[0];
 
+        //If some tags are linked add them in the this.state.checkboxes array
         if(!(result.tags === null)){
             result.tags.forEach(function(e){
                 currentcheckboxes[event.target.id].push(e)
@@ -52,19 +55,24 @@ class StudentsAnnotations extends Component{
         this.setState({modify: current, checkboxes: currentcheckboxes})
     }
 
-    //If annotation is being updated will initialize checkbobxes state
+    /*If annotation is being updated will initialize checkbobxes state
+    *  param: annot: ID!
+    */
     preChecking(annot){
 
+       //Construct value depending of annotation.ID and type of tags
         let str = "Strengths_"+annot;
         let wk = "Weaknesses_"+annot;
         let ap = "Action Plan_"+annot;
         let pu = "Parent update_"+annot;
 
+        //Initiate HTML DOM element with previous value and attach change handle on it
         let str_checcked = <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={str} inline>Strengths</Checkbox >;
         let wk_checcked =  <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={wk} inline>Weaknesses</Checkbox>;
         let ap_checcked =  <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={ap} inline>Action plan</Checkbox>;
         let pu_checcked =  <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={pu} inline>Parent update</Checkbox>;
 
+        //Verify if each checkbox if checked and if yescheck it
         this.state.checkboxes[annot].forEach(function(e){
             switch(e){
                 case "Strengths":
@@ -85,6 +93,7 @@ class StudentsAnnotations extends Component{
             }
         }, this);
 
+        //Return the initialized checboxes
         return (
             <FormGroup>
                 {
@@ -108,10 +117,13 @@ class StudentsAnnotations extends Component{
 
     //Handle checkboxes state changes
     handleCheckboxChange(e){
+        //take checkbox value and separate tags & ID
         let valuepart = e.target.value.split('_');
 
+        //Get the array of the current checkboxes in modifying state
         let currentcheckboxes = this.state.checkboxes;
 
+        //If checkbox in it get rid of it (not checked) else add it (checked)
         if(currentcheckboxes[valuepart[1]].includes(valuepart[0])){
             var index = currentcheckboxes[valuepart[1]].indexOf(valuepart[0]);
             currentcheckboxes[valuepart[1]].splice(index, 1);
@@ -119,6 +131,7 @@ class StudentsAnnotations extends Component{
             currentcheckboxes[valuepart[1]].push(valuepart[0]);
         }
 
+        //Reassign checkbox array
         this.setState({checkboxes: currentcheckboxes})
 
     }

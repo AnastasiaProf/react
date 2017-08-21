@@ -1,4 +1,8 @@
 
+/* All Courses Component
+* Get the list of all the courses the professor had
+*
+*/
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { graphql } from 'react-apollo';

@@ -18,6 +18,7 @@ class WeeklyCourses extends React.Component {
         };
     }
 
+    //Check wether the course is in the current week or not
     compareWeek(start, end){
         let current = currentWeekNumber();
         let today = new Date();
@@ -33,6 +34,7 @@ class WeeklyCourses extends React.Component {
         }
     }
 
+    //Allow to sort array of objects by object value
     dynamicSort(property) {
         var sortOrder = 1;
         if(property[0] === "-") {
@@ -45,6 +47,7 @@ class WeeklyCourses extends React.Component {
         }
     }
 
+    //Create the array the hold the courses array[day_nbr] = [courses]
     classifyCourses(courses){
         let monday = [];
         let tuesday = [];
@@ -54,11 +57,13 @@ class WeeklyCourses extends React.Component {
         let saturday = [];
         let sunday = [];
 
-
+        //For each fetched courses
         courses.forEach(function(course){
             let courseSchedules = course.courseSchedules;
+            //If course in this current week
             if(this.compareWeek(course.courseStartWeekCode, course.courseEndWeekCode)){
                 courseSchedules.forEach(function (courseSchedule) {
+                    //Push the course in the good array
                     switch(courseSchedule.weekDay){
                         case "Mon":
                             monday.push({
@@ -128,6 +133,7 @@ class WeeklyCourses extends React.Component {
             }
         }, this);
 
+        //Sort all the arrays by start time
         monday = monday.sort(this.dynamicSort("startStudyTime"));
         tuesday = tuesday.sort(this.dynamicSort("startStudyTime"));
         wednesday = wednesday.sort(this.dynamicSort("startStudyTime"));
@@ -162,6 +168,7 @@ class WeeklyCourses extends React.Component {
         return (
             <div>
                 {week.map((day, index) => {
+                    //Switch on week index to initiate the title component
                     switch(index){
                         case 0:
                             dayname = (<h3>Monday</h3>);
@@ -197,6 +204,7 @@ class WeeklyCourses extends React.Component {
                             <div className="day-name">{dayname}</div>
                             <ul>
                                 {day.map((course) => {
+                                    //For each course in the day render it
                                     return (
                                         <ListGroupItem key={course.courseID} ><Link to={`/${course.courseID}`}><h4>{course.name} - {course.startStudyTime}</h4></Link></ListGroupItem>
                                     );

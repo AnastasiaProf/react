@@ -168,6 +168,7 @@ class StudentHomeList extends React.Component {
         let annot = false;
 
         if(this.state.sortStud){
+            //Depending on sorting choice redirect to the goodworkflow of functions
             switch(this.state.sortStud) {
                 case "name":
                     annot = true;

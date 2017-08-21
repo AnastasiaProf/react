@@ -54,6 +54,7 @@ class StudentList extends React.Component {
     return a;
 }
 
+//Count the number of annotations per student
     countAnnot(array){
         let counterarray = [];
 
