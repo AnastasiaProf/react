@@ -34,7 +34,26 @@ networkInterface.use([{
 
         next();
     }
+
 }]);
+
+networkInterface.useAfter([{
+    applyAfterware({ response }, next) {
+        if (response.status === 500 || response.status === 401) {
+            window.location.replace('/');
+            localStorage.removeItem('token');
+            localStorage.removeItem('userID')
+            .then(() =>
+                client.resetStore()
+            )
+            .catch(err =>
+                console.error('Logout failed', err)
+            );
+        }
+        next();
+    }
+}]);
+
 const client = new ApolloClient({
     networkInterface,
 });
