@@ -111,6 +111,7 @@ class StudentPage extends Component{
         let teacherID = localStorage.getItem('userID');
         let studentID = this.props.match.params.userID;
         let annotations = [];
+        let tags = this.props.data.annotationTags.defaultTags;
 
         //If not filter take the whole annotations array loaded
         if(this.state.all){
@@ -170,22 +171,25 @@ class StudentPage extends Component{
                                 <FormControl className="tag-filter" onChange={this.filterAnnot.bind(this)} componentClass="select" placeholder="select">
                                     <option value="all">All Annotations</option>
                                     <option value="null">No Feedback Type</option>
-                                    <option value="Strengths">Strengths</option>
-                                    <option value="Weaknesses">Weaknesses</option>
-                                    <option value="Action Plan">Action plan</option>
-                                    <option value="Parent update">Parent update</option>
+                                    {
+                                        tags.map((tag) => {
+                                            return(
+                                                <option key={tag} value={tag}>{tag}</option>
+                                            )
+                                        })
+                                    }
                                 </FormControl>
                             </Col>
                         </Row>
                         <Row>
                             <Col xs={12} md={8} mdOffset={2}>
 
-                                <AddStudentAnnotation studentID={studentID} teacherID={teacherID} courseID={this.props.match.params.courseID}/>
+                                <AddStudentAnnotation studentID={studentID} teacherID={teacherID} courseID={this.props.match.params.courseID} tags={tags} />
                                 {weeks.map((week) => {
                                     return(
                                         <div key={week['week_nbr']}>
                                             <h1 className="week-nbr">Week {week['week_nbr']}</h1>
-                                            <StudentAnnotations week={week} annotations={this.props.data.annotations} courseID={this.props.match.params.courseID} studentID={studentID} />
+                                            <StudentAnnotations week={week} annotations={this.props.data.annotations} courseID={this.props.match.params.courseID} studentID={studentID} tags={tags} />
                                         </div>
                                     )
                                 })}

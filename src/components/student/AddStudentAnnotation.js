@@ -8,9 +8,7 @@ import React, {Component} from 'react';
 import { IndexRoute} from 'react-router-dom';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import Panel from 'react-bootstrap/lib/Panel';
-import Button from 'react-bootstrap/lib/Button';
-import TokenAutocomplete from 'react-token-autocomplete';
+import { Panel, Button, FormGroup, Checkbox } from 'react-bootstrap';
 import getStudentInfo from '../../queries/fetchAnnotations';
 import CourseStudentQuery from '../../queries/fetchStudentsList'
 
@@ -26,7 +24,7 @@ class AddStudentAnnotation extends Component{
             text: '',
             studentIDs: [props.studentID],
             teacherID: props.teacherID,
-            defaultTags:[],
+            annotTags: []
 
         };
     }
@@ -38,7 +36,7 @@ class AddStudentAnnotation extends Component{
         let studentID = this.props.studentID;
         let teacherID = this.props.teacherID;
         let course = this.props.courseID;
-        let defaultTags = this.props.defaultTags;
+        let tags = this.state.annotTags;
         
         let date = new Date();
         let local = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + "T" +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()+"."+date.getMilliseconds()+"Z";
@@ -50,7 +48,7 @@ class AddStudentAnnotation extends Component{
                     text: this.state.text,
                     teacherID: teacherID,
                     studentIDs: [studentID],
-                    tags: defaultTags,
+                    tags: tags,
                     deleted: false,
                     courseID: course,
                     //localCreatedAt : local,
@@ -67,8 +65,18 @@ class AddStudentAnnotation extends Component{
         }).then(() => this.setState({text: ''}));
     }
 
+    handleChange(e){
+        if(this.state.annotTags.includes(e.target.value)){
+            var index = this.state.annotTags.indexOf(e.target.value);
+            this.state.annotTags.splice(index, 1);
+        } else {
+            this.state.annotTags.push(e.target.value);
+        }
+    }
 
     render(){
+        let tags = this.props.tags;
+
         return(
             <div className="text-tag">
                 <Button className="add-annoation" bsSize="large" block onClick={ ()=> this.setState({ open: !this.state.open })}> + Add a comment</Button>
@@ -76,12 +84,17 @@ class AddStudentAnnotation extends Component{
                     <form onSubmit={this.onSubmit.bind(this)}>
                         <textarea spellCheck="true" className="students" value= {this.state.text} onChange={event => this.setState({ text: event.target.value})}/>
                         <div className="formsubmit">
-                            <TokenAutocomplete
-                                placeholder="type to limit suggestions"
-                                limitToOptions={true}
-                                defaultValues={['apple']}
-                                options={['apple', 'banana', 'carrot', 'watermelon']}/>
-
+                            <FormGroup className="tags">
+                                {
+                                    tags.map((tag, index) => {
+                                        return(
+                                            <Checkbox onChange={this.handleChange.bind(this)} key={index} id={tag} value={tag} inline>
+                                                {tag}
+                                            </Checkbox >
+                                        )
+                                    })
+                                }
+                            </FormGroup>
                             <Button className="submit" type="submit">Submit</Button>
                         </div>
                     </form>
