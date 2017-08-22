@@ -36,6 +36,9 @@ const getStudentInfo = gql`
             transcribedAt
             deleted
         }
+        annotationTags{
+            defaultTags
+        }
     }
 `;
 
