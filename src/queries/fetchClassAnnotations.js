@@ -64,6 +64,9 @@ const getAnnotations = gql`
             transcribedAt
             deleted
         }
+        annotationTags{
+            defaultTags
+        }
     }
 `;
 

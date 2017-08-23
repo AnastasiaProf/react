@@ -25,11 +25,7 @@ class AddAnnotation extends Component{
             text: '',
             studentIDs: [props.studentID],
             teacherID: props.teacherID,
-            strength: '',
-            weakness: '',
-            action: '',
-            parent: '',
-
+            annotTags: []
         };
     }
 
@@ -39,23 +35,8 @@ class AddAnnotation extends Component{
 
         let teacherID = this.props.teacherID;
         let courseID = this.props.courseID;
-        let tags = [];
+        let tags = this.state.annotTags;
 
-        if(!(this.state.strength) == ""){
-            tags.push("Strengths")
-        }
-
-        if(!(this.state.weakness) == ""){
-            tags.push("Weaknesses")
-        }
-
-        if(!(this.state.action) == ""){
-            tags.push("Action Plan")
-        }
-
-        if(!(this.state.parent) == ""){
-            tags.push("Parent update")
-        }
 
 
         let date = new Date();
@@ -81,43 +62,17 @@ class AddAnnotation extends Component{
         }).then(() => this.setState({text: ''}));
     }
 
-    //Handle strength checkbox change
-    handleChangeStrength(){
-        if(this.state.strength == ""){
-            this.setState({strength: "on"})
+    handleChange(e){
+        if(this.state.annotTags.includes(e.target.value)){
+            var index = this.state.annotTags.indexOf(e.target.value);
+            this.state.annotTags.splice(index, 1);
         } else {
-            this.setState({strength: ""})
-        }
-    }
-
-    //Handle weakness checkbox change
-    handleChangeWeakness(){
-        if(this.state.weakness == ""){
-            this.setState({weakness: "on"})
-        } else {
-            this.setState({weakness: ""})
-        }
-    }
-
-    //Handle action checkbox change
-    handleChangeAction(){
-        if(this.state.action == ""){
-            this.setState({action: "on"})
-        } else {
-            this.setState({action: ""})
-        }
-    }
-
-    //Handle parent checkbox change
-    handleChangeParent(){
-        if(this.state.parent == ""){
-            this.setState({parent: "on"})
-        } else {
-            this.setState({parent: ""})
+            this.state.annotTags.push(e.target.value);
         }
     }
 
     render(){
+        let tags = this.props.tags;
         return(
 			<div className="text-tag">
 				<Button className="add-annoation" bsSize="large" block onClick={ ()=> this.setState({ open: !this.state.open })}> + Add a comment</Button>
@@ -126,21 +81,15 @@ class AddAnnotation extends Component{
 						<textarea className="students" value= {this.state.text} onChange={event => this.setState({ text: event.target.value})}/>
                         <div className="formsubmit">
                             <FormGroup className="tags">
-                                <Checkbox onChange={this.handleChangeStrength.bind(this)} value={this.state.strength_value} inline>
-                                    Strengths
-                                </Checkbox >
-                                {' '}
-                                <Checkbox onChange={this.handleChangeWeakness.bind(this)} value={this.state.weakness_value} inline>
-                                    Weaknesses
-                                </Checkbox>
-                                {' '}
-                                <Checkbox onChange={this.handleChangeAction.bind(this)} value={this.state.action_value} inline>
-                                    Action plan
-                                </Checkbox>
-                                {' '}
-                                <Checkbox onChange={this.handleChangeParent.bind(this)} value={this.state.parent_value} inline>
-                                    Parent update
-                                </Checkbox>
+                                {
+                                    tags.map((tag, index) => {
+                                        return(
+                                        <Checkbox onChange={this.handleChange.bind(this)} key={index} id={tag} value={tag} inline>
+                                            {tag}
+                                        </Checkbox >
+                                        )
+                                    })
+                                }
                             </FormGroup>
                             <Button className="submit" type="submit">Submit</Button>
                         </div>

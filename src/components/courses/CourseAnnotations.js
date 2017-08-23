@@ -58,61 +58,18 @@ class CourseAnnotations extends Component{
     /*If annotation is being updated will initialize checkbobxes state
      *  param: annot: ID!
      */
-    preChecking(annot){
-
-
-        //Construct value depending of annotation.ID and type of tags
-        let str = "Strengths_"+annot;
-        let wk = "Weaknesses_"+annot;
-        let ap = "Action Plan_"+annot;
-        let pu = "Parent update_"+annot;
-
+    preChecking(annot, tag){
         //Initiate HTML DOM element with previous value and attach change handle on it
-        let str_checcked = <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={str} inline>Strengths</Checkbox >;
-        let wk_checcked =  <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={wk} inline>Weaknesses</Checkbox>;
-        let ap_checcked =  <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={ap} inline>Action plan</Checkbox>;
-        let pu_checcked =  <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={pu} inline>Parent update</Checkbox>;
-
-        //Verify if each checkbox if checked and if yescheck it
-        this.state.checkboxes[annot].forEach(function(e){
-            switch(e){
-                case "Strengths":
-                    str_checcked = <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={str} checked inline>Strengths</Checkbox >;
-                    break;
-
-                case "Weaknesses":
-                    wk_checcked =  <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={wk} checked inline>Weaknesses</Checkbox>;
-                    break;
-
-                case "Action Plan":
-                    ap_checcked =  <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={ap} checked inline>Action Plan</Checkbox>;
-                    break;
-
-                case "Parent update":
-                    pu_checcked =  <Checkbox onChange={this.handleCheckboxChange.bind(this)} value={pu} checked inline>Parent update</Checkbox>;
-                    break;
+        let checkbox_values;
+            if(this.state.checkboxes[annot].includes(tag)){
+                checkbox_values = <Checkbox onChange={this.handleCheckboxChange.bind(this)} key={tag} value={tag+"_"+annot} inline checked>{tag}</Checkbox >;
+            } else {
+                checkbox_values = <Checkbox onChange={this.handleCheckboxChange.bind(this)} key={tag} value={tag+"_"+annot} inline>{tag}</Checkbox >;
             }
-        }, this);
 
         //Return the initialized checboxes
         return (
-            <FormGroup>
-                {
-                    str_checcked
-                }
-                {' '}
-                {
-                    wk_checcked
-                }
-                {' '}
-                {
-                    ap_checcked
-                }
-                {' '}
-                {
-                    pu_checcked
-                }
-            </FormGroup>
+            checkbox_values
         )
     }
 
@@ -191,6 +148,8 @@ class CourseAnnotations extends Component{
 
         var week = this.props.week;
         let courseID = this.props.courseID;
+        let tags = this.props.tags;
+
 
         return(
             <div>
@@ -249,7 +208,9 @@ class CourseAnnotations extends Component{
                                     <Panel className="annotation" key={annotation.annotationID}>
                                         <form onSubmit={this.onSubmit.bind(this)} id={annotation.annotationID}>
                                             {
-                                                this.preChecking(annotation.annotationID)
+                                                tags.map((tag) => {
+                                                    return (this.preChecking(annotation.annotationID, tag))
+                                                })
                                             }
                                             <p className="content-text"><input type="text" defaultValue={annotation.text} onChange={this.handleChange.bind(this)} /></p>
 

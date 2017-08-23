@@ -108,6 +108,7 @@ class CoursePage extends Component{
         let teacherID = localStorage.getItem('userID');
         let courseID = this.props.match.params.courseID;
         let annotations = [];
+        let tags = this.props.data.annotationTags.defaultTags;
 
         if(this.state.all){
             annotations = this.getOnlyClassAnnot(this.props.data.annotations);
@@ -149,22 +150,25 @@ class CoursePage extends Component{
                                 <FormControl className="tag-filter" onChange={this.filterAnnot.bind(this)} componentClass="select" placeholder="select">
                                     <option value="all">All Annotations</option>
                                     <option value="null">No Feedback Type</option>
-                                    <option value="Strengths">Strengths</option>
-                                    <option value="Weaknesses">Weaknesses</option>
-                                    <option value="Action Plan">Action plan</option>
-                                    <option value="Parent update">Parent update</option>
+                                    {
+                                        tags.map((tag) => {
+                                            return(
+                                                <option key={tag} value={tag}>{tag}</option>
+                                            )
+                                        })
+                                    }
                                 </FormControl>
                             </Col>
                         </Row>
                         <Row>
                             <Col xs={12} md={8} mdOffset={2}>
 
-                                <AddClassAnnotations courseID={courseID} teacherID={teacherID}/>
+                                <AddClassAnnotations courseID={courseID} teacherID={teacherID} tags={tags}/>
                                 {weeks.map((week) => {
                                     return(
                                         <div key={week['week_nbr']}>
                                             <h1 className="week-nbr">Week {week['week_nbr']}</h1>
-                                            <CourseAnnotations week={week} annotations={this.props.data.annotations} courseID={courseID} />
+                                            <CourseAnnotations week={week} annotations={this.props.data.annotations} courseID={courseID} tags={tags} />
                                         </div>
                                     )
                                 })}
