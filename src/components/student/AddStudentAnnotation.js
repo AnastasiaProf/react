@@ -9,6 +9,7 @@ import { IndexRoute} from 'react-router-dom';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Panel, Button, FormGroup, Checkbox } from 'react-bootstrap';
+import { WithContext as ReactTags } from 'react-tag-input';
 import getStudentInfo from '../../queries/fetchAnnotations';
 import CourseStudentQuery from '../../queries/fetchStudentsList'
 
@@ -17,16 +18,22 @@ import CourseStudentQuery from '../../queries/fetchStudentsList'
 class AddStudentAnnotation extends Component{
     constructor(props){
         super(props);
-
+        console.log("Constructor", props.tags)
         this.state = {
             open: false,
             contentType: '',
             text: '',
             studentIDs: [props.studentID],
             teacherID: props.teacherID,
-            annotTags: []
+            annotTags: [],
+            suggestions: []
 
         };
+    }
+
+    componentDidMount(){
+        let tags = this.props.tags;
+        this.setState({suggestions: tags})
     }
 
     //onSubmit create tags array and run the mutation, then set annotation content to empty
@@ -36,7 +43,11 @@ class AddStudentAnnotation extends Component{
         let studentID = this.props.studentID;
         let teacherID = this.props.teacherID;
         let course = this.props.courseID;
-        let tags = this.state.annotTags;
+        let tags = [];
+
+        this.state.annotTags.map(tag =>
+            tags.push(tag.text)
+        )
     
         let date = new Date();
         let local = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + "T" +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()+"."+date.getMilliseconds()+"Z";
@@ -62,22 +73,53 @@ class AddStudentAnnotation extends Component{
                     query: CourseStudentQuery,
                     variables: { teacherID: localStorage.getItem('userID') },
                 }]
-        }).then(() => this.setState({text: ''}));
+        }).then(() => this.setState({text: '', annotTags:[], suggestions: this.props.tags }));
     }
 
+    handleDelete(i) {
+        let tags = this.state.annotTags;
+        tags.splice(i, 1);
+        this.setState({tags: tags});
+    }
+ 
+    handleAddition(tag) {
+        let tags = this.state.annotTags;
 
-    handleChange(e){
-        if(this.state.annotTags.includes(e.target.value)){
-            var index = this.state.annotTags.indexOf(e.target.value);
-            this.state.annotTags.splice(index, 1);
-        } else {
-            this.state.annotTags.push(e.target.value);
-        }
+        let suggestions = [];
+        this.state.suggestions.forEach(function(e){
+            console.log(e, tag)
+            if(!(e == tag)){
+            suggestions.push(e)
+            }
+        }, this)
+
+        tags.push({
+            id: tags.length + 1,
+            text: tag
+        })
+        this.setState({tags: tags, suggestions: suggestions});
+    }
+ 
+    handleDrag(tag, currPos, newPos) {
+        let tags = this.state.annotTags;
+ 
+        // mutate array 
+        tags.splice(currPos, 1);
+        tags.splice(newPos, 0, tag);
+ 
+        // re-render 
+        this.setState({ tags: tags });
     }
 
     render(){
-        let tags = this.props.tags;
 
+        console.log(this);
+
+        console.log(this.state.suggestions);
+
+
+        let tags = this.props.tags;
+        
         return(
             <div className="text-tag">
                 <Button className="add-annoation" bsSize="large" block onClick={ ()=> this.setState({ open: !this.state.open })}> + Add a comment</Button>
@@ -85,16 +127,10 @@ class AddStudentAnnotation extends Component{
                     <form onSubmit={this.onSubmit.bind(this)}>
                         <textarea spellCheck="true" className="students" value= {this.state.text} onChange={event => this.setState({ text: event.target.value})}/>
                         <div className="formsubmit">
-                            <FormGroup className="tags">
-                                {
-                                    tags.map((tag, index) => {
-                                        return(
-                                            <Checkbox onChange={this.handleChange.bind(this)} key={index} id={tag} value={tag} inline>
-                                                {tag}
-                                            </Checkbox >
-                                        )
-                                    })
-                                }
+                            <FormGroup className="tags">         
+
+                                <ReactTags tags={this.state.annotTags} suggestions={this.state.suggestions} handleDelete={this.handleDelete.bind(this)} handleAddition={this.handleAddition.bind(this)} handleDrag={this.handleDrag.bind(this)}/>
+                                                       
                             </FormGroup>
                             <Button className="submit" type="submit">Submit</Button>
                         </div>
