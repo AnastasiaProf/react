@@ -89,7 +89,10 @@ const mutation = gql`
 				firstName
 				lastName
 				email
-				role
+				roles{
+                    schoolID
+                    role
+                }
 				photoURL
 				photoUID
 				langCode

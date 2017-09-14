@@ -102,12 +102,12 @@ class StudentPage extends Component{
 
 
     render(){
-        const { student } = this.props.data;
+        const { user } = this.props.data;
 
         let back = this.getQueryVariable("oldurl");
 
 
-        if (!student) { return <div>Loading...</div>}
+        if (!user) { return <div>Loading...</div>}
         let teacherID = localStorage.getItem('userID');
         let studentID = this.props.match.params.userID;
         let annotations = [];
@@ -147,7 +147,7 @@ class StudentPage extends Component{
 
         return (
             <div>
-                <div key={student.userID}>
+                <div key={user.userID}>
                     <Grid>
                         <Row>
                             <Col xs={12} md={8} mdOffset={2} >
@@ -157,17 +157,17 @@ class StudentPage extends Component{
                                         this.getQueryVariable("oldurl")
                                     }
                                 </div>
-                                <img onClick={this.open.bind(this)} className="student-picture" src={student.photoURL} alt="242x200"/>
+                                <img onClick={this.open.bind(this)} className="student-picture" src={user.photoURL} alt="242x200"/>
                                 <Modal  bsSize="small" show={this.state.showModal} onHide={this.close.bind(this)}>
                                     <Modal.Header closeButton>
-                                        <Modal.Title>{student.firstName} {student.lastName}</Modal.Title>
+                                        <Modal.Title>{user.firstName} {user.lastName}</Modal.Title>
                                     </Modal.Header>
                                     <Modal.Body>
-                                        <img className="img-modal" src={student.photoURL} />
+                                        <img className="img-modal" src={user.photoURL} />
                                     </Modal.Body>
                                 </Modal>
 
-                                <h1 className="student-name">{student.firstName} {student.lastName}</h1>
+                                <h1 className="student-name">{user.firstName} {user.lastName}</h1>
                                 <FormControl className="tag-filter" onChange={this.filterAnnot.bind(this)} componentClass="select" placeholder="select">
                                     <option value="all">All Annotations</option>
                                     <option value="null">No Feedback Type</option>

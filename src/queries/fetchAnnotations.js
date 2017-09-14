@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 const getStudentInfo = gql`
     query getStudentInfo($userID: ID!, $tags: [String])
     {
-        student(studentID: $userID) {
+        user(userID : $userID) {
             firstName
             lastName
             photoURL
