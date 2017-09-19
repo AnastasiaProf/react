@@ -4,7 +4,8 @@
  * Child : DeleteStudentAnnotations
  */
 import React, {Component} from 'react';
-import {Panel, Button, Checkbox, FormGroup} from 'react-bootstrap';
+import {Alert, Panel, Button, Checkbox, FormGroup} from 'react-bootstrap';
+import { WithContext as ReactTags } from 'react-tag-input';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import ReactPlayer from 'react-player';
@@ -23,80 +24,122 @@ class StudentsAnnotations extends Component{
         this.state = {
             filterAnnot: "",
             all : true,
-            modify: [],
-            checkboxes: []
+            modify: '',
+            currenttags: [],
+            alertVisible: false
         }
+    }
+
+    componentDidMount(){
+        let tags = this.props.tags;
+        this.setState({suggestions: tags})
     }
 
     //Initialization on update annotation click
     initiateUpdate(event){
         event.preventDefault();
-        //Add in current the id of the annotation
-        let current = this.state.modify;
-        current.push(event.target.id);
+        
+        //check if this.state.modify is "" if yes continue if no popup messages to ask to save current modified annot
+        if (this.state.modify == ''){
+        
+        
+            //Add in current the id of the annotation
+            var current = event.target.id;
 
-        //Initialise the array of checkboxes in this.state.checkboxes with the annot.ID as the key
-        let currentcheckboxes = this.state.checkboxes;
-        currentcheckboxes[event.target.id] = [];
+            //Initialise the array of checkboxes in this.state.checkboxes with the annot.ID as the key
+            var currenttags = this.state.currenttags;
+            currenttags = [];
 
-        //Return the annotation object
-        let result = this.props.annotations.filter(function( obj ) {
-            return obj.annotationID == event.target.id;
-        })[0];
+            //Return the annotation object
+            let result = this.props.annotations.filter(function( obj ) {
+                return obj.annotationID == event.target.id;
+            })[0];
 
-        //If some tags are linked add them in the this.state.checkboxes array
-        if(!(result.tags === null)){
-            result.tags.forEach(function(e){
-                currentcheckboxes[event.target.id].push(e)
-            });
+            //If some tags are linked add them in the this.state.checkboxes array
+            if(!(result.tags === null)){
+                result.tags.forEach(function(e, i){
+                    currenttags.push({
+                        id: i + 1,
+                        text: e
+                    });
+                });
+            
+            } 
+            
+            var suggestions = new Array();
+                this.state.suggestions.forEach(function(e){
+                    if(!(result.tags.includes(e))){
+                        suggestions.push(e)
+                    }
+            }, this)
+             
+        }else{  
+            return(
+                this.setState({alertVisible: true})
+            )
         }
+        
 
 
-        this.setState({modify: current, checkboxes: currentcheckboxes})
+        this.setState({modify: current, currenttags: currenttags, suggestions: suggestions})
+    }
+        
+    handleAlertDismiss() {
+        this.setState({alertVisible: false})
     }
 
     /*If annotation is being updated will initialize checkbobxes state
     *  param: annot: ID!
     */
-    preChecking(annot, tag){
+    preChecking(annot){
         //Initiate HTML DOM element with previous value and attach change handle on it
-        let checkbox_values;
-        if(this.state.checkboxes[annot].includes(tag)){
-            checkbox_values = <Checkbox onChange={this.handleCheckboxChange.bind(this)} key={tag} value={tag+"_"+annot} inline checked>{tag}</Checkbox >;
-        } else {
-            checkbox_values = <Checkbox onChange={this.handleCheckboxChange.bind(this)} key={tag} value={tag+"_"+annot} inline>{tag}</Checkbox >;
-        }
+        let tags_values;
 
+        tags_values = <ReactTags id={annot} tags={this.state.currenttags} suggestions={this.props.suggestions} handleDelete={this.handleDelete.bind(this)} handleAddition={this.handleAddition.bind(this)} handleDrag={this.handleDrag.bind(this)}/>
+        
         //Return the initialized checboxes
         return (
-            checkbox_values
+            tags_values
         )
-    }
-
-    //Handle checkboxes state changes
-    handleCheckboxChange(e){
-        //take checkbox value and separate tags & ID
-        let valuepart = e.target.value.split('_');
-
-        //Get the array of the current checkboxes in modifying state
-        let currentcheckboxes = this.state.checkboxes;
-
-        //If checkbox in it get rid of it (not checked) else add it (checked)
-        if(currentcheckboxes[valuepart[1]].includes(valuepart[0])){
-            var index = currentcheckboxes[valuepart[1]].indexOf(valuepart[0]);
-            currentcheckboxes[valuepart[1]].splice(index, 1);
-        } else {
-            currentcheckboxes[valuepart[1]].push(valuepart[0]);
-        }
-
-        //Reassign checkbox array
-        this.setState({checkboxes: currentcheckboxes})
-
     }
 
     //Handle text changes
     handleChange(event){
         this.setState({text: event.target.value})
+    }
+
+    handleDelete(i) {
+        let tags = this.state.currenttags;
+        tags.splice(i, 1);
+        this.setState({tags: tags});
+    }
+ 
+    handleAddition(tag) {
+       
+        let tags = this.state.currenttags;
+        let suggestions = [];
+        this.state.suggestions.forEach(function(e){
+            if(!(e == tag)){
+            suggestions.push(e)
+            }
+        }, this)
+        console.log(suggestions)
+        tags.push({
+            id: tags.length + 1,
+            text: tag
+        })
+        this.setState({tags: tags, suggestions: suggestions});
+    }
+ 
+    handleDrag(tag, currPos, newPos) {
+        let tags = this.state.currenttags;
+ 
+        // mutate array 
+        tags.splice(currPos, 1);
+        tags.splice(newPos, 0, tag);
+ 
+        // re-render 
+        this.setState({ tags: tags });
     }
 
     //Submit of the update form
@@ -105,22 +148,22 @@ class StudentsAnnotations extends Component{
         event.preventDefault();
 
         let studentID = this.props.studentID;
-        let annotID = event.target.id;
-        let modannot = this.state.modify;
+        let annotID = this.state.modify;
         let teacherID = localStorage.getItem('userID');
         let courseID = this.props.courseID;
 
-        let index = modannot.indexOf(annotID);
-        modannot.splice(index, 1);
 
         let filterTag = this.state.filterTags;
 
         let updatetags;
 
-        if(this.state.checkboxes[annotID].length == 0){
+        if(this.state.currenttags.length == 0){
             updatetags = null;
         } else {
-            updatetags = this.state.checkboxes[annotID];
+            updatetags = [];
+            this.state.currenttags.forEach(function(e){
+                updatetags.push(e.text);
+            })
         }
 
         this.props.mutate({
@@ -139,7 +182,7 @@ class StudentsAnnotations extends Component{
                 variables: { userID: studentID, tags: filterTag, text: this.state.text},
             }]
         }).then(() =>
-            this.setState({modify: modannot})
+            this.setState({modify: "", currenttags: []})
         );
     }
 
@@ -147,16 +190,28 @@ class StudentsAnnotations extends Component{
     //Render annotation HTML depending of their type
     render(){
 
-        console.log(this);
-
-        var week = this.props.week;
+        var weeks = this.props.weeks;
         let studentID = this.props.studentID;
         let tags = this.props.tags;
-
-
-        return(
+        
+        return( 
             <div>
-                {week.map(annotation => {
+            {this.state.alertVisible ?
+                    <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss.bind(this)}>
+                            <h4>Oops!You didn't submit your changes.</h4>
+                            <p>Please Submit before you change another annotation.</p>
+                            <p>
+                                <Button onClick={this.handleAlertDismiss.bind(this)}>Hide Alert</Button>
+                            </p>
+                    </Alert>
+                    : null
+                }
+            {weeks.map((week) => {
+                return(
+                    <div key={week['week_nbr']}>
+                        <h1 className="week-nbr">Week {week['week_nbr']}</h1>
+                        
+                        {week.map(annotation => {
                     if(!(annotation.deleted == true)){
                         let tag_verif = false;
                         if(!(annotation.tags === null)){
@@ -164,6 +219,8 @@ class StudentsAnnotations extends Component{
                                 tag_verif = true;
                             }
                         }
+                       
+      
                         if(annotation.contentType == "image"){
 
                             return (
@@ -211,11 +268,9 @@ class StudentsAnnotations extends Component{
                                 return (
                                     <Panel className="annotation" key={annotation.annotationID}>
                                         <form onSubmit={this.onSubmit.bind(this)} id={annotation.annotationID}>
-                                            {
-                                                tags.map((tag) => {
-                                                    return (this.preChecking(annotation.annotationID, tag))
-                                                })
-                                            }
+                                           
+                                            { this.preChecking(annotation.annotationID)}
+                                                
                                             <p className="content-text"><textarea spellCheck="true" className="modify-text" defaultValue={annotation.text} onChange={this.handleChange.bind(this)} /></p>
 
                                             <div className="annotation-bottom">
@@ -275,7 +330,9 @@ class StudentsAnnotations extends Component{
                         }
                     }
                 })}
-
+                    </div>
+                )
+            })}
             </div>
         );
     }

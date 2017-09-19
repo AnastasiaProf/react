@@ -78,8 +78,18 @@ class AddStudentAnnotation extends Component{
 
     handleDelete(i) {
         let tags = this.state.annotTags;
-        tags.splice(i, 1);
-        this.setState({tags: tags});
+
+        let suggestions = [];
+        this.state.suggestions.forEach(function(e){
+            suggestions.push(e)
+        }, this)
+
+        let result = tags.splice(i, 1);
+        suggestions.push(result[0].text);
+
+        console.log(suggestions);
+
+        this.setState({annotTags: tags, suggestions: suggestions});
     }
  
     handleAddition(tag) {
@@ -87,7 +97,6 @@ class AddStudentAnnotation extends Component{
 
         let suggestions = [];
         this.state.suggestions.forEach(function(e){
-            console.log(e, tag)
             if(!(e == tag)){
             suggestions.push(e)
             }
@@ -97,7 +106,7 @@ class AddStudentAnnotation extends Component{
             id: tags.length + 1,
             text: tag
         })
-        this.setState({tags: tags, suggestions: suggestions});
+        this.setState({annotTags: tags, suggestions: suggestions});
     }
  
     handleDrag(tag, currPos, newPos) {
@@ -108,7 +117,7 @@ class AddStudentAnnotation extends Component{
         tags.splice(newPos, 0, tag);
  
         // re-render 
-        this.setState({ tags: tags });
+        this.setState({ annotTags: tags });
     }
 
     render(){

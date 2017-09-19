@@ -164,12 +164,9 @@ class CoursePage extends Component{
                             <Col xs={12} md={8} mdOffset={2}>
 
                                 <AddClassAnnotations courseID={courseID} teacherID={teacherID} tags={tags}/>
-                                {weeks.map((week) => {
-                                    return(
-                                        <div key={week['week_nbr']}>
-                                            <h1 className="week-nbr">Week {week['week_nbr']}</h1>
-                                            <CourseAnnotations week={week} annotations={this.props.data.annotations} courseID={courseID} tags={tags} />
-                                        </div>
+                                
+                                            <CourseAnnotations weeks={weeks} annotations={this.props.data.annotations} courseID={courseID} tags={tags} />
+                                     
                                     )
                                 })}
 

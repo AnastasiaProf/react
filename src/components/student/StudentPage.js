@@ -185,15 +185,7 @@ class StudentPage extends Component{
                             <Col xs={12} md={8} mdOffset={2}>
 
                                 <AddStudentAnnotation studentID={studentID} teacherID={teacherID} courseID={this.props.match.params.courseID} tags={tags} />
-                                {weeks.map((week) => {
-                                    return(
-                                        <div key={week['week_nbr']}>
-                                            <h1 className="week-nbr">Week {week['week_nbr']}</h1>
-                                            <StudentAnnotations week={week} annotations={this.props.data.annotations} courseID={this.props.match.params.courseID} studentID={studentID} tags={tags} />
-                                        </div>
-                                    )
-                                })}
-
+                                            <StudentAnnotations weeks={weeks} annotations={this.props.data.annotations} courseID={this.props.match.params.courseID} studentID={studentID} tags={tags} />
                             </Col>
                         </Row>
                     </Grid>
