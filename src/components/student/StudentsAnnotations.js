@@ -4,8 +4,10 @@
  * Child : DeleteStudentAnnotations
  */
 import React, {Component} from 'react';
+import { Link } from 'react-router-dom';
 import {Alert, Panel, Button, Checkbox, FormGroup} from 'react-bootstrap';
 import { WithContext as ReactTags } from 'react-tag-input';
+import {Scroll,Element, scroller} from 'react-scroll';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import ReactPlayer from 'react-player';
@@ -75,18 +77,33 @@ class StudentsAnnotations extends Component{
              
         }else{  
             return(
-                this.setState({alertVisible: true})
+                
+                this.setState(
+                    {alertVisible: true},
+                    scroller.scrollTo('alertpost', {
+                        duration: 1500,
+                        smooth: true}
+                    )
+                )  
             )
         }
-        
-
-
+ 
         this.setState({modify: current, currenttags: currenttags, suggestions: suggestions})
     }
         
     handleAlertDismiss() {
-        this.setState({alertVisible: false})
+        var annotID = this.state.modify;
+        
+         this.setState({alertVisible: false}, 
+                        scroller.scrollTo(JSON.parse(JSON.stringify({annotID})).annotID, {
+                            duration: 1500,
+                            smooth: true}
+                        )
+                     )
     }
+    
+    
+    
 
     /*If annotation is being updated will initialize checkbobxes state
     *  param: annot: ID!
@@ -95,7 +112,7 @@ class StudentsAnnotations extends Component{
         //Initiate HTML DOM element with previous value and attach change handle on it
         let tags_values;
 
-        tags_values = <ReactTags id={annot} tags={this.state.currenttags} suggestions={this.props.suggestions} handleDelete={this.handleDelete.bind(this)} handleAddition={this.handleAddition.bind(this)} handleDrag={this.handleDrag.bind(this)}/>
+        tags_values = <ReactTags id={annot} tags={this.state.currenttags} suggestions={this.state.suggestions} handleDelete={this.handleDelete.bind(this)} handleAddition={this.handleAddition.bind(this)} handleDrag={this.handleDrag.bind(this)}/>
         
         //Return the initialized checboxes
         return (
@@ -143,69 +160,139 @@ class StudentsAnnotations extends Component{
     }
 
     //Submit of the update form
-    onSubmit(event){
+    onSubmit (type) {
+        return event => {
+            event.preventDefault();
 
-        event.preventDefault();
-
-        let studentID = this.props.studentID;
-        let annotID = this.state.modify;
-        let teacherID = localStorage.getItem('userID');
-        let courseID = this.props.courseID;
+            let studentID = this.props.studentID;
+            let annotID = this.state.modify;
+            let teacherID = localStorage.getItem('userID');
+            let courseID = this.props.courseID;
 
 
-        let filterTag = this.state.filterTags;
+            let filterTag = this.state.filterTags;
 
-        let updatetags;
+            let updatetags;
 
-        if(this.state.currenttags.length == 0){
-            updatetags = null;
-        } else {
-            updatetags = [];
-            this.state.currenttags.forEach(function(e){
-                updatetags.push(e.text);
-            })
+            if(this.state.currenttags.length == 0){
+                updatetags = null;
+            } else {
+                updatetags = [];
+                this.state.currenttags.forEach(function(e){
+                    updatetags.push(e.text);
+                })
+            }
+
+            switch(type) {
+                case "text":
+                    this.props.mutate({
+                        variables: {
+                            annotationID: annotID,
+                            annotation: {
+                                contentType: "text",
+                                teacherID: teacherID,
+                                courseID: courseID,
+                                tags: updatetags,
+                                text: this.state.text
+                            }
+                        },
+                        refetchQueries: [{
+                            query: getStudentInfo,
+                            variables: { userID: studentID, tags: filterTag, text: this.state.text},
+                        }]
+                    }).then(() =>
+                        this.setState({modify: "", currenttags: []})
+                    );
+                break;
+                    
+                case "image":
+                    this.props.mutate({
+                        variables: {
+                            annotationID: annotID,
+                            annotation: {
+                                contentType: "image",
+                                teacherID: teacherID,
+                                courseID: courseID,
+                                tags: updatetags
+                            }
+                        },
+                        refetchQueries: [{
+                            query: getStudentInfo,
+                            variables: { userID: studentID, tags: filterTag},
+                        }]
+                    }).then(() =>
+                        this.setState({modify: "", currenttags: []})
+                    );
+                    break;
+                    
+                case "audio":
+                    this.props.mutate({
+                        variables: {
+                            annotationID: annotID,
+                            annotation: {
+                                contentType: "audio",
+                                teacherID: teacherID,
+                                courseID: courseID,
+                                tags: updatetags
+                            }
+                        },
+                        refetchQueries: [{
+                            query: getStudentInfo,
+                            variables: { userID: studentID, tags: filterTag},
+                        }]
+                    }).then(() =>
+                        this.setState({modify: "", currenttags: []})
+                    );
+                    break;
+                    
+                case "video":
+                    this.props.mutate({
+                        variables: {
+                            annotationID: annotID,
+                            annotation: {
+                                contentType: "video",
+                                teacherID: teacherID,
+                                courseID: courseID,
+                                tags: updatetags
+                            }
+                        },
+                        refetchQueries: [{
+                            query: getStudentInfo,
+                            variables: { userID: studentID, tags: filterTag},
+                        }]
+                    }).then(() =>
+                        this.setState({modify: "", currenttags: []})
+                    );
+                    break;
+            }
+
         }
-
-        this.props.mutate({
-            variables: {
-                annotationID: annotID,
-                annotation: {
-                    contentType: "text",
-                    teacherID: teacherID,
-                    courseID: courseID,
-                    tags: updatetags,
-                    text: this.state.text
-                }
-            },
-            refetchQueries: [{
-                query: getStudentInfo,
-                variables: { userID: studentID, tags: filterTag, text: this.state.text},
-            }]
-        }).then(() =>
-            this.setState({modify: "", currenttags: []})
-        );
     }
 
 
     //Render annotation HTML depending of their type
     render(){
-
+        console.log(this)
         var weeks = this.props.weeks;
         let studentID = this.props.studentID;
         let tags = this.props.tags;
-        
+        console.log(this.state.modify);
         return( 
             <div>
+                <Element name="alertpost">
             {this.state.alertVisible ?
+                    
                     <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss.bind(this)}>
                             <h4>Oops!You didn't submit your changes.</h4>
                             <p>Please Submit before you change another annotation.</p>
                             <p>
+                                
                                 <Button onClick={this.handleAlertDismiss.bind(this)}>Hide Alert</Button>
                             </p>
                     </Alert>
+                        
                     : null
-                }
+                }</Element>
             {weeks.map((week) => {
                 return(
                     <div key={week['week_nbr']}>
@@ -222,9 +309,33 @@ class StudentsAnnotations extends Component{
                        
       
                         if(annotation.contentType == "image"){
+                            
+                            if(this.state.modify.includes(annotation.annotationID)){
+                                return (
+                                    <Element key={annotation.annotationID} name={this.state.modify}>
+                                    <Panel className="annotation" >
+                                        <form onSubmit={this.onSubmit(annotation.contentType).bind(this)} id={annotation.annotationID}>
+                                           
+                                            { this.preChecking(annotation.annotationID)}
+                                            
+                                            <img className="imgannotation" src={annotation.mediaURL} />
+                                            
+                                            <div className="annotation-bottom">
+                                                <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
+                                                <Button className="submit change" type="submit">Submit</Button>
+                                                <p><DeleteStudentAnnotations annotation={annotation} studentID={studentID} courseID={this.props.courseID}/></p>
+                                            </div>
+                                        </form>
+                                    </Panel>
+                                    </Element>
+                                );
+                            } else {
+
 
                             return (
+                                
                                 <Panel className="annotation" key={annotation.annotationID}>
+                                <a href="#" className="update" onClick={this.initiateUpdate.bind(this)} id={annotation.annotationID} >Modify</a>
                                     <div className="tag-container" >
                                         {/*if no tags then do not try to loop over it (Code breakage prevention)*/}
                                         { tag_verif ?
@@ -235,17 +346,41 @@ class StudentsAnnotations extends Component{
                                             }) : <p>No Feedback Type</p>
                                         }
                                     </div>
-                                    <img src={annotation.mediaURL} />
+                                    <p></p>
+                                    <img className="imgannotation" src={annotation.mediaURL} />
 
-                                    <div>
+                                    <div className="annotation-bottom">
                                         <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
                                         <DeleteStudentAnnotations annotation={annotation} studentID={studentID} courseID={this.props.courseID}/>
                                     </div>
                                 </Panel>
+                                
                             );
+                            }
                         }else if(annotation.contentType == "video"){
+                            if(this.state.modify.includes(annotation.annotationID)){
+                                return (
+                                    <Element key={annotation.annotationID} name={this.state.modify}>
+                                    <Panel className="annotation" >
+                                        <form onSubmit={this.onSubmit(annotation.contentType).bind(this)} id={annotation.annotationID}>
+                                           
+                                            { this.preChecking(annotation.annotationID)}
+                                                
+                                            <ReactPlayer className="videoannotation" url={annotation.mediaURL} controls/>
+
+                                            <div className="annotation-bottom">
+                                                <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
+                                                <Button className="submit change" type="submit">Submit</Button>
+                                                <p><DeleteStudentAnnotations annotation={annotation} studentID={studentID} courseID={this.props.courseID}/></p>
+                                            </div>
+                                        </form>
+                                    </Panel>
+                                    </Element>
+                                );
+                            } else {
                             return (
                                 <Panel className="annotation" key={annotation.annotationID}>
+                                    <a className="update" onClick={this.initiateUpdate.bind(this)} id={annotation.annotationID} href="#">Modify</a>
                                     <div className="tag-container" >
                                         { tag_verif ?
                                             annotation.tags.map(tag => {
@@ -255,19 +390,21 @@ class StudentsAnnotations extends Component{
                                             }) : <p>No Feedback Type</p>
                                         }
                                     </div>
-                                    <ReactPlayer url={annotation.mediaURL} controls/>
+                                    <ReactPlayer className="videoannotation" url={annotation.mediaURL} controls/>
 
-                                    <div>
+                                    <div className="annotation-bottom">
                                         <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
                                         <p><DeleteStudentAnnotations annotation={annotation} studentID={studentID} courseID={this.props.courseID}/></p>
                                     </div>
                                 </Panel>
                             );
+                            }
                         }else if(annotation.contentType == "text"){
                             if(this.state.modify.includes(annotation.annotationID)){
                                 return (
-                                    <Panel className="annotation" key={annotation.annotationID}>
-                                        <form onSubmit={this.onSubmit.bind(this)} id={annotation.annotationID}>
+                                    <Element key={annotation.annotationID} name={this.state.modify}>
+                                    <Panel className="annotation" >
+                                        <form onSubmit={this.onSubmit(annotation.contentType).bind(this)} id={annotation.annotationID}>
                                            
                                             { this.preChecking(annotation.annotationID)}
                                                 
@@ -280,6 +417,7 @@ class StudentsAnnotations extends Component{
                                             </div>
                                         </form>
                                     </Panel>
+                                    </Element>
                                 );
                             } else {
 
@@ -307,6 +445,27 @@ class StudentsAnnotations extends Component{
                                 );
                             }
                         }else if(annotation.contentType == "audio"){
+                              if(this.state.modify.includes(annotation.annotationID)){
+                                return (
+                                    <Element key={annotation.annotationID} name={this.state.modify}>
+                                    <Panel className="annotation" >
+                                        <form onSubmit={this.onSubmit(annotation.contentType).bind(this)} id={annotation.annotationID}>
+                                           
+                                            { this.preChecking(annotation.annotationID)}
+                                                
+                                            <ReactAudioPlayer src={annotation.mediaURL} controls />
+                                            <p className="content-text">{annotation.transcript}</p>
+
+                                            <div className="annotation-bottom">
+                                                <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
+                                                <Button className="submit change" type="submit">Submit</Button>
+                                                <p><DeleteStudentAnnotations annotation={annotation} studentID={studentID} courseID={this.props.courseID}/></p>
+                                            </div>
+                                        </form>
+                                    </Panel>
+                                    </Element>
+                                );
+                            } else {
                             return (
                                 <Panel className="annotation" key={annotation.annotationID}>
                                     <div className="tag-container" >
@@ -327,7 +486,7 @@ class StudentsAnnotations extends Component{
                                     </div>
                                 </Panel>
                             );
-                        }
+                        }}
                     }
                 })}
                     </div>

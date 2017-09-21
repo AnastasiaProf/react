@@ -229,6 +229,20 @@ ul.header li a {
   border-top: 0.5px solid #7C7676;
 }
 
+.imgannotation{
+  width: 50% !important;
+  margin-top: 5%;
+  margin-bottom: 3%;
+  margin-left: 25%;
+}
+
+.videoannotation{
+  width: 50% !important;
+  margin-top: 5%;
+  margin-bottom: 3%;
+  margin-left: 25%; 
+}
+
 .students{
   width: 100%;
   height: 100px;
