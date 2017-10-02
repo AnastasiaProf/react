@@ -167,8 +167,7 @@ class CoursePage extends Component{
                                 
                                             <CourseAnnotations weeks={weeks} annotations={this.props.data.annotations} courseID={courseID} tags={tags} />
                                      
-                                    )
-                                })}
+                                
 
                             </Col>
                         </Row>

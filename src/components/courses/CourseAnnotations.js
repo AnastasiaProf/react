@@ -6,6 +6,7 @@
 import React, {Component} from 'react';
 import {Alert, Panel, Button, Checkbox, FormGroup} from 'react-bootstrap';
 import { WithContext as ReactTags } from 'react-tag-input';
+import {Scroll,Element, scroller} from 'react-scroll';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import ReactPlayer from 'react-player';
@@ -76,7 +77,13 @@ class CourseAnnotations extends Component{
              
         }else{  
             return(
-                this.setState({alertVisible: true})
+                this.setState(
+                    {alertVisible: true},
+                    scroller.scrollTo('alertpost', {
+                        duration: 1500,
+                        smooth: true}
+                    )
+                )  
             )
         }
         
@@ -86,7 +93,14 @@ class CourseAnnotations extends Component{
     }
         
     handleAlertDismiss() {
-        this.setState({alertVisible: false})
+        var annotID = this.state.modify;
+        
+         this.setState({alertVisible: false}, 
+                        scroller.scrollTo(JSON.parse(JSON.stringify({annotID})).annotID, {
+                            duration: 1500,
+                            smooth: true}
+                        )
+                     )
     }
 
 
@@ -97,7 +111,7 @@ class CourseAnnotations extends Component{
            //Initiate HTML DOM element with previous value and attach change handle on it
         let tags_values;
 
-        tags_values = <ReactTags id={annot} tags={this.state.currenttags} suggestions={this.props.suggestions} handleDelete={this.handleDelete.bind(this)} handleAddition={this.handleAddition.bind(this)} handleDrag={this.handleDrag.bind(this)}/>
+        tags_values = <ReactTags id={annot} tags={this.state.currenttags} suggestions={this.state.suggestions} handleDelete={this.handleDelete.bind(this)} handleAddition={this.handleAddition.bind(this)} handleDrag={this.handleDrag.bind(this)}/>
         
         //Return the initialized checboxes
         return (
@@ -199,6 +213,7 @@ class CourseAnnotations extends Component{
 
         return(
             <div>
+            <Element name="alertpost">
             {this.state.alertVisible ?
                     <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss.bind(this)}>
                             <h4>Oops!You didn't submit your changes.</h4>
@@ -208,7 +223,7 @@ class CourseAnnotations extends Component{
                             </p>
                     </Alert>
                     : null
-                }
+                }</Element>
                 {weeks.map((week) => {
                 return(
                     <div key={week['week_nbr']}>
@@ -267,12 +282,13 @@ class CourseAnnotations extends Component{
                         }else if(annotation.contentType == "text"){
                             if(this.state.modify.includes(annotation.annotationID)){
                                 return (
-                                    <Panel className="annotation" key={annotation.annotationID}>
+                                     <Element key={annotation.annotationID} name={this.state.modify}>
+                                    <Panel className="annotation" >
                                         <form onSubmit={this.onSubmit.bind(this)} id={annotation.annotationID}>
                                     
                                             { this.preChecking(annotation.annotationID)}
 
-                                            <p className="content-text"><input type="text" defaultValue={annotation.text} onChange={this.handleChange.bind(this)} /></p>
+                                            <p className="content-text"><textarea spellCheck="true" className="modify-text" defaultValue={annotation.text} onChange={this.handleChange.bind(this)} /></p>
 
                                             <div className="annotation-bottom">
                                                 <p className="date"><Moment format="HH:mm - DD MMMM">{annotation.createdAt}</Moment></p>
@@ -281,6 +297,7 @@ class CourseAnnotations extends Component{
                                             </div>
                                         </form>
                                     </Panel>
+                                </Element>
                                 );
                             } else {
                                 return (

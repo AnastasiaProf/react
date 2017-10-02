@@ -272,11 +272,11 @@ class StudentsAnnotations extends Component{
 
     //Render annotation HTML depending of their type
     render(){
-        console.log(this)
+        
         var weeks = this.props.weeks;
         let studentID = this.props.studentID;
         let tags = this.props.tags;
-        console.log(this.state.modify);
+        
         return( 
             <div>
                 <Element name="alertpost">
